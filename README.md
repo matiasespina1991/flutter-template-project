@@ -2,7 +2,7 @@
 
 Template Flutter project.
 
-# 1. Rename the Flutter App from `template_app` to the name of your app. 
+# 1. Rename the Flutter app from `template_app` to the desired name of your app. 
 
 1. **Change Package/Bundle ID:**
     - **Android:** Edit `android/app/src/main/AndroidManifest.xml` and change the `package` attribute.
@@ -34,7 +34,7 @@ Template Flutter project.
     - Update the app name in external services (Firebase, APIs, etc.) as needed.
 
 
-# 2. Adding Firebase to a Flutter App (using FlutterFire):
+# 2. Add Firebase to the Flutter app (using FlutterFire):
 
 1. **Create a Firebase Project:**
     - Go to the [Firebase Console](https://console.firebase.google.com/).
@@ -43,7 +43,8 @@ Template Flutter project.
 2. **Setup Firebase in the App:**
     - Follow these instructions: https://firebase.google.com/docs/flutter/setup.
 
-# 3. Things to take in account for pre-production of the app (Check the item with ✅):
+# 3. Things to take in account for pre-production of the app:
+Check the item with ✅.
 
 ### UI Design:
    - **Font Type:** Choose a font for the app and define the custom fonts in the app if necessary. [ ]
