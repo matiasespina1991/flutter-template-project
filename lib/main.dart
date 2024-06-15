@@ -4,7 +4,7 @@ import 'package:template_app/providers/authorization_provider.dart';
 import 'package:template_app/screens/home_screen/home_screen.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';
 import 'package:template_app/screens/login_screen/login_screen.dart';
-import 'package:template_app/theme/EscribaTheme.dart';
+import 'package:template_app/theme/TemplateTheme.dart';
 
 import 'config.dart';
 
@@ -23,7 +23,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: Config.appName,
-        theme: TemplateTheme.themeData,
+        theme: TemplateTheme.lightTheme,
+        darkTheme: TemplateTheme.darkTheme,
+        themeMode: ThemeMode.system,
         home: const MainScreen(),
       ),
     );
