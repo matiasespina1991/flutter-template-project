@@ -2,7 +2,7 @@
 
 Template Flutter project.
 
-# Step 1: Rename the Flutter App from `template_app` to the name of your app. 
+# Setup: Rename the Flutter App from `template_app` to the name of your app. 
 
 1. **Change Package/Bundle ID:**
     - **Android:** Edit `android/app/src/main/AndroidManifest.xml` and change the `package` attribute.
