@@ -44,7 +44,7 @@ Template Flutter project.
     - Follow these instructions: https://firebase.google.com/docs/flutter/setup.
 
 # 3. Things to take in account for pre-production of the app:
-Check the item with ✅.
+## Check the item with ✅.
 
 ### UI Design:
    - **Font Type:** Choose a font for the app and define the custom fonts in the app if necessary. [ ]
