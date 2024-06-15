@@ -1,4 +1,4 @@
-# FLUTTER TEMPLATE APP
+# Flutter Template App
 
 Template Flutter project.
 
