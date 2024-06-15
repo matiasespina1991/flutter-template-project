@@ -51,7 +51,7 @@ Template Flutter project.
    - **Color Scheme:** Define a color scheme for the app and use it consistently across the app. [ ]
    - **Icon Design:** Select the appropriate icons and icon library for the app. [ ]
    - **UI Design:** Implement the UI design for the app screens and components. [ ]
-   - 
+
 ### App Architecture:
    - **Navigation:** Implement navigation between screens and manage the app routes. [ ]
    - **State Management:** Choose a state management solution for the app and implement it. [ ]
@@ -60,7 +60,7 @@ Template Flutter project.
    - **Search Functionality:** Add search functionality to the app for users to find content. [ ]
    - **Push Notifications:** Implement push notifications for the app using Firebase Cloud Messaging. [ ]
    - **Error Handling:** Implement error handling and logging in the app. [ ]
-   - 
+
 ### UX Design:
    - **User Onboarding:** Create user onboarding screens and flows for the app. [ ]
    - **Accessibility:** Ensure the app is accessible to users with disabilities. [ ]
