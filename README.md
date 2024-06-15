@@ -44,33 +44,47 @@ Template Flutter project.
     - Follow these instructions: https://firebase.google.com/docs/flutter/setup.
 
 # Things to take in account for pre-production of the app (Check the item with ✅):
+
+### UI Design:
    - **Font Type:** Choose a font for the app and define the custom fonts in the app if necessary. [ ]
    - **Color Scheme:** Define a color scheme for the app and use it consistently across the app. [ ]
    - **Icon Design:** Select the appropriate icons and icon library for the app. [ ]
    - **UI Design:** Implement the UI design for the app screens and components. [ ]
+   - 
+### App Architecture:
    - **Navigation:** Implement navigation between screens and manage the app routes. [ ]
    - **State Management:** Choose a state management solution for the app and implement it. [ ]
    - **Data Management:** Implement data management for the app using APIs, databases, or local storage. [ ]
    - **User Authentication:** Implement user authentication and authorization in the app. [ ]
+   - **Search Functionality:** Add search functionality to the app for users to find content. [ ]
    - **Push Notifications:** Implement push notifications for the app using Firebase Cloud Messaging. [ ]
+   - **Error Handling:** Implement error handling and logging in the app. [ ]
+   - 
+### UX Design:
+   - **User Onboarding:** Create user onboarding screens and flows for the app. [ ]
+   - **Accessibility:** Ensure the app is accessible to users with disabilities. [ ]
+   - **Status Indicators:** Add loading indicators, error messages, and other status indicators. [ ]
+   - **User Profile:** Create user profiles and settings for the app. [ ]
    - **Offline Support:** Add offline support for the app using local storage or caching. [ ]
+   - **Localization:** Add support for multiple languages in the app. [ ]
+   - **Dark Mode:** Implement dark mode support for the app. [ ]
+   - **Support:** Provide customer support and respond to user queries. [ ]
+   - **Feedback:** Collect user feedback and reviews for the app. [ ]
+
+### App Features:
    - **App Icon:** Replace the default app icon with a custom one. [ ]
    - **Splash Screen:** Customize the splash screen for the app. [ ]
    - **App Theme:** Define a custom theme for the app. [ ]
-   - **Localization:** Add support for multiple languages in the app. [ ]
-   - **Error Handling:** Implement error handling and logging in the app. [ ]
+
+### Testing and Deployment:
    - **Testing:** Write unit, widget, and integration tests for the app. [ ]
+   - **Compliance:** Ensure the app complies with legal and regulatory requirements. [ ]
    - **Performance:** Optimize the app for performance and memory usage. [ ]
    - **Security:** Secure sensitive data and implement secure communication. [ ]
-   - **Accessibility:** Ensure the app is accessible to users with disabilities. [ ]
    - **Documentation:** Document the app architecture, code, and setup instructions. [ ]
    - **Deployment:** Prepare the app for deployment to app stores. [ ]
    - **Maintenance:** Plan for app updates, bug fixes, and feature enhancements. [ ]
-   - **Feedback:** Collect user feedback and reviews for the app. [ ]
    - **Marketing:** Promote the app through social media, ads, and other channels. [ ]
-   - **Support:** Provide customer support and respond to user queries. [ ]
    - **Monetization:** Implement monetization strategies for the app. [ ]
-   - **Compliance:** Ensure the app complies with legal and regulatory requirements. [ ]
-   - **Feedback:** Collect user feedback and reviews for the app. [ ]
-   - **Marketing:** Promote the app through social media, ads, and other channels. [ ]
+
 
