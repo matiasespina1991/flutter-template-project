@@ -43,7 +43,7 @@ Template Flutter project.
 2. **Setup Firebase in the App:**
     - Follow these instructions: https://firebase.google.com/docs/flutter/setup.
 
-# 3. Things to take in account for pre-production and prior to deployment of the app:
+# 3. Things to take in account for pre-production and should be fully taken in account prior to the deployment of the app:
 ### (Check each completed item with a ✅)
 
 ### UI Design:
