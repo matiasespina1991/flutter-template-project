@@ -32,3 +32,13 @@ Template Flutter project.
 
 8. **Update External Service References:**
     - Update the app name in external services (Firebase, APIs, etc.) as needed.
+
+
+# Adding Firebase to a Flutter App (using FlutterFire):
+
+1. **Create a Firebase Project:**
+    - Go to the [Firebase Console](https://console.firebase.google.com/).
+    - Click on "Add Project" and follow the setup instructions.
+
+2. **Setup Firebase in the App:**
+    - Follow these instructions: https://firebase.google.com/docs/flutter/setup.
