@@ -10,15 +10,15 @@ class MainTheme {
     return base.copyWith(
       scaffoldBackgroundColor: Config.scaffoldBackgroundColor.lightThemeColor,
       hintColor: Colors.blueAccent,
-      textTheme: _buildTextTheme(base.textTheme, Config.primaryFont),
+      textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
       appBarTheme: AppBarTheme(
         foregroundColor: Colors.white, // AppBar text color
-        titleTextStyle: Config.appBarFont.isGoogleFont
-            ? GoogleFonts.getFont(Config.appBarFont.name,
+        titleTextStyle: Config.appBarTextStyle.isGoogleFont
+            ? GoogleFonts.getFont(Config.appBarTextStyle.name,
                 textStyle:
                     const TextStyle(fontSize: Config.appBarTitleFontSize))
             : TextStyle(
-                fontFamily: Config.appBarFont.name,
+                fontFamily: Config.appBarTextStyle.name,
                 fontSize: Config.appBarTitleFontSize),
         backgroundColor: Config
             .appBarBackgroundColor.lightThemeColor, // AppBar background color
@@ -41,17 +41,17 @@ class MainTheme {
     return base.copyWith(
       scaffoldBackgroundColor: Config.scaffoldBackgroundColor.darkThemeColor,
       hintColor: Colors.blueAccent,
-      textTheme: _buildTextTheme(base.textTheme, Config.primaryFont),
+      textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
       appBarTheme: AppBarTheme(
         foregroundColor: Colors.white, // AppBar text color
         backgroundColor: Config
             .appBarBackgroundColor.darkThemeColor, // AppBar background color
-        titleTextStyle: Config.appBarFont.isGoogleFont
-            ? GoogleFonts.getFont(Config.appBarFont.name,
+        titleTextStyle: Config.appBarTextStyle.isGoogleFont
+            ? GoogleFonts.getFont(Config.appBarTextStyle.name,
                 textStyle:
                     const TextStyle(fontSize: Config.appBarTitleFontSize))
             : TextStyle(
-                fontFamily: Config.appBarFont.name,
+                fontFamily: Config.appBarTextStyle.name,
                 fontSize: Config.appBarTitleFontSize),
       ),
       colorScheme: base.colorScheme.copyWith(

@@ -14,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: const TemplateAppBar(
         title: 'Home',
@@ -26,17 +27,24 @@ class _HomeScreenState extends State<HomeScreen> {
               'Light Mode/Dark Mode',
             ),
             const SizedBox(height: 10),
-            Consumer<ThemeNotifier>(
-              builder: (context, themeNotifier, child) {
-                return Switch(
-                  value: themeNotifier.themeMode == ThemeMode.dark,
-                  activeTrackColor: Theme.of(context).colorScheme.secondary,
-                  onChanged: (value) {
-                    themeNotifier.toggleTheme(value);
-                  },
-                );
+            Switch(
+              value: isDark,
+              onChanged: (value) {
+                Provider.of<ThemeNotifier>(context, listen: false)
+                    .toggleTheme(value);
               },
             ),
+            // Consumer<ThemeNotifier>(
+            //   builder: (context, themeNotifier, child) {
+            //     return Switch(
+            //       value: themeNotifier.themeMode == ThemeMode.dark,
+            //       activeTrackColor: Theme.of(context).colorScheme.secondary,
+            //       onChanged: (value) {
+            //         themeNotifier.toggleTheme(value);
+            //       },
+            //     );
+            //   },
+            // ),
           ],
         ),
       ),
