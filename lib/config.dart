@@ -9,6 +9,8 @@ class Config {
 
   // APP CONFIG:
 
+  static const bool useSafeArea =
+      true; // If true, the app will adjust to the space below the status bar
   static const bool useFirebase = false;
   static const bool useTopAppBar = false;
 
@@ -21,16 +23,18 @@ class Config {
   static const bool allowAnonymousSignIn = false;
   static const bool allowEmailSignIn = false;
 
-  static const List supportedLanguages = ['en'];
+  static const String appDefaultLanguage = 'en';
+  static const List supportedLocales = ['en', 'es'];
 
   // DEBUG MODE:
 
-  static const bool debugMode = false;
+  static const bool debugMode = false; // Set to true to skip login screen
 
   // APP STYLES:
 
-  static const bool useFlutterToast = false; // Use FlutterToast package
-  static const bool useMaterial3 = true; // Use Material 3.0
+  static const bool useFlutterToast =
+      false; // Use FlutterToast package for snackbars
+  static const bool useMaterial3 = true; // Use Material 3.0 // DEFAULT: true
 
   // COLOR THEME:
 
@@ -106,7 +110,7 @@ class Config {
   // FONT SIZES:
 
   static const double appBarTitleFontSize = 20;
-  static const double bodyLargeFontSize = 20;
+  static const double bodyLargeFontSize = 16;
   static const double bodyMediumFontSize = 14; // Default Text() font size
   static const double bodySmallFontSize = 12;
   static const double snackbarFontSize = 14;

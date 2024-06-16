@@ -1,0 +1,21 @@
+{
+  "_locale": "en",
+  "loginScreenTitle": "Login screen",
+  "emailLabel": "EMAIL",
+  "passwordLabel": "PASSWORD",
+  "email": "email",
+  "password": "password",
+  "loginButton": "Login",
+  "signingInMessage": "Signing in...",
+  "loginSuccessfulMessage": "Login successful!",
+  "loginErrorMessage": "Error logging in. Please try again or contact support.",
+  "invalidEmailMessage": "Please insert a valid email.",
+  "invalidPasswordMessage": "Please insert a valid password.",
+  "lightModeDarkMode": "Light Mode/Dark Mode",
+  "emailHintText": "Email",
+  "passwordHintText": "Password",
+  "invalidPasswordTooShortMessage": "Password must be at least 6 characters long.",
+  "invalidEmailSnackbarMessage": "The email address inserted is not valid.",
+   "invalidPasswordSnackbarMessage": "The password inserted is not valid.",
+  "pleaseFillTheFollowingFields": "Please fill the following fields:"
+}
