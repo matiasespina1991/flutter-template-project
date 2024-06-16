@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:template_app/providers/authorization_provider.dart';
@@ -7,9 +8,14 @@ import 'package:template_app/screens/login_screen/login_screen.dart';
 import 'package:template_app/theme/main_theme.dart';
 
 import 'config.dart';
+import 'globals.dart';
 import 'helpers/theme_notifier.dart';
 
-void main() {
+void main() async {
+  if (Config.useFirebase) {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+  }
   runApp(const MyApp());
 }
 
@@ -26,6 +32,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeNotifier>(
         builder: (context, themeNotifier, child) {
           return MaterialApp(
+            scaffoldMessengerKey: snackbarKey,
             title: Config.appName,
             theme: MainTheme.lightTheme,
             darkTheme: MainTheme.darkTheme,

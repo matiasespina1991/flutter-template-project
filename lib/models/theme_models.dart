@@ -24,21 +24,10 @@ class TextThemes {
   });
 }
 
-class ScaffoldBackgroundColor {
+class ThemeColors {
   final Color lightThemeColor;
   final Color darkThemeColor;
-
-  const ScaffoldBackgroundColor({
-    required this.lightThemeColor,
-    required this.darkThemeColor,
-  });
-}
-
-class AppBarBackgroundColor {
-  final Color lightThemeColor;
-  final Color darkThemeColor;
-
-  const AppBarBackgroundColor({
+  const ThemeColors({
     required this.lightThemeColor,
     required this.darkThemeColor,
   });

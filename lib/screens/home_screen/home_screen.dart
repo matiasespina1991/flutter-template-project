@@ -2,6 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:template_app/widgets/AppBar/template_app_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../../config.dart';
 import '../../helpers/theme_notifier.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,12 +13,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool useAppBar = Config.useTopAppBar;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TemplateAppBar(
-        title: 'Home',
-      ),
+      appBar: Config.useTopAppBar
+          ? const TemplateAppBar(
+              title: 'Home',
+            )
+          : null,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -26,17 +30,25 @@ class _HomeScreenState extends State<HomeScreen> {
               'Light Mode/Dark Mode',
             ),
             const SizedBox(height: 10),
-            Consumer<ThemeNotifier>(
-              builder: (context, themeNotifier, child) {
-                return Switch(
-                  value: themeNotifier.themeMode == ThemeMode.dark,
-                  activeTrackColor: Theme.of(context).colorScheme.secondary,
-                  onChanged: (value) {
-                    themeNotifier.toggleTheme(value);
-                  },
-                );
+            Switch(
+              value: Theme.of(context).brightness == Brightness.dark,
+              activeTrackColor: Theme.of(context).colorScheme.secondary,
+              onChanged: (value) {
+                Provider.of<ThemeNotifier>(context, listen: false)
+                    .toggleTheme(value);
               },
             ),
+            // Consumer<ThemeNotifier>(
+            //   builder: (context, themeNotifier, child) {
+            //     return Switch(
+            //       value: themeNotifier.themeMode == ThemeMode.dark,
+            //       activeTrackColor: Theme.of(context).colorScheme.secondary,
+            //       onChanged: (value) {
+            //         themeNotifier.toggleTheme(value);
+            //       },
+            //     );
+            //   },
+            // ),
           ],
         ),
       ),
