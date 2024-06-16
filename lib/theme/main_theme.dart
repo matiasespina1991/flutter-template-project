@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../config.dart';
 
-class TemplateTheme {
+class MainTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       primaryColor: Colors.blue,

@@ -4,9 +4,10 @@ import 'package:template_app/providers/authorization_provider.dart';
 import 'package:template_app/screens/home_screen/home_screen.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';
 import 'package:template_app/screens/login_screen/login_screen.dart';
-import 'package:template_app/theme/TemplateTheme.dart';
+import 'package:template_app/theme/main_theme.dart';
 
 import 'config.dart';
+import 'helpers/theme_notifier.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,13 +21,19 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthorizationProvider()),
+        ChangeNotifierProvider(
+            create: (_) => ThemeNotifier()), // Añade el ThemeNotifier
       ],
-      child: MaterialApp(
-        title: Config.appName,
-        theme: TemplateTheme.lightTheme,
-        darkTheme: TemplateTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        home: const MainScreen(),
+      child: Consumer<ThemeNotifier>(
+        builder: (context, themeNotifier, child) {
+          return MaterialApp(
+            title: Config.appName,
+            theme: MainTheme.lightTheme,
+            darkTheme: MainTheme.darkTheme,
+            themeMode: themeNotifier.themeMode,
+            home: const MainScreen(),
+          );
+        },
       ),
     );
   }
@@ -43,18 +50,19 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthorizationProvider>(
-        builder: (BuildContext context, value, Widget? child) {
-          bool isAuthenticated = value.isAuthenticated;
+      builder: (BuildContext context, value, Widget? child) {
+        bool isAuthenticated = value.isAuthenticated;
 
-          if (Config.debugMode == true) {
-            isAuthenticated = true;
-          }
+        if (Config.debugMode == true) {
+          isAuthenticated = true;
+        }
 
-          if (!isAuthenticated) {
-            return const LoginScreen();
-          }
-          return const HomeScreen();
-        },
-        child: const LoadingScreen());
+        if (!isAuthenticated) {
+          return const LoginScreen();
+        }
+        return const HomeScreen();
+      },
+      child: const LoadingScreen(),
+    );
   }
 }

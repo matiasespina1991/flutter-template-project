@@ -1,5 +1,8 @@
+import 'package:provider/provider.dart';
 import 'package:template_app/widgets/AppBar/template_app_bar.dart';
 import 'package:flutter/material.dart';
+
+import '../../helpers/theme_notifier.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,16 +14,28 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: TemplateAppBar(
+    return Scaffold(
+      appBar: const TemplateAppBar(
         title: 'Home',
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Welcome',
+            const Text(
+              'Light Mode/Dark Mode',
+            ),
+            const SizedBox(height: 10),
+            Consumer<ThemeNotifier>(
+              builder: (context, themeNotifier, child) {
+                return Switch(
+                  value: themeNotifier.themeMode == ThemeMode.dark,
+                  activeTrackColor: Theme.of(context).colorScheme.secondary,
+                  onChanged: (value) {
+                    themeNotifier.toggleTheme(value);
+                  },
+                );
+              },
             ),
           ],
         ),

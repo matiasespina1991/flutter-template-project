@@ -34,6 +34,7 @@ Template Flutter project.
     - Update the app name in external services (Firebase, APIs, etc.) as needed.
 
 
+
 # 2. Add Firebase to the Flutter app (using FlutterFire):
 
 1. **Create a Firebase Project:**
