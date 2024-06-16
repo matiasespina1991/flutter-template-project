@@ -66,12 +66,12 @@ class Config {
   );
 
   static const ThemeColors elevatedButtonBackgroundColor = ThemeColors(
-    lightThemeColor: Colors.white,
+    lightThemeColor: Colors.blueGrey,
     darkThemeColor: Colors.blueGrey,
   );
 
   static const ThemeColors elevatedButtonTextColor = ThemeColors(
-    lightThemeColor: Colors.black,
+    lightThemeColor: Colors.white,
     darkThemeColor: Colors.white,
   );
 
@@ -113,9 +113,13 @@ class Config {
 
   static const double appBarTitleFontSize = 20;
   static const double bodyLargeFontSize = 16;
-  static const double bodyMediumFontSize = 14; // Default Text() font size
+  static const double bodyMediumFontSize = 13; // Default Text() font size
   static const double bodySmallFontSize = 12;
   static const double snackbarFontSize = 14;
+
+  // SHADOWS:
+
+  static const double buttonsElevation = 1.1;
 
   //-----------------------
 

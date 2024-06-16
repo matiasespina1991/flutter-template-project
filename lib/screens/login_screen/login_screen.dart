@@ -33,6 +33,186 @@ class _LoginScreenState extends State<LoginScreen> {
     return emailRegex.hasMatch(email);
   }
 
+  double get _screenHeight => MediaQuery.of(context).size.height;
+
+  @override
+  Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthorizationProvider>(context);
+
+    return Scaffold(
+      appBar: Config.useTopAppBar
+          ? TemplateAppBar(title: S.of(context).loginScreenTitle)
+          : null,
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Center(
+          child: SizedBox(
+            width: 300,
+            height: _screenHeight * 0.8,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(height: 50),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Icon(Icons.email_outlined),
+                      const SizedBox(width: 5),
+                      Text(
+                        S.of(context).emailLabel,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                ThemeTextField(
+                  controller: _emailController,
+                  focusNode: _emailFocusNode,
+                  hintText: S.of(context).emailHintText,
+                  isEmailInput: true,
+                  isValid: _isEmailValid,
+                  errorText: S.of(context).invalidEmailMessage,
+                  onChanged: (value) {
+                    if (isEmailValid(value)) {
+                      setState(() {
+                        _isEmailValid = true;
+                      });
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Icon(Icons.lock_outline),
+                      const SizedBox(width: 5),
+                      Text(
+                        S.of(context).passwordLabel,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                ThemeTextField(
+                  controller: _passwordController,
+                  focusNode: _passwordFocusNode,
+                  hintText: S.of(context).passwordHintText,
+                  isPasswordInput: true,
+                  hidePasswordVisibilityIcon: false,
+                  isValid: _isPasswordValid,
+                  errorText: S.of(context).invalidPasswordMessage,
+                  onChanged: (value) {
+                    if (value.isNotEmpty && value.length >= minPasswordLength) {
+                      setState(() {
+                        _isPasswordValid = true;
+                      });
+                    }
+                  },
+                ),
+                const SizedBox(height: 32.0),
+                SizedBox(
+                  width: 233,
+                  child: ElevatedButton(
+                    onPressed:
+                        _attemptingLogin ? null : () => attemptLogin(context),
+                    child: Text(S.of(context).loginButton),
+                  ),
+                ),
+                const SizedBox(height: 22.0),
+                Visibility(
+                  visible: Config.allowGoogleSignIn,
+                  child: SignInButton(Buttons.google,
+                      elevation: Config.buttonsElevation,
+                      padding: const EdgeInsets.all(5.5),
+                      clipBehavior: Clip.hardEdge,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      text: S.of(context).signInWithGoogleButtonLabel,
+                      onPressed: () async {
+                    ShowSnackbar.showSnackBar(
+                      message: S.of(context).signingInWithGoogleSnackbarMessage,
+                      variant: SnackbarVariant.info,
+                      duration: SnackbarDuration.long,
+                    );
+
+                    try {
+                      await authProvider.signInWithGoogle();
+                    } on PlatformException catch (error) {
+                      ShowSnackbar.showSnackBar(
+                        message: S
+                            .of(context)
+                            .errorSigningInWithGoogleSnackbarMessage,
+                        variant: SnackbarVariant.error,
+                        duration: SnackbarDuration.long,
+                      );
+
+                      debugPrint(
+                          'Error signing in with Google: ${error.toString()}');
+                    } catch (error) {
+                      ShowSnackbar.showSnackBar(
+                        message: S
+                            .of(context)
+                            .errorSigningInWithGoogleSnackbarMessage,
+                        variant: SnackbarVariant.error,
+                        duration: SnackbarDuration.long,
+                      );
+                      debugPrint('Error: ${error.toString()}');
+                    }
+                  }),
+                ),
+                const Divider(),
+                Text(S.of(context).lightModeDarkMode),
+                Switch(
+                  value: Theme.of(context).brightness == Brightness.dark,
+                  activeTrackColor: Theme.of(context).colorScheme.secondary,
+                  onChanged: (value) {
+                    Provider.of<ThemeNotifier>(context, listen: false)
+                        .toggleTheme(value);
+                  },
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          S.load(const Locale('en'));
+                        });
+                      },
+                      child: const Text(
+                        '🇺🇸',
+                        style: TextStyle(fontSize: 30),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text('/'),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          S.load(const Locale('es'));
+                        });
+                      },
+                      child: const Text(
+                        '🇪🇸',
+                        style: TextStyle(fontSize: 30),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   void attemptLogin(BuildContext context) async {
     debugPrint('Attempting login...');
     var error = false;
@@ -148,177 +328,5 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthorizationProvider>(context);
-
-    return Scaffold(
-      appBar: Config.useTopAppBar
-          ? TemplateAppBar(title: S.of(context).loginScreenTitle)
-          : null,
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Center(
-          child: SizedBox(
-            width: 300,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Icon(Icons.email_outlined),
-                      const SizedBox(width: 5),
-                      Text(
-                        S.of(context).emailLabel,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-                ThemeTextField(
-                  controller: _emailController,
-                  focusNode: _emailFocusNode,
-                  hintText: S.of(context).emailHintText,
-                  isEmailInput: true,
-                  isValid: _isEmailValid,
-                  errorText: S.of(context).invalidEmailMessage,
-                  onChanged: (value) {
-                    if (isEmailValid(value)) {
-                      setState(() {
-                        _isEmailValid = true;
-                      });
-                    }
-                  },
-                ),
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Icon(Icons.lock_outline),
-                      const SizedBox(width: 5),
-                      Text(
-                        S.of(context).passwordLabel,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-                ThemeTextField(
-                  controller: _passwordController,
-                  focusNode: _passwordFocusNode,
-                  hintText: S.of(context).passwordHintText,
-                  isPasswordInput: true,
-                  hidePasswordVisibilityIcon: false,
-                  isValid: _isPasswordValid,
-                  errorText: S.of(context).invalidPasswordMessage,
-                  onChanged: (value) {
-                    if (value.isNotEmpty && value.length >= minPasswordLength) {
-                      setState(() {
-                        _isPasswordValid = true;
-                      });
-                    }
-                  },
-                ),
-                const SizedBox(height: 25.0),
-                ElevatedButton(
-                  onPressed:
-                      _attemptingLogin ? null : () => attemptLogin(context),
-                  child: Text(S.of(context).loginButton),
-                ),
-                const SizedBox(height: 25.0),
-                Visibility(
-                  visible: Config.allowGoogleSignIn,
-                  child: SignInButton(Buttons.google,
-                      padding: const EdgeInsets.all(5),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      text: S.of(context).signInWithGoogleButtonLabel,
-                      onPressed: () async {
-                    ShowSnackbar.showSnackBar(
-                      message: S.of(context).signingInWithGoogleSnackbarMessage,
-                      variant: SnackbarVariant.info,
-                      duration: SnackbarDuration.long,
-                    );
-
-                    try {
-                      await authProvider.signInWithGoogle();
-                    } on PlatformException catch (error) {
-                      ShowSnackbar.showSnackBar(
-                        message: S
-                            .of(context)
-                            .errorSigningInWithGoogleSnackbarMessage,
-                        variant: SnackbarVariant.error,
-                        duration: SnackbarDuration.long,
-                      );
-
-                      debugPrint(
-                          'Error signing in with Google: ${error.toString()}');
-                    } catch (error) {
-                      ShowSnackbar.showSnackBar(
-                        message: S
-                            .of(context)
-                            .errorSigningInWithGoogleSnackbarMessage,
-                        variant: SnackbarVariant.error,
-                        duration: SnackbarDuration.long,
-                      );
-                      debugPrint('Error: ${error.toString()}');
-                    }
-                  }),
-                ),
-                const Divider(),
-                Text(S.of(context).lightModeDarkMode),
-                Switch(
-                  value: Theme.of(context).brightness == Brightness.dark,
-                  activeTrackColor: Theme.of(context).colorScheme.secondary,
-                  onChanged: (value) {
-                    Provider.of<ThemeNotifier>(context, listen: false)
-                        .toggleTheme(value);
-                  },
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          S.load(const Locale('en'));
-                        });
-                      },
-                      child: const Text(
-                        '🇺🇸',
-                        style: TextStyle(fontSize: 30),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    const Text('/'),
-                    const SizedBox(width: 10),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          S.load(const Locale('es'));
-                        });
-                      },
-                      child: const Text(
-                        '🇪🇸',
-                        style: TextStyle(fontSize: 30),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

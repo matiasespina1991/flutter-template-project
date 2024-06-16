@@ -41,10 +41,14 @@ class MainTheme {
         style: ElevatedButton.styleFrom(
           foregroundColor: Config.elevatedButtonTextColor.lightThemeColor,
           backgroundColor: Config.elevatedButtonBackgroundColor.lightThemeColor,
+          elevation: Config.buttonsElevation,
+          minimumSize: const Size(double.infinity, 47),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
       ),
       dividerTheme: base.dividerTheme.copyWith(
-        space: 50,
+        space: 70,
         color: Colors.black26,
         thickness: 1,
         indent: 50,
@@ -88,10 +92,14 @@ class MainTheme {
         style: ElevatedButton.styleFrom(
           foregroundColor: Config.elevatedButtonTextColor.darkThemeColor,
           backgroundColor: Config.elevatedButtonBackgroundColor.darkThemeColor,
+          elevation: Config.buttonsElevation,
+          minimumSize: const Size(double.infinity, 50),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
       ),
       dividerTheme: base.dividerTheme.copyWith(
-        space: 50,
+        space: 70,
         color: Colors.white60,
         thickness: 1,
         indent: 50,
