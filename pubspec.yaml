@@ -18,6 +18,8 @@ dependencies:
   provider: ^6.1.2
   # Flutter Secure Storage is a Flutter plugin for storing data securely on the device.
   flutter_secure_storage: ^9.2.2
+  # Google Fonts is a Flutter plugin for using Google Fonts in a Flutter app.
+  google_fonts: ^6.2.1
 
 #  # -----------------  GENERAL PACKAGES  -----------------
 #  # Url Launcher is a Flutter plugin for launching a URL in the mobile platform. Supports iOS and Android.
