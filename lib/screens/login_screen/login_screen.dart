@@ -1,13 +1,15 @@
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:template_app/utils/show_snackbar.dart';
 import 'package:template_app/widgets/AppBar/template_app_bar.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:template_app/generated/l10n.dart'; // Importa las clases generadas
 
 import '../../config.dart';
 import '../../helpers/theme_notifier.dart';
 import '../../providers/authorization_provider.dart';
+import '../../widgets/ThemeTextField/theme_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,70 +26,94 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isEmailValid = true;
   bool _isPasswordValid = true;
   final int minPasswordLength = 6;
-  bool _isPasswordVisible = false;
   bool _attemptingLogin = false;
 
   bool isEmailValid(String email) {
-    // A simple email validation logic
     final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
     return emailRegex.hasMatch(email);
   }
 
   void attemptLogin(BuildContext context) async {
+    debugPrint('Attempting login...');
+    var error = false;
     setState(() {
       _isEmailValid = true;
       _isPasswordValid = true;
     });
 
-    if (!isEmailValid(_emailController.text)) {
-      setState(() {
-        _isEmailValid = false;
-      });
-    }
-
-    if (_passwordController.text.isEmpty ||
-        _passwordController.text.length < minPasswordLength) {
-      setState(() {
-        _isPasswordValid = false;
-      });
-    }
-
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       List<String> emptyFields = [];
       if (_emailController.text.isEmpty) {
-        emptyFields.add('email');
+        debugPrint('Please insert a valid email');
+        emptyFields.add(S.of(context).email);
+        setState(() {
+          _isEmailValid = false;
+        });
+        ShowSnackbar.showSnackBar(
+          message: S.of(context).invalidEmailSnackbarMessage,
+          variant: SnackbarVariant.error,
+          duration: SnackbarDuration.short,
+        );
       }
       if (_passwordController.text.isEmpty) {
-        emptyFields.add('password');
+        debugPrint('Please insert a valid password');
+        emptyFields.add(S.of(context).password);
+        setState(() {
+          _isPasswordValid = false;
+        });
+        ShowSnackbar.showSnackBar(
+          message: S.of(context).invalidPasswordSnackbarMessage,
+          variant: SnackbarVariant.error,
+          duration: SnackbarDuration.short,
+        );
+        error = true;
       }
 
       debugPrint('Error: The following fields are empty: $emptyFields');
 
+      // Please fill the following fields:
+
       ShowSnackbar.showSnackBar(
-        message: 'Please fill the following fields: ${emptyFields.join(', ')}',
+        message:
+            '${S.of(context).pleaseFillTheFollowingFields} ${emptyFields.join(', ')}.',
         variant: SnackbarVariant.error,
-        duration: SnackbarDuration.long,
+        duration: SnackbarDuration.short,
       );
-      return;
+      error = true;
     }
 
-    if (!isEmailValid(_emailController.text)) {
+    if (_emailController.text.isNotEmpty &&
+        !isEmailValid(_emailController.text)) {
       debugPrint('Email is not valid');
+      setState(() {
+        _isEmailValid = false;
+      });
       ShowSnackbar.showSnackBar(
-        message: 'Please insert a valid email',
+        message: S.of(context).invalidEmailMessage,
         variant: SnackbarVariant.error,
-        duration: SnackbarDuration.long,
+        duration: SnackbarDuration.short,
       );
-      return;
+      error = true;
     }
 
-    if (_passwordController.text.isEmpty) {
-      debugPrint('Please insert a valid password');
+    if (_passwordController.text.isNotEmpty &&
+        _passwordController.text.length < minPasswordLength) {
+      debugPrint('Password is too short. Minimum length: $minPasswordLength');
+      setState(() {
+        _isPasswordValid = false;
+      });
+
       ShowSnackbar.showSnackBar(
-        message: 'Please insert a valid email',
+        message: S.of(context).invalidPasswordTooShortMessage,
         variant: SnackbarVariant.error,
-        duration: SnackbarDuration.long,
+        duration: SnackbarDuration.short,
       );
+
+      error = true;
+    }
+
+    if (error) {
+      debugPrint('Login aborted.');
       return;
     }
 
@@ -96,11 +122,9 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        duration: Duration(seconds: 25),
-        content: Text(
-          'Trying to login...',
-        ),
+      SnackBar(
+        duration: const Duration(seconds: 25),
+        content: Text(S.of(context).signingInMessage),
       ),
     );
 
@@ -109,13 +133,13 @@ class _LoginScreenState extends State<LoginScreen> {
           .signInWithEmail(_emailController.text, _passwordController.text);
 
       ShowSnackbar.showSnackBar(
-        message: 'Login successful!',
+        message: S.of(context).loginSuccessfulMessage,
         variant: SnackbarVariant.success,
         duration: SnackbarDuration.long,
       );
     } catch (error) {
       ShowSnackbar.showSnackBar(
-        message: 'Error logging in. Please try again or contact support.',
+        message: S.of(context).loginErrorMessage,
         variant: SnackbarVariant.error,
         duration: SnackbarDuration.long,
       );
@@ -134,9 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       appBar: Config.useTopAppBar
-          ? const TemplateAppBar(
-              title: 'Login screen',
-            )
+          ? TemplateAppBar(title: S.of(context).loginScreenTitle)
           : null,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -146,28 +168,28 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const SizedBox(
-                  height: 50,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 8.0),
+                const SizedBox(height: 50),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Icon(Icons.email_outlined),
-                      SizedBox(
-                        width: 5,
-                      ),
+                      const Icon(Icons.email_outlined),
+                      const SizedBox(width: 5),
                       Text(
-                        'EMAIL ADDRESS',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        S.of(context).emailLabel,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
-                TextField(
+                ThemeTextField(
                   controller: _emailController,
                   focusNode: _emailFocusNode,
+                  hintText: S.of(context).emailHintText,
+                  isEmailInput: true,
+                  isValid: _isEmailValid,
+                  errorText: S.of(context).invalidEmailMessage,
                   onChanged: (value) {
                     if (isEmailValid(value)) {
                       setState(() {
@@ -175,44 +197,30 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     }
                   },
-                  decoration: InputDecoration(
-                    filled: true,
-                    hintText: 'Email',
-                    border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(7),
-                      ),
-                    ),
-                    errorBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(7),
-                      ),
-                    ),
-                    errorText:
-                        _isEmailValid ? null : 'Please insert a valid email',
-                  ),
                 ),
-                const SizedBox(height: 20.0),
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 8.0),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Icon(Icons.lock_outline),
-                      SizedBox(
-                        width: 5,
-                      ),
+                      const Icon(Icons.lock_outline),
+                      const SizedBox(width: 5),
                       Text(
-                        'PASSWORD',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        S.of(context).passwordLabel,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
-                TextField(
+                ThemeTextField(
                   controller: _passwordController,
                   focusNode: _passwordFocusNode,
+                  hintText: S.of(context).passwordHintText,
+                  isPasswordInput: true,
+                  hidePasswordVisibilityIcon: false,
+                  isValid: _isPasswordValid,
+                  errorText: S.of(context).invalidPasswordMessage,
                   onChanged: (value) {
                     if (value.isNotEmpty && value.length >= minPasswordLength) {
                       setState(() {
@@ -220,37 +228,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     }
                   },
-                  decoration: InputDecoration(
-                    filled: true,
-                    hintText: 'Password',
-                    errorText: _isPasswordValid
-                        ? null
-                        : 'Please insert a valid password',
-                    border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(7),
-                      ),
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                  obscureText: !_isPasswordVisible,
                 ),
                 const SizedBox(height: 25.0),
                 ElevatedButton(
                   onPressed:
                       _attemptingLogin ? null : () => attemptLogin(context),
-                  child: Text('Login'),
+                  child: Text(S.of(context).loginButton),
                 ),
                 const SizedBox(height: 25.0),
                 Visibility(
@@ -286,9 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   }),
                 ),
                 const Divider(),
-                const Text(
-                  'Light Mode/Dark Mode',
-                ),
+                Text(S.of(context).lightModeDarkMode),
                 Switch(
                   value: Theme.of(context).brightness == Brightness.dark,
                   activeTrackColor: Theme.of(context).colorScheme.secondary,
@@ -296,6 +277,37 @@ class _LoginScreenState extends State<LoginScreen> {
                     Provider.of<ThemeNotifier>(context, listen: false)
                         .toggleTheme(value);
                   },
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          S.load(const Locale('en'));
+                        });
+                      },
+                      child: Text(
+                        '🇺🇸',
+                        style: const TextStyle(fontSize: 30),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text('/'),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          S.load(const Locale('es'));
+                        });
+                      },
+                      child: Text(
+                        '🇪🇸',
+                        style: const TextStyle(fontSize: 30),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -1,0 +1,22 @@
+{
+  "_locale": "es",
+  "loginScreenTitle": "Iniciar sesión",
+  "emailLabel": "EMAIL",
+  "passwordLabel": "CONTRASEÑA",
+  "email": "email",
+  "password": "contraseña",
+  "loginButton": "Iniciar sesión",
+  "signingInMessage": "Iniciando sesión...",
+  "loginSuccessfulMessage": "Inicio de sesión exitoso!",
+  "loginErrorMessage": "Error al iniciar sesión. Por favor, inténtelo de nuevo o contacte con el soporte.",
+  "invalidEmailMessage": "Inserte un correo electrónico válido, por favor.",
+  "invalidPasswordMessage": "Inserte una contraseña válida, por favor.",
+  "lightModeDarkMode": "Modo claro / modo oscuro",
+  "emailHintText": "Email",
+  "passwordHintText": "Contraseña",
+  "invalidPasswordTooShortMessage": "La contraseña debe tener al menos 6 caracteres.",
+  "invalidEmailSnackbarMessage": "El correo electrónico insertado no es válido.",
+   "invalidPasswordSnackbarMessage": "La contraseña insertada no es válida.",
+  "pleaseFillTheFollowingFields": "Por favor, rellene los siguientes campos:"
+
+}

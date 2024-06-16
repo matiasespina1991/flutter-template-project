@@ -74,6 +74,7 @@ class MainTheme {
                 fontFamily: Config.appBarTextStyle.name,
                 fontSize: Config.appBarTitleFontSize),
       ),
+
       colorScheme: base.colorScheme.copyWith(
         primary: Config.primaryTextColor.darkThemeColor,
         onPrimary: Colors.black,
