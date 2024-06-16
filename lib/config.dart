@@ -10,6 +10,7 @@ class Config {
   // APP CONFIG:
 
   static const bool useFirebase = false;
+  static const bool useTopAppBar = false;
 
   static const bool allowGoogleSignIn = true;
   static const List<String> googleSignInScopes = [
@@ -28,20 +29,44 @@ class Config {
 
   // APP STYLES:
 
-  static const bool useFlutterToast = true; // Use FlutterToast package
+  static const bool useFlutterToast = false; // Use FlutterToast package
+  static const bool useMaterial3 = true; // Use Material 3.0
 
   // COLOR THEME:
 
-  static const ScaffoldBackgroundColor scaffoldBackgroundColor =
-      ScaffoldBackgroundColor(
+  static const ThemeColors scaffoldBackgroundColor = ThemeColors(
     lightThemeColor: lightWhiteColor,
     darkThemeColor: lightBlackColor,
   );
 
-  static const AppBarBackgroundColor appBarBackgroundColor =
-      AppBarBackgroundColor(
-    lightThemeColor: Colors.indigo,
-    darkThemeColor: Colors.indigo,
+  static const ThemeColors appBarBackgroundColor = ThemeColors(
+    lightThemeColor: Colors.black87,
+    darkThemeColor: Colors.blueGrey,
+  );
+
+  static const ThemeColors primaryTextColor = ThemeColors(
+    lightThemeColor: Colors.black,
+    darkThemeColor: Colors.white,
+  );
+
+  static const ThemeColors secondaryTextColor = ThemeColors(
+    lightThemeColor: Colors.black,
+    darkThemeColor: Colors.white,
+  );
+
+  static const ThemeColors hintTextColor = ThemeColors(
+    lightThemeColor: Colors.grey,
+    darkThemeColor: Colors.grey,
+  );
+
+  static const ThemeColors elevatedButtonBackgroundColor = ThemeColors(
+    lightThemeColor: Colors.white,
+    darkThemeColor: Colors.blueGrey,
+  );
+
+  static const ThemeColors elevatedButtonTextColor = ThemeColors(
+    lightThemeColor: Colors.black,
+    darkThemeColor: Colors.white,
   );
 
   static const Color snackBarErrorBackgroundColor = Colors.red;

@@ -5,12 +5,15 @@ import '../config.dart';
 import '../models/theme_models.dart';
 
 class MainTheme {
+  /// --------------- LIGHT THEME ---------------
   static ThemeData get lightTheme {
-    final base = ThemeData.light();
+    final base = ThemeData.light(useMaterial3: Config.useMaterial3);
     return base.copyWith(
       scaffoldBackgroundColor: Config.scaffoldBackgroundColor.lightThemeColor,
-      hintColor: Colors.blueAccent,
+      hintColor: Config.hintTextColor
+          .lightThemeColor, // Define the hintColor for light theme
       textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
+
       appBarTheme: AppBarTheme(
         foregroundColor: Colors.white, // AppBar text color
         titleTextStyle: Config.appBarTextStyle.isGoogleFont
@@ -23,9 +26,10 @@ class MainTheme {
         backgroundColor: Config
             .appBarBackgroundColor.lightThemeColor, // AppBar background color
       ),
-      colorScheme: const ColorScheme.light(
-        primary: Colors.blue,
-        secondary: Colors.blueAccent,
+
+      colorScheme: ColorScheme.light(
+        primary: Config.primaryTextColor.lightThemeColor,
+        secondary: Config.secondaryTextColor.lightThemeColor,
         surface: Colors.white,
         error: Colors.red,
         onPrimary: Colors.white,
@@ -33,14 +37,30 @@ class MainTheme {
         onError: Colors.white,
         brightness: Brightness.light,
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Config.elevatedButtonTextColor.lightThemeColor,
+          backgroundColor: Config.elevatedButtonBackgroundColor.lightThemeColor,
+        ),
+      ),
+      dividerTheme: base.dividerTheme.copyWith(
+        space: 50,
+        color: Colors.black26,
+        thickness: 1,
+        indent: 50,
+        endIndent: 50,
+      ),
     );
   }
 
+  /// --------------- DARK THEME ---------------
+
   static ThemeData get darkTheme {
-    final base = ThemeData.dark();
+    final base = ThemeData.dark(useMaterial3: Config.useMaterial3);
     return base.copyWith(
       scaffoldBackgroundColor: Config.scaffoldBackgroundColor.darkThemeColor,
-      hintColor: Colors.blueAccent,
+      hintColor: Config
+          .hintTextColor.darkThemeColor, // Define the hintColor for dark theme
       textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
       appBarTheme: AppBarTheme(
         foregroundColor: Colors.white, // AppBar text color
@@ -55,13 +75,26 @@ class MainTheme {
                 fontSize: Config.appBarTitleFontSize),
       ),
       colorScheme: base.colorScheme.copyWith(
+        primary: Config.primaryTextColor.darkThemeColor,
         onPrimary: Colors.black,
-        primary: Colors.white,
-        secondary: Colors.blueAccent,
+        secondary: Config.secondaryTextColor.darkThemeColor,
         error: Colors.red[900]!,
         onSecondary: Colors.black,
         onError: Colors.black,
         brightness: Brightness.dark,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Config.elevatedButtonTextColor.darkThemeColor,
+          backgroundColor: Config.elevatedButtonBackgroundColor.darkThemeColor,
+        ),
+      ),
+      dividerTheme: base.dividerTheme.copyWith(
+        space: 50,
+        color: Colors.white60,
+        thickness: 1,
+        indent: 50,
+        endIndent: 50,
       ),
     );
   }

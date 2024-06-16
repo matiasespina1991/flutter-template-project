@@ -49,6 +49,41 @@ class AuthorizationProvider with ChangeNotifier {
 
   bool get isAuthenticated => _authToken != null && _authToken!.isNotEmpty;
 
+  // Email/Password Sign In methods
+  Future<void> signInWithEmail(String email, String password) async {
+    try {
+      debugPrint('Attempting to sign in with email and password.');
+
+      if (Config.useFirebase) {
+        final UserCredential authResult = await _firebaseAuth!
+            .signInWithEmailAndPassword(email: email, password: password);
+        _authToken = authResult.user!.uid; // Use user ID as auth token
+        await setAuthToken(_authToken!);
+      } else {
+        // Non-Firebase Sign In
+        _authToken = email; // Use email as auth token
+        await setAuthToken(_authToken!);
+      }
+
+      ShowSnackbar.showSnackBar(
+        message: 'Signed in with email and password.',
+        variant: SnackbarVariant.success,
+        duration: SnackbarDuration.short,
+      );
+
+      notifyListeners();
+    } catch (error) {
+      debugPrint('Error during email/password Sign In: ${error.toString()}');
+
+      ShowSnackbar.showSnackBar(
+        message:
+            'Error signing in with email and password: ${error.toString()}',
+        variant: SnackbarVariant.error,
+        duration: SnackbarDuration.short,
+      );
+    }
+  }
+
   // Google Sign In methods
   Future<void> signInWithGoogle() async {
     if (Config.allowGoogleSignIn) {
