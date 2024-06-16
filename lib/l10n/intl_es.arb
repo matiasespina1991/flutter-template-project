@@ -17,6 +17,9 @@
   "invalidPasswordTooShortMessage": "La contraseña debe tener al menos 6 caracteres.",
   "invalidEmailSnackbarMessage": "El correo electrónico insertado no es válido.",
    "invalidPasswordSnackbarMessage": "La contraseña insertada no es válida.",
-  "pleaseFillTheFollowingFields": "Por favor, rellene los siguientes campos:"
+  "pleaseFillTheFollowingFields": "Por favor, rellene los siguientes campos:",
+   "signInWithGoogleButtonLabel": "Iniciar sesión con Google",
+  "signingInWithGoogleSnackbarMessage": "Iniciando sesión con Google...",
+   "errorSigningInWithGoogleSnackbarMessage": "Hubo un error al iniciar sesión con Google. Por favor, inténtelo de nuevo o contacte con el soporte."
 
 }

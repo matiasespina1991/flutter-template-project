@@ -71,8 +71,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
       debugPrint('Error: The following fields are empty: $emptyFields');
 
-      // Please fill the following fields:
-
       ShowSnackbar.showSnackBar(
         message:
             '${S.of(context).pleaseFillTheFollowingFields} ${emptyFields.join(', ')}.',
@@ -238,9 +236,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 25.0),
                 Visibility(
                   visible: Config.allowGoogleSignIn,
-                  child: SignInButton(Buttons.google, onPressed: () async {
+                  child: SignInButton(Buttons.google,
+                      padding: const EdgeInsets.all(5),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      text: S.of(context).signInWithGoogleButtonLabel,
+                      onPressed: () async {
                     ShowSnackbar.showSnackBar(
-                      message: 'Signing in with Google...',
+                      message: S.of(context).signingInWithGoogleSnackbarMessage,
                       variant: SnackbarVariant.info,
                       duration: SnackbarDuration.long,
                     );
@@ -249,8 +252,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       await authProvider.signInWithGoogle();
                     } on PlatformException catch (error) {
                       ShowSnackbar.showSnackBar(
-                        message:
-                            'There was an error signing in with Google. Please try again or contact support.',
+                        message: S
+                            .of(context)
+                            .errorSigningInWithGoogleSnackbarMessage,
                         variant: SnackbarVariant.error,
                         duration: SnackbarDuration.long,
                       );
@@ -259,8 +263,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           'Error signing in with Google: ${error.toString()}');
                     } catch (error) {
                       ShowSnackbar.showSnackBar(
-                        message:
-                            'There was an error signing in with Google. Please try again or contact support.',
+                        message: S
+                            .of(context)
+                            .errorSigningInWithGoogleSnackbarMessage,
                         variant: SnackbarVariant.error,
                         duration: SnackbarDuration.long,
                       );
@@ -288,9 +293,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           S.load(const Locale('en'));
                         });
                       },
-                      child: Text(
+                      child: const Text(
                         '🇺🇸',
-                        style: const TextStyle(fontSize: 30),
+                        style: TextStyle(fontSize: 30),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -302,9 +307,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           S.load(const Locale('es'));
                         });
                       },
-                      child: Text(
+                      child: const Text(
                         '🇪🇸',
-                        style: const TextStyle(fontSize: 30),
+                        style: TextStyle(fontSize: 30),
                       ),
                     ),
                   ],

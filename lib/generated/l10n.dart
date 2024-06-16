@@ -239,6 +239,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Sign in with Google`
+  String get signInWithGoogleButtonLabel {
+    return Intl.message(
+      'Sign in with Google',
+      name: 'signInWithGoogleButtonLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Signing in with Google...`
+  String get signingInWithGoogleSnackbarMessage {
+    return Intl.message(
+      'Signing in with Google...',
+      name: 'signingInWithGoogleSnackbarMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There was an error signing in with Google. Please try again or contact support.`
+  String get errorSigningInWithGoogleSnackbarMessage {
+    return Intl.message(
+      'There was an error signing in with Google. Please try again or contact support.',
+      name: 'errorSigningInWithGoogleSnackbarMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

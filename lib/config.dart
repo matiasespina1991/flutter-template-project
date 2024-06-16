@@ -26,6 +26,8 @@ class Config {
   static const String appDefaultLanguage = 'en';
   static const List supportedLocales = ['en', 'es'];
 
+  /// NOTE: edit lib/l10n/intl_xx.arb files and use 'flutter pub run intl_utils:generate' to generate translations
+
   // DEBUG MODE:
 
   static const bool debugMode = false; // Set to true to skip login screen

@@ -26,6 +26,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "email": MessageLookupByLibrary.simpleMessage("email"),
         "emailHintText": MessageLookupByLibrary.simpleMessage("Email"),
         "emailLabel": MessageLookupByLibrary.simpleMessage("EMAIL"),
+        "errorSigningInWithGoogleSnackbarMessage":
+            MessageLookupByLibrary.simpleMessage(
+                "There was an error signing in with Google. Please try again or contact support."),
         "invalidEmailMessage": MessageLookupByLibrary.simpleMessage(
             "Please insert a valid email."),
         "invalidEmailSnackbarMessage": MessageLookupByLibrary.simpleMessage(
@@ -50,7 +53,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "passwordLabel": MessageLookupByLibrary.simpleMessage("PASSWORD"),
         "pleaseFillTheFollowingFields": MessageLookupByLibrary.simpleMessage(
             "Please fill the following fields:"),
+        "signInWithGoogleButtonLabel":
+            MessageLookupByLibrary.simpleMessage("Sign in with Google"),
         "signingInMessage":
-            MessageLookupByLibrary.simpleMessage("Signing in...")
+            MessageLookupByLibrary.simpleMessage("Signing in..."),
+        "signingInWithGoogleSnackbarMessage":
+            MessageLookupByLibrary.simpleMessage("Signing in with Google...")
       };
 }

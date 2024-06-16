@@ -17,5 +17,10 @@
   "invalidPasswordTooShortMessage": "Password must be at least 6 characters long.",
   "invalidEmailSnackbarMessage": "The email address inserted is not valid.",
    "invalidPasswordSnackbarMessage": "The password inserted is not valid.",
-  "pleaseFillTheFollowingFields": "Please fill the following fields:"
+  "pleaseFillTheFollowingFields": "Please fill the following fields:",
+  "signInWithGoogleButtonLabel": "Sign in with Google",
+   "signingInWithGoogleSnackbarMessage": "Signing in with Google...",
+     "errorSigningInWithGoogleSnackbarMessage": "There was an error signing in with Google. Please try again or contact support."
+
+
 }
