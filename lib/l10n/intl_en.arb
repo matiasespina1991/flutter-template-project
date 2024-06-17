@@ -16,6 +16,8 @@
   "lightModeDarkMode": "Light Mode/Dark Mode",
   "lightMode": "Light Mode",
   "darkMode": "Dark Mode",
+  "switchToDarkMode": "Switch to dark mode",
+    "switchToLightMode": "Switch to light mode",
   "emailHintText": "Email",
   "passwordHintText": "Password",
   "invalidPasswordTooShortMessage": "Password must be at least 6 characters long.",

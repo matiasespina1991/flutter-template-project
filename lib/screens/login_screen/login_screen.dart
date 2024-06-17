@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
-import 'package:template_app/widgets/ShowSnackbar/show_snackbar.dart';
 
 import 'package:flutter/services.dart';
 import 'package:template_app/generated/l10n.dart';
 
 import '../../config.dart';
-import '../../providers/theme_notifier.dart';
+import '../../providers/theme_provider.dart';
 import '../../providers/authorization_provider.dart';
 import '../../providers/locale_provider.dart';
 import '../../utils/create_route.dart';
 import '../../utils/is_email_valid.dart';
 import '../../widgets/AppScaffold/app_scaffold.dart';
+import '../../widgets/NotificationSnackbar/notification_snackbar.dart';
 import '../../widgets/ThemeInputField/theme_input_field.dart';
 import '../home_screen/home_screen.dart';
 
@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               borderRadius: BorderRadius.circular(10)),
                           text: S.of(context).signInWithGoogleButtonLabel,
                           onPressed: () async {
-                        ShowSnackbar.showSnackBar(
+                        NotificationSnackbar.showSnackBar(
                           message:
                               S.of(context).signingInWithGoogleSnackbarMessage,
                           variant: SnackbarVariant.info,
@@ -149,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         try {
                           await authProvider.signInWithGoogle();
                         } on PlatformException catch (error) {
-                          ShowSnackbar.showSnackBar(
+                          NotificationSnackbar.showSnackBar(
                             message: S
                                 .of(context)
                                 .errorSigningInWithGoogleSnackbarMessage,
@@ -160,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           debugPrint(
                               'Error signing in with Google: ${error.toString()}');
                         } catch (error) {
-                          ShowSnackbar.showSnackBar(
+                          NotificationSnackbar.showSnackBar(
                             message: S
                                 .of(context)
                                 .errorSigningInWithGoogleSnackbarMessage,
@@ -178,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Switch(
                   value: Theme.of(context).brightness == Brightness.dark,
                   onChanged: (value) {
-                    Provider.of<ThemeNotifier>(context, listen: false)
+                    Provider.of<ThemeProvider>(context, listen: false)
                         .toggleTheme(value);
                   },
                 ),
@@ -250,7 +250,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _isEmailValid = false;
         });
-        ShowSnackbar.showSnackBar(
+        NotificationSnackbar.showSnackBar(
           message: S.of(context).invalidEmailSnackbarMessage,
           variant: SnackbarVariant.error,
           duration: SnackbarDuration.short,
@@ -262,7 +262,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _isPasswordValid = false;
         });
-        ShowSnackbar.showSnackBar(
+        NotificationSnackbar.showSnackBar(
           message: S.of(context).invalidPasswordSnackbarMessage,
           variant: SnackbarVariant.error,
           duration: SnackbarDuration.short,
@@ -272,7 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       debugPrint('Error: The following fields are empty: $emptyFields');
 
-      ShowSnackbar.showSnackBar(
+      NotificationSnackbar.showSnackBar(
         message:
             '${S.of(context).pleaseFillTheFollowingFields} ${emptyFields.join(', ')}.',
         variant: SnackbarVariant.error,
@@ -287,7 +287,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isEmailValid = false;
       });
-      ShowSnackbar.showSnackBar(
+      NotificationSnackbar.showSnackBar(
         message: S.of(context).invalidEmailMessage,
         variant: SnackbarVariant.error,
         duration: SnackbarDuration.short,
@@ -301,7 +301,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isPasswordValid = false;
       });
-      ShowSnackbar.showSnackBar(
+      NotificationSnackbar.showSnackBar(
         message: S.of(context).invalidPasswordTooShortMessage,
         variant: SnackbarVariant.error,
         duration: SnackbarDuration.short,
@@ -318,7 +318,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _attemptingLogin = true;
     });
 
-    ShowSnackbar.showSnackBar(
+    NotificationSnackbar.showSnackBar(
       message: S.of(context).signingInMessage,
       variant: SnackbarVariant.info,
       duration: SnackbarDuration.long,
@@ -329,21 +329,22 @@ class _LoginScreenState extends State<LoginScreen> {
               .signInWithEmail(_emailController.text, _passwordController.text);
 
       if (userSignedIn) {
-        ShowSnackbar.showSnackBar(
-          message: S.of(context).loginSuccessfulMessage,
-          variant: SnackbarVariant.success,
-          duration: SnackbarDuration.short,
-        );
+        NotificationSnackbar.hideCurrentSnackBar();
+        NotificationSnackbar.showSnackBar(
+            message: S.of(context).loginSuccessfulMessage,
+            variant: SnackbarVariant.success,
+            duration: SnackbarDuration.short,
+            delay: 1);
         Navigator.of(context).pushReplacement(createRoute(const HomeScreen()));
       } else {
-        ShowSnackbar.showSnackBar(
+        NotificationSnackbar.showSnackBar(
           message: S.of(context).loginErrorMessage,
           variant: SnackbarVariant.error,
           duration: SnackbarDuration.long,
         );
       }
     } catch (error) {
-      ShowSnackbar.showSnackBar(
+      NotificationSnackbar.showSnackBar(
         message: S.of(context).loginErrorMessage,
         variant: SnackbarVariant.error,
         duration: SnackbarDuration.long,

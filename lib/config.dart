@@ -9,12 +9,12 @@ class Config {
   // APP CONFIG:
   static const bool useSafeArea =
       true; // If true, the app will adjust to the space below the status bar
-  static const bool useTopAppBar = true;
+  static const bool useTopAppBar = false;
   static const bool useFloatingSpeedDialMenu = true;
   static const bool useAppDrawer = false;
 
   // DEBUG MODE:
-  static const bool debugMode = true; // Set to true to skip login screen
+  static const bool debugMode = false; // Set to true to skip login screen
 
   // AUTHENTICATION:
   static const bool useProtectedRoutes =

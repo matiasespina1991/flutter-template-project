@@ -220,6 +220,26 @@ class S {
     );
   }
 
+  /// `Switch to dark mode`
+  String get switchToDarkMode {
+    return Intl.message(
+      'Switch to dark mode',
+      name: 'switchToDarkMode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Switch to light mode`
+  String get switchToLightMode {
+    return Intl.message(
+      'Switch to light mode',
+      name: 'switchToLightMode',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Email`
   String get emailHintText {
     return Intl.message(

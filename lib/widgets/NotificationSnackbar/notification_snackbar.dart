@@ -16,12 +16,17 @@ class SnackbarVariant {
   static const String info = 'info';
 }
 
-class ShowSnackbar {
+class NotificationSnackbar {
   static void showSnackBar({
     required String message,
     required String variant,
     required String duration,
-  }) {
+    int delay = 0,
+  }) async {
+    if (delay > 0) {
+      await Future.delayed(Duration(seconds: delay));
+    }
+
     if (Config.useFlutterToast) {
       Fluttertoast.showToast(
         msg: message,

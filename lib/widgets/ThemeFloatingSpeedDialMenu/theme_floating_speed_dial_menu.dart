@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../config.dart';
 import '../../generated/l10n.dart';
 import '../../providers/authorization_provider.dart';
-import '../../providers/theme_notifier.dart';
+import '../../providers/theme_provider.dart';
 
 class ThemeFloatingSpeedDialMenu extends StatefulWidget {
   final bool hideFloatingSpeedDialMenu;
@@ -25,7 +25,9 @@ class _ThemeFloatingSpeedDialMenuState
     extends State<ThemeFloatingSpeedDialMenu> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeNotifier>(builder: (context, theme, child) {
+    double childMenuFontSize = 17;
+
+    return Consumer<ThemeProvider>(builder: (context, theme, child) {
       bool isDarkMode = theme.themeMode == ThemeMode.dark;
 
       return SpeedDial(
@@ -33,6 +35,7 @@ class _ThemeFloatingSpeedDialMenuState
             false, // If set to true, dont try to add dynamic items or state-dependent items, they wont update
         animationDuration: const Duration(milliseconds: 200),
         elevation: 1.5,
+
         spacing: 10.0,
         visible:
             widget.hideFloatingSpeedDialMenu | !Config.useFloatingSpeedDialMenu
@@ -41,14 +44,13 @@ class _ThemeFloatingSpeedDialMenuState
         icon: Icons.add,
         activeIcon: Icons.close,
         iconTheme: const IconThemeData(color: Colors.white),
-        activeBackgroundColor: Theme.of(context).colorScheme.secondary,
-        activeForegroundColor: Colors.white,
+
         curve: Curves.easeInOut,
         children: [
           SpeedDialChild(
             child: const Icon(Icons.settings),
             label: S.of(context).settingsButton,
-            labelStyle: TextStyle(fontSize: 18.0),
+            labelStyle: TextStyle(fontSize: childMenuFontSize),
             onTap: () {
               // Add your action here
             },
@@ -59,9 +61,9 @@ class _ThemeFloatingSpeedDialMenuState
             ),
             label:
                 isDarkMode ? S.of(context).lightMode : S.of(context).darkMode,
-            labelStyle: TextStyle(fontSize: 18.0),
+            labelStyle: TextStyle(fontSize: childMenuFontSize),
             onTap: () {
-              Provider.of<ThemeNotifier>(context, listen: false)
+              Provider.of<ThemeProvider>(context, listen: false)
                   .toggleTheme(!isDarkMode);
               setState(() {
                 isDarkMode = !isDarkMode;
@@ -71,7 +73,7 @@ class _ThemeFloatingSpeedDialMenuState
           SpeedDialChild(
             child: const Icon(Icons.logout),
             label: S.of(context).logoutButton,
-            labelStyle: TextStyle(fontSize: 18.0),
+            labelStyle: TextStyle(fontSize: childMenuFontSize),
             onTap: () {
               Provider.of<AuthorizationProvider>(context, listen: false)
                   .signOut(context);

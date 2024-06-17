@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 Route createRoute(Widget page) {
   return PageRouteBuilder(
+    transitionDuration: const Duration(milliseconds: 800),
     pageBuilder: (context, animation, secondaryAnimation) => page,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;
-      const curve = Curves.ease;
+      const curve = Curves.easeInOutCubic;
 
       var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
       var offsetAnimation = animation.drive(tween);

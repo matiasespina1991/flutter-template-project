@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class ThemeNotifier extends ChangeNotifier {
+class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
   final FlutterSecureStorage _storage = FlutterSecureStorage();
 
-  ThemeNotifier() {
+  ThemeProvider() {
     _loadThemeMode();
   }
 

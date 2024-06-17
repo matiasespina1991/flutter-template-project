@@ -13,12 +13,19 @@ import 'package:template_app/theme/main_theme.dart';
 import 'package:template_app/utils/create_route.dart';
 import 'config.dart';
 import 'globals.dart';
-import 'providers/theme_notifier.dart';
+import 'providers/theme_provider.dart';
 
 void main() async {
   if (Config.useFirebase) {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
+  }
+  if (Config.debugMode) {
+    debugPrint('-------------------- DEBUG MODE: ON --------------------');
+    debugPrint(
+        'Login screen will be skipped and user will be automatically authenticated.');
+    debugPrint('Change Config.debugMode to false to disable this feature.');
+    debugPrint('--------------------------------------------------------');
   }
   runApp(const MyApp());
 }
@@ -31,10 +38,10 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthorizationProvider()),
-        ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
       ],
-      child: Consumer2<ThemeNotifier, LocaleProvider>(
+      child: Consumer2<ThemeProvider, LocaleProvider>(
         builder: (context, themeNotifier, localeProvider, child) {
           return MaterialApp(
             scaffoldMessengerKey: snackbarKey,

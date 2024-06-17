@@ -62,6 +62,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "signingInMessage":
             MessageLookupByLibrary.simpleMessage("Signing in..."),
         "signingInWithGoogleSnackbarMessage":
-            MessageLookupByLibrary.simpleMessage("Signing in with Google...")
+            MessageLookupByLibrary.simpleMessage("Signing in with Google..."),
+        "switchToDarkMode":
+            MessageLookupByLibrary.simpleMessage("Switch to dark mode"),
+        "switchToLightMode":
+            MessageLookupByLibrary.simpleMessage("Switch to light mode")
       };
 }

@@ -16,6 +16,8 @@
   "lightModeDarkMode": "Modo claro / modo oscuro",
   "lightMode": "Modo claro",
   "darkMode": "Modo oscuro",
+  "switchToDarkMode": "Cambiar a modo oscuro",
+    "switchToLightMode": "Cambiar a modo claro",
   "emailHintText": "Email",
   "passwordHintText": "Contraseña",
   "invalidPasswordTooShortMessage": "La contraseña debe tener al menos 6 caracteres.",

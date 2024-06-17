@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:template_app/widgets/ShowSnackbar/show_snackbar.dart';
 
 import '../config.dart';
-import '../screens/login_screen/login_screen.dart';
-import '../utils/create_route.dart';
 
 class AuthorizationProvider with ChangeNotifier {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -43,14 +39,19 @@ class AuthorizationProvider with ChangeNotifier {
   }
 
   Future<void> signOut(BuildContext context) async {
+    if (Config.debugMode) {
+      debugPrint(
+          'Error: Debug mode is on. Disable it from Config.debugMode in order to proceed with sign out.');
+      return;
+    }
     await clearAuthToken();
     if (Config.useFirebase) {
       await _firebaseAuth?.signOut();
     }
-    // Navigator.of(context).pushReplacement(createRoute(const LoginScreen()));
   }
 
-  bool get isAuthenticated => _authToken != null && _authToken!.isNotEmpty;
+  bool get isAuthenticated =>
+      Config.debugMode || (_authToken != null && _authToken!.isNotEmpty);
 
   /// Email/Password Sign In methods
   Future<bool> signInWithEmail(String email, String password) async {
@@ -103,7 +104,7 @@ class AuthorizationProvider with ChangeNotifier {
             _authToken = authResult?.user!.uid; // Use user ID as auth token
             await setAuthToken(_authToken!);
           } else {
-            // Non-Firebase Sign In
+            /// Non-Firebase Sign In
             _authToken =
                 googleAuth.accessToken; // Use access token as auth token
             await setAuthToken(_authToken!);

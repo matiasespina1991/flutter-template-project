@@ -46,8 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginButton": MessageLookupByLibrary.simpleMessage("Anmelden"),
         "loginErrorMessage": MessageLookupByLibrary.simpleMessage(
             "Fehler bei der Anmeldung. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support."),
-        "loginScreenTitle":
-            MessageLookupByLibrary.simpleMessage("Anmeldebildschirm"),
+        "loginScreenTitle": MessageLookupByLibrary.simpleMessage("Anmelden"),
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Erfolgreich angemeldet!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Abmelden"),
@@ -62,6 +61,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "signingInMessage":
             MessageLookupByLibrary.simpleMessage("Anmeldung..."),
         "signingInWithGoogleSnackbarMessage":
-            MessageLookupByLibrary.simpleMessage("Anmeldung mit Google...")
+            MessageLookupByLibrary.simpleMessage("Anmeldung mit Google..."),
+        "switchToDarkMode":
+            MessageLookupByLibrary.simpleMessage("Zu Dunkelmodus wechseln"),
+        "switchToLightMode":
+            MessageLookupByLibrary.simpleMessage("Zu Hellmodus wechseln")
       };
 }
