@@ -304,13 +304,13 @@ class _LoginScreenState extends State<LoginScreen> {
       _attemptingLogin = true;
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 25),
-        content: Text(S.of(context).signingInMessage),
-      ),
-    );
+    // Text(S.of(context).signingInMessage);
 
+    ShowSnackbar.showSnackBar(
+      message: S.of(context).signingInMessage,
+      variant: SnackbarVariant.info,
+      duration: SnackbarDuration.long,
+    );
     try {
       await Provider.of<AuthorizationProvider>(context, listen: false)
           .signInWithEmail(_emailController.text, _passwordController.text);

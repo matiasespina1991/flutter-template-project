@@ -73,11 +73,10 @@ dependencies:
 #  percent_indicator: ^3.0.1
 
 #  # -----------------  WIDGET DESIGN PACKAGES  -----------------
-#  # Flutter Speed Dial is a Flutter plugin for creating a speed dial menu widget in a Flutter app.
-#  flutter_speed_dial: ^7.0.0
+  # Flutter Speed Dial is a Flutter plugin for creating a speed dial menu widget in a Flutter app.
+  flutter_speed_dial: ^7.0.0
 #  # Badges is a Flutter plugin for creating fancy animated badges in a Flutter app.
 #  badges: ^3.1.2
-
 #  # Flutter Native Splash is a Flutter plugin for creating a splash screen in a Flutter app.
 #  flutter_native_splash: ^2.4.0
 #  # Awesome Dialog is a Flutter plugin for creating awesome dialogs in a Flutter app.
@@ -96,8 +95,6 @@ dependencies:
 #  lottie: ^3.1.2
 
 #  # -----------------  FONT PACKAGES  -----------------
-#  # Google Fonts is a Flutter plugin for using Google Fonts in a Flutter app.
-#  google_fonts: ^6.2.1
 #  # Auto Size Text is a Flutter plugin for creating auto-size text in a Flutter app.
 #  auto_size_text: ^3.0.0
 

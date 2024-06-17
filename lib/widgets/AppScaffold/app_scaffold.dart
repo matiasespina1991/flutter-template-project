@@ -1,26 +1,25 @@
 import 'dart:ui';
-
+import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
-import 'package:template_app/widgets/AppBar/template_app_bar.dart';
-import 'package:flutter/material.dart';
-
 import '../../config.dart';
 import '../../helpers/theme_notifier.dart';
+import '../AppBar/template_app_bar.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class AppScaffold extends StatelessWidget {
+  final Widget body;
+  final bool hideSpeedDial;
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  bool useAppBar = Config.useTopAppBar;
-  ValueNotifier<bool> isDialOpen = ValueNotifier(false);
+  const AppScaffold({
+    super.key,
+    required this.body,
+    this.hideSpeedDial = false,
+  });
 
   @override
   Widget build(BuildContext context) {
+    ValueNotifier<bool> isDialOpen = ValueNotifier(false);
+
     return Scaffold(
       appBar: Config.useTopAppBar
           ? const TemplateAppBar(
@@ -29,42 +28,25 @@ class _HomeScreenState extends State<HomeScreen> {
           : null,
       body: Stack(
         children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'Light Mode/Dark Mode',
-                ),
-                const SizedBox(height: 10),
-                Switch(
-                  value: Theme.of(context).brightness == Brightness.dark,
-                  activeTrackColor: Theme.of(context).colorScheme.secondary,
-                  onChanged: (value) {
-                    Provider.of<ThemeNotifier>(context, listen: false)
-                        .toggleTheme(value);
-                  },
-                ),
-              ],
+          body,
+          if (!hideSpeedDial && Config.useSpeedDial)
+            ValueListenableBuilder(
+              valueListenable: isDialOpen,
+              builder: (context, value, child) {
+                return value
+                    ? BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 1, sigmaY: 2),
+                        child: Container(
+                          color: Colors.black.withOpacity(0),
+                        ),
+                      )
+                    : SizedBox.shrink();
+              },
             ),
-          ),
-          ValueListenableBuilder(
-            valueListenable: isDialOpen,
-            builder: (context, value, child) {
-              return value
-                  ? BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 1, sigmaY: 2),
-                      child: Container(
-                        color: Colors.black.withOpacity(0),
-                      ),
-                    )
-                  : SizedBox.shrink();
-            },
-          ),
         ],
       ),
       floatingActionButton: SpeedDial(
-        visible: true,
+        visible: !hideSpeedDial && Config.useSpeedDial ? true : false,
         icon: Icons.add,
         activeIcon: Icons.close,
         iconTheme: const IconThemeData(color: Colors.white),
