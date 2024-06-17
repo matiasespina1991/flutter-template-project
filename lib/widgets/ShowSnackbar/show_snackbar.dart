@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../config.dart';
-import '../globals.dart';
+import '../../config.dart';
+import '../../globals.dart';
 
 class SnackbarDuration {
   static const String short = 'short';

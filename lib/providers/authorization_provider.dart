@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:template_app/utils/show_snackbar.dart';
+import 'package:template_app/widgets/ShowSnackbar/show_snackbar.dart';
 
 import '../config.dart';
 

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
-import 'package:template_app/utils/show_snackbar.dart';
+import 'package:template_app/widgets/ShowSnackbar/show_snackbar.dart';
 import 'package:template_app/widgets/AppBar/template_app_bar.dart';
 import 'package:flutter/services.dart';
-import 'package:template_app/generated/l10n.dart'; // Importa las clases generadas
+import 'package:template_app/generated/l10n.dart';
 
 import '../../config.dart';
 import '../../helpers/theme_notifier.dart';
 import '../../providers/authorization_provider.dart';
+import '../../utils/is_email_valid.dart';
 import '../../widgets/ThemeTextField/theme_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -28,13 +29,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final int minPasswordLength = 6;
   bool _attemptingLogin = false;
 
-  bool isEmailValid(String email) {
-    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    return emailRegex.hasMatch(email);
-  }
-
-  double get _screenHeight => MediaQuery.of(context).size.height;
-
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthorizationProvider>(context);
@@ -48,10 +42,16 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Center(
           child: SizedBox(
             width: 300,
-            height: _screenHeight * 0.8,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                Config.useTopAppBar
+                    ? const SizedBox()
+                    : Config.useSafeArea
+                        ? const SizedBox(height: 40)
+                        : const SizedBox(
+                            height: 100,
+                          ),
                 const SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
@@ -122,47 +122,52 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(S.of(context).loginButton),
                   ),
                 ),
-                const SizedBox(height: 22.0),
                 Visibility(
                   visible: Config.allowGoogleSignIn,
-                  child: SignInButton(Buttons.google,
-                      elevation: Config.buttonsElevation,
-                      padding: const EdgeInsets.all(5.5),
-                      clipBehavior: Clip.hardEdge,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      text: S.of(context).signInWithGoogleButtonLabel,
-                      onPressed: () async {
-                    ShowSnackbar.showSnackBar(
-                      message: S.of(context).signingInWithGoogleSnackbarMessage,
-                      variant: SnackbarVariant.info,
-                      duration: SnackbarDuration.long,
-                    );
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 22.0),
+                      SignInButton(Buttons.google,
+                          elevation: Config.buttonsElevation,
+                          padding: const EdgeInsets.all(5.5),
+                          clipBehavior: Clip.hardEdge,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          text: S.of(context).signInWithGoogleButtonLabel,
+                          onPressed: () async {
+                        ShowSnackbar.showSnackBar(
+                          message:
+                              S.of(context).signingInWithGoogleSnackbarMessage,
+                          variant: SnackbarVariant.info,
+                          duration: SnackbarDuration.long,
+                        );
 
-                    try {
-                      await authProvider.signInWithGoogle();
-                    } on PlatformException catch (error) {
-                      ShowSnackbar.showSnackBar(
-                        message: S
-                            .of(context)
-                            .errorSigningInWithGoogleSnackbarMessage,
-                        variant: SnackbarVariant.error,
-                        duration: SnackbarDuration.long,
-                      );
+                        try {
+                          await authProvider.signInWithGoogle();
+                        } on PlatformException catch (error) {
+                          ShowSnackbar.showSnackBar(
+                            message: S
+                                .of(context)
+                                .errorSigningInWithGoogleSnackbarMessage,
+                            variant: SnackbarVariant.error,
+                            duration: SnackbarDuration.long,
+                          );
 
-                      debugPrint(
-                          'Error signing in with Google: ${error.toString()}');
-                    } catch (error) {
-                      ShowSnackbar.showSnackBar(
-                        message: S
-                            .of(context)
-                            .errorSigningInWithGoogleSnackbarMessage,
-                        variant: SnackbarVariant.error,
-                        duration: SnackbarDuration.long,
-                      );
-                      debugPrint('Error: ${error.toString()}');
-                    }
-                  }),
+                          debugPrint(
+                              'Error signing in with Google: ${error.toString()}');
+                        } catch (error) {
+                          ShowSnackbar.showSnackBar(
+                            message: S
+                                .of(context)
+                                .errorSigningInWithGoogleSnackbarMessage,
+                            variant: SnackbarVariant.error,
+                            duration: SnackbarDuration.long,
+                          );
+                          debugPrint('Error: ${error.toString()}');
+                        }
+                      }),
+                    ],
+                  ),
                 ),
                 const Divider(),
                 Text(S.of(context).lightModeDarkMode),

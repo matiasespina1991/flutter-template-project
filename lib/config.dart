@@ -10,10 +10,10 @@ class Config {
   // APP CONFIG:
 
   static const bool useSafeArea =
-      true; // If true, the app will adjust to the space below the status bar
-  static const bool useFirebase = false;
+      false; // If true, the app will adjust to the space below the status bar
   static const bool useTopAppBar = false;
 
+  static const bool useFirebase = false;
   static const bool allowGoogleSignIn = true;
   static const List<String> googleSignInScopes = [
     'email'
