@@ -46,6 +46,9 @@ class ThemeTextFieldState extends State<ThemeTextField> {
       decoration: InputDecoration(
         filled: true,
         hintText: widget.hintText,
+        hintStyle: const TextStyle(
+          fontSize: 15.5,
+        ),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(7)),
         ),

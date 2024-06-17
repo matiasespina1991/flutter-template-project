@@ -12,6 +12,7 @@ class MainTheme {
       scaffoldBackgroundColor: Config.scaffoldBackgroundColor.lightThemeColor,
       hintColor: Config.hintTextColor
           .lightThemeColor, // Define the hintColor for light theme
+
       textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
 
       appBarTheme: AppBarTheme(
@@ -37,6 +38,7 @@ class MainTheme {
         onError: Colors.white,
         brightness: Brightness.light,
       ),
+
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           foregroundColor: Config.elevatedButtonTextColor.lightThemeColor,

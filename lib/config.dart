@@ -112,7 +112,7 @@ class Config {
   // FONT SIZES:
 
   static const double appBarTitleFontSize = 20;
-  static const double bodyLargeFontSize = 16;
+  static const double bodyLargeFontSize = 16; // Input fields text
   static const double bodyMediumFontSize = 13; // Default Text() font size
   static const double bodySmallFontSize = 12;
   static const double snackbarFontSize = 14;
