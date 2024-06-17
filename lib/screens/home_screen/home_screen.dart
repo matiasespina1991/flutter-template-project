@@ -1,12 +1,11 @@
 import 'dart:ui';
 
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
-import 'package:template_app/widgets/AppBar/template_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:template_app/widgets/AppScaffold/app_scaffold.dart';
 
 import '../../config.dart';
+import '../../generated/l10n.dart';
 import '../../providers/theme_notifier.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,8 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Light Mode/Dark Mode',
+            Text(
+              S.of(context).lightModeDarkMode,
             ),
             const SizedBox(height: 10),
             Switch(

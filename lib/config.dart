@@ -4,16 +4,17 @@ import 'models/theme_models.dart';
 
 class Config {
   // APP INFO:
-
   static const String appName = 'Template App';
 
   // APP CONFIG:
-
   static const bool useSafeArea =
-      false; // If true, the app will adjust to the space below the status bar
-  static const bool useTopAppBar = false;
+      true; // If true, the app will adjust to the space below the status bar
+  static const bool useTopAppBar = true;
   static const bool useSpeedDial = true;
 
+  // AUTHENTICATION:
+  static const bool useProtectedRoutes =
+      true; // If true, the app will always redirect to login screen if user is not authenticated
   static const bool useFirebase = false;
   static const bool allowGoogleSignIn = true;
   static const List<String> googleSignInScopes = [

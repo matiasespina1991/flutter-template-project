@@ -9,9 +9,11 @@ import 'package:template_app/generated/l10n.dart';
 import '../../config.dart';
 import '../../providers/theme_notifier.dart';
 import '../../providers/authorization_provider.dart';
+import '../../utils/create_route.dart';
 import '../../utils/is_email_valid.dart';
 import '../../widgets/AppScaffold/app_scaffold.dart';
 import '../../widgets/ThemeTextField/theme_text_field.dart';
+import '../home_screen/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -36,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return AppScaffold(
       appBarTitle: S.of(context).loginScreenTitle,
+      protected: false,
       hideSpeedDial: true,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -303,8 +306,6 @@ class _LoginScreenState extends State<LoginScreen> {
       _attemptingLogin = true;
     });
 
-    // Text(S.of(context).signingInMessage);
-
     ShowSnackbar.showSnackBar(
       message: S.of(context).signingInMessage,
       variant: SnackbarVariant.info,
@@ -321,6 +322,7 @@ class _LoginScreenState extends State<LoginScreen> {
           variant: SnackbarVariant.success,
           duration: SnackbarDuration.short,
         );
+        Navigator.of(context).pushReplacement(createRoute(const HomeScreen()));
       } else {
         ShowSnackbar.showSnackBar(
           message: S.of(context).loginErrorMessage,

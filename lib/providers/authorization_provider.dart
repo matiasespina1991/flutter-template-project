@@ -6,6 +6,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:template_app/widgets/ShowSnackbar/show_snackbar.dart';
 
 import '../config.dart';
+import '../screens/login_screen/login_screen.dart';
+import '../utils/create_route.dart';
 
 class AuthorizationProvider with ChangeNotifier {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -40,16 +42,17 @@ class AuthorizationProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> logout() async {
+  Future<void> signOut(BuildContext context) async {
     await clearAuthToken();
     if (Config.useFirebase) {
-      await _firebaseAuth?.signOut(); // Sign out from Firebase if enabled
+      await _firebaseAuth?.signOut();
     }
+    // Navigator.of(context).pushReplacement(createRoute(const LoginScreen()));
   }
 
   bool get isAuthenticated => _authToken != null && _authToken!.isNotEmpty;
 
-  // Email/Password Sign In methods
+  /// Email/Password Sign In methods
   Future<bool> signInWithEmail(String email, String password) async {
     bool success = false;
     try {
@@ -77,7 +80,7 @@ class AuthorizationProvider with ChangeNotifier {
     }
   }
 
-  // Google Sign In methods
+  /// Google Sign In methods
   Future<bool> signInWithGoogle() async {
     bool success = false;
     if (Config.allowGoogleSignIn) {

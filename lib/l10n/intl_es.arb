@@ -6,6 +6,8 @@
   "email": "email",
   "password": "contraseña",
   "loginButton": "Iniciar sesión",
+  "logoutButton": "Cerrar sesión",
+  "settingsButton": "Configuraciones",
   "signingInMessage": "Iniciando sesión...",
   "loginSuccessfulMessage": "Haz iniciado sesión!",
   "loginErrorMessage": "Error al iniciar sesión. Por favor, inténtelo de nuevo o contacte con el soporte.",

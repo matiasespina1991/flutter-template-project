@@ -6,6 +6,8 @@
   "email": "email",
   "password": "password",
   "loginButton": "Login",
+  "logoutButton": "Logout",
+  "settingsButton": "Settings",
   "signingInMessage": "Signing in...",
   "loginSuccessfulMessage": "Login successful!",
   "loginErrorMessage": "Error logging in. Please try again or contact support.",

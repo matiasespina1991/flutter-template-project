@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:template_app/generated/l10n.dart';
 import 'package:template_app/providers/authorization_provider.dart';
@@ -8,6 +9,7 @@ import 'package:template_app/screens/home_screen/home_screen.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';
 import 'package:template_app/screens/login_screen/login_screen.dart';
 import 'package:template_app/theme/main_theme.dart';
+import 'package:template_app/utils/create_route.dart';
 import 'config.dart';
 import 'globals.dart';
 import 'providers/theme_notifier.dart';
@@ -38,15 +40,27 @@ class MyApp extends StatelessWidget {
             theme: MainTheme.lightTheme,
             darkTheme: MainTheme.darkTheme,
             themeMode: themeNotifier.themeMode,
+            localeResolutionCallback: (locale, supportedLocales) {
+              if (locale != null) {
+                for (var supportedLocale in supportedLocales) {
+                  if (supportedLocale.languageCode == locale.languageCode) {
+                    debugPrint(
+                        'Supported locale found, changing app language to "${supportedLocale.languageCode}".');
 
-            ///TODO: Add automatic locale detection
+                    return supportedLocale;
+                  }
+                }
+                debugPrint(
+                    'Device locale returned "${locale.languageCode}". Supported locale not found, changing app language to ${supportedLocales.first.languageCode}".');
+                return supportedLocales.first;
+              }
+              return supportedLocales.first;
+            },
             locale: const Locale.fromSubtags(
                 languageCode: Config.appDefaultLanguage),
-            supportedLocales: Config.supportedLocales.length > 1
-                ? Config.supportedLocales
-                    .map((e) => Locale.fromSubtags(languageCode: e))
-                    .toList()
-                : [const Locale.fromSubtags(languageCode: 'en')],
+            supportedLocales: Config.supportedLocales
+                .map((e) => Locale.fromSubtags(languageCode: e))
+                .toList(),
             localizationsDelegates: const [
               S.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -82,9 +96,18 @@ class _MainScreenState extends State<MainScreen> {
           }
 
           if (!isAuthenticated) {
-            return const LoginScreen();
+            return Navigator(
+              onGenerateRoute: (settings) {
+                return createRoute(const LoginScreen());
+              },
+            );
           }
-          return const HomeScreen();
+
+          return Navigator(
+            onGenerateRoute: (settings) {
+              return createRoute(const HomeScreen());
+            },
+          );
         },
         child: const LoadingScreen(),
       ),

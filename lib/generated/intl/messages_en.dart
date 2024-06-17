@@ -50,11 +50,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Login screen"),
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Login successful!"),
+        "logoutButton": MessageLookupByLibrary.simpleMessage("Logout"),
         "password": MessageLookupByLibrary.simpleMessage("password"),
         "passwordHintText": MessageLookupByLibrary.simpleMessage("Password"),
         "passwordLabel": MessageLookupByLibrary.simpleMessage("PASSWORD"),
         "pleaseFillTheFollowingFields": MessageLookupByLibrary.simpleMessage(
             "Please fill the following fields:"),
+        "settingsButton": MessageLookupByLibrary.simpleMessage("Settings"),
         "signInWithGoogleButtonLabel":
             MessageLookupByLibrary.simpleMessage("Sign in with Google"),
         "signingInMessage":

@@ -120,6 +120,26 @@ class S {
     );
   }
 
+  /// `Logout`
+  String get logoutButton {
+    return Intl.message(
+      'Logout',
+      name: 'logoutButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settingsButton {
+    return Intl.message(
+      'Settings',
+      name: 'settingsButton',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Signing in...`
   String get signingInMessage {
     return Intl.message(
