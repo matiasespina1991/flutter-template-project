@@ -12,6 +12,9 @@ class Config {
   static const bool useTopAppBar = true;
   static const bool useSpeedDial = true;
 
+  // DEBUG MODE:
+  static const bool debugMode = true; // Set to true to skip login screen
+
   // AUTHENTICATION:
   static const bool useProtectedRoutes =
       true; // If true, the app will always redirect to login screen if user is not authenticated
@@ -30,10 +33,6 @@ class Config {
 
   /// NOTE: edit lib/l10n/intl_xx.arb files and use 'flutter pub run intl_utils:generate' to generate translations
 
-  // DEBUG MODE:
-
-  static const bool debugMode = false; // Set to true to skip login screen
-
   // APP STYLES:
 
   static const bool useFlutterToast =
@@ -41,6 +40,23 @@ class Config {
   static const bool useMaterial3 = true; // Use Material 3.0 // DEFAULT: true
 
   // COLOR THEME:
+
+  ///TODO
+  //ThemePalette for dark and light themes, presenting the primary, secondary, tertiary, quarternary, white, and black, inverse, success, info, warning, and error colors.
+
+  // static const ThemePallette themePallette = ThemePallette(
+  //   primary: Color(0xFF6200EE),
+  //   secondary: Color(0xFF03DAC6),
+  //   tertiary: Color(0xFF03DAC6),
+  //   quarternary: Color(0xFF03DAC6),
+  //   white: Color(0xFFFFFFFF),
+  //   black: Color(0xFF000000),
+  //   inverse: Color(0xFF000000),
+  //   success: Color(0xFF00C853),
+  //   info: Color(0xFF03DAC6),
+  //   warning: Color(0xFFFFAB00),
+  //   error: Color(0xFFFF453A),
+  // );
 
   static const ThemeColors scaffoldBackgroundColor = ThemeColors(
     lightThemeColor: lightWhiteColor,
@@ -65,6 +81,11 @@ class Config {
   static const ThemeColors hintTextColor = ThemeColors(
     lightThemeColor: Colors.grey,
     darkThemeColor: Colors.grey,
+  );
+
+  static const ThemeColors primaryContainerBackgroundColor = ThemeColors(
+    lightThemeColor: Colors.blueGrey,
+    darkThemeColor: Colors.blueGrey,
   );
 
   static const ThemeColors elevatedButtonBackgroundColor = ThemeColors(

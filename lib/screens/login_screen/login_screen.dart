@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:template_app/widgets/ShowSnackbar/show_snackbar.dart';
-import 'package:template_app/widgets/AppBar/template_app_bar.dart';
+
 import 'package:flutter/services.dart';
 import 'package:template_app/generated/l10n.dart';
 

@@ -7,8 +7,8 @@ import '../../config.dart';
 import '../../generated/l10n.dart';
 import '../../providers/theme_notifier.dart';
 import '../../screens/login_screen/login_screen.dart';
-import '../AppBar/template_app_bar.dart';
 import '../../utils/create_route.dart';
+import '../TemplateAppBar/template_app_bar.dart';
 
 class AppScaffold extends StatelessWidget {
   final Widget body;
