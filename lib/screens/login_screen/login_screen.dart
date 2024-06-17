@@ -7,9 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:template_app/generated/l10n.dart';
 
 import '../../config.dart';
-import '../../helpers/theme_notifier.dart';
+import '../../providers/theme_notifier.dart';
 import '../../providers/authorization_provider.dart';
 import '../../utils/is_email_valid.dart';
+import '../../widgets/AppScaffold/app_scaffold.dart';
 import '../../widgets/ThemeTextField/theme_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -33,10 +34,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthorizationProvider>(context);
 
-    return Scaffold(
-      appBar: Config.useTopAppBar
-          ? TemplateAppBar(title: S.of(context).loginScreenTitle)
-          : null,
+    return AppScaffold(
+      appBarTitle: S.of(context).loginScreenTitle,
+      hideSpeedDial: true,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Center(
@@ -173,7 +173,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text(S.of(context).lightModeDarkMode),
                 Switch(
                   value: Theme.of(context).brightness == Brightness.dark,
-                  activeTrackColor: Theme.of(context).colorScheme.secondary,
                   onChanged: (value) {
                     Provider.of<ThemeNotifier>(context, listen: false)
                         .toggleTheme(value);
@@ -312,14 +311,23 @@ class _LoginScreenState extends State<LoginScreen> {
       duration: SnackbarDuration.long,
     );
     try {
-      await Provider.of<AuthorizationProvider>(context, listen: false)
-          .signInWithEmail(_emailController.text, _passwordController.text);
+      bool userSignedIn =
+          await Provider.of<AuthorizationProvider>(context, listen: false)
+              .signInWithEmail(_emailController.text, _passwordController.text);
 
-      ShowSnackbar.showSnackBar(
-        message: S.of(context).loginSuccessfulMessage,
-        variant: SnackbarVariant.success,
-        duration: SnackbarDuration.long,
-      );
+      if (userSignedIn) {
+        ShowSnackbar.showSnackBar(
+          message: S.of(context).loginSuccessfulMessage,
+          variant: SnackbarVariant.success,
+          duration: SnackbarDuration.short,
+        );
+      } else {
+        ShowSnackbar.showSnackBar(
+          message: S.of(context).loginErrorMessage,
+          variant: SnackbarVariant.error,
+          duration: SnackbarDuration.long,
+        );
+      }
     } catch (error) {
       ShowSnackbar.showSnackBar(
         message: S.of(context).loginErrorMessage,

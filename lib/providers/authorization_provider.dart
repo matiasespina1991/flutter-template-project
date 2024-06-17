@@ -50,7 +50,8 @@ class AuthorizationProvider with ChangeNotifier {
   bool get isAuthenticated => _authToken != null && _authToken!.isNotEmpty;
 
   // Email/Password Sign In methods
-  Future<void> signInWithEmail(String email, String password) async {
+  Future<bool> signInWithEmail(String email, String password) async {
+    bool success = false;
     try {
       debugPrint('Attempting to sign in with email and password.');
 
@@ -65,27 +66,20 @@ class AuthorizationProvider with ChangeNotifier {
         await setAuthToken(_authToken!);
       }
 
-      ShowSnackbar.showSnackBar(
-        message: 'Signed in with email and password.',
-        variant: SnackbarVariant.success,
-        duration: SnackbarDuration.short,
-      );
-
       notifyListeners();
+      success = true;
+      return success;
     } catch (error) {
       debugPrint('Error during email/password Sign In: ${error.toString()}');
 
-      ShowSnackbar.showSnackBar(
-        message:
-            'Error signing in with email and password: ${error.toString()}',
-        variant: SnackbarVariant.error,
-        duration: SnackbarDuration.short,
-      );
+      success = false;
+      return success;
     }
   }
 
   // Google Sign In methods
-  Future<void> signInWithGoogle() async {
+  Future<bool> signInWithGoogle() async {
+    bool success = false;
     if (Config.allowGoogleSignIn) {
       try {
         debugPrint('Attempting to sign in with Google.');
@@ -112,23 +106,16 @@ class AuthorizationProvider with ChangeNotifier {
             await setAuthToken(_authToken!);
           }
 
-          ShowSnackbar.showSnackBar(
-            message: 'Signed in with Google.',
-            variant: SnackbarVariant.success,
-            duration: SnackbarDuration.short,
-          );
-
           notifyListeners();
+          success = true;
+          return success;
         }
       } catch (error) {
         debugPrint('Error during Google Sign In: ${error.toString()}');
-
-        ShowSnackbar.showSnackBar(
-          message: 'Error signing in with Google: ${error.toString()}',
-          variant: SnackbarVariant.error,
-          duration: SnackbarDuration.short,
-        );
+        success = false;
+        return success;
       }
     }
+    return success;
   }
 }

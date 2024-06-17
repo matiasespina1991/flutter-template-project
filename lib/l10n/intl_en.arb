@@ -12,6 +12,8 @@
   "invalidEmailMessage": "Please insert a valid email.",
   "invalidPasswordMessage": "Please insert a valid password.",
   "lightModeDarkMode": "Light Mode/Dark Mode",
+  "lightMode": "Light Mode",
+  "darkMode": "Dark Mode",
   "emailHintText": "Email",
   "passwordHintText": "Password",
   "invalidPasswordTooShortMessage": "Password must be at least 6 characters long.",

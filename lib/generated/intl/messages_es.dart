@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("es"),
+        "darkMode": MessageLookupByLibrary.simpleMessage("Modo oscuro"),
         "email": MessageLookupByLibrary.simpleMessage("email"),
         "emailHintText": MessageLookupByLibrary.simpleMessage("Email"),
         "emailLabel": MessageLookupByLibrary.simpleMessage("EMAIL"),
@@ -39,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "La contraseña insertada no es válida."),
         "invalidPasswordTooShortMessage": MessageLookupByLibrary.simpleMessage(
             "La contraseña debe tener al menos 6 caracteres."),
+        "lightMode": MessageLookupByLibrary.simpleMessage("Modo claro"),
         "lightModeDarkMode":
             MessageLookupByLibrary.simpleMessage("Modo claro / modo oscuro"),
         "loginButton": MessageLookupByLibrary.simpleMessage("Iniciar sesión"),
@@ -47,7 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginScreenTitle":
             MessageLookupByLibrary.simpleMessage("Iniciar sesión"),
         "loginSuccessfulMessage":
-            MessageLookupByLibrary.simpleMessage("Inicio de sesión exitoso!"),
+            MessageLookupByLibrary.simpleMessage("Haz iniciado sesión!"),
         "password": MessageLookupByLibrary.simpleMessage("contraseña"),
         "passwordHintText": MessageLookupByLibrary.simpleMessage("Contraseña"),
         "passwordLabel": MessageLookupByLibrary.simpleMessage("CONTRASEÑA"),

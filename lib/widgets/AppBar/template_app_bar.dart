@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../helpers/theme_notifier.dart';
+import '../../providers/theme_notifier.dart';
 
 class TemplateAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TemplateAppBar({super.key, this.appBarHeight, this.title});

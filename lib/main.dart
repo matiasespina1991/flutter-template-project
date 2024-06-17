@@ -10,7 +10,7 @@ import 'package:template_app/screens/login_screen/login_screen.dart';
 import 'package:template_app/theme/main_theme.dart';
 import 'config.dart';
 import 'globals.dart';
-import 'helpers/theme_notifier.dart';
+import 'providers/theme_notifier.dart';
 
 void main() async {
   if (Config.useFirebase) {
