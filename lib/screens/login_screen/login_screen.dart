@@ -9,10 +9,11 @@ import 'package:template_app/generated/l10n.dart';
 import '../../config.dart';
 import '../../providers/theme_notifier.dart';
 import '../../providers/authorization_provider.dart';
+import '../../providers/locale_provider.dart';
 import '../../utils/create_route.dart';
 import '../../utils/is_email_valid.dart';
 import '../../widgets/AppScaffold/app_scaffold.dart';
-import '../../widgets/ThemeTextField/theme_text_field.dart';
+import '../../widgets/ThemeInputField/theme_input_field.dart';
 import '../home_screen/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -39,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return AppScaffold(
       appBarTitle: S.of(context).loginScreenTitle,
       protected: false,
-      hideSpeedDial: true,
+      hideFloatingSpeedDialMenu: true,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Center(
@@ -70,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-                ThemeTextField(
+                ThemeInputField(
                   controller: _emailController,
                   focusNode: _emailFocusNode,
                   hintText: S.of(context).emailHintText,
@@ -100,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-                ThemeTextField(
+                ThemeInputField(
                   controller: _passwordController,
                   focusNode: _passwordFocusNode,
                   hintText: S.of(context).passwordHintText,
@@ -187,9 +188,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        setState(() {
-                          S.load(const Locale('en'));
-                        });
+                        Provider.of<LocaleProvider>(context, listen: false)
+                            .setLocale(const Locale('en'));
                       },
                       child: const Text(
                         '🇺🇸',
@@ -201,12 +201,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(width: 10),
                     GestureDetector(
                       onTap: () {
-                        setState(() {
-                          S.load(const Locale('es'));
-                        });
+                        Provider.of<LocaleProvider>(context, listen: false)
+                            .setLocale(const Locale('es'));
                       },
                       child: const Text(
                         '🇪🇸',
+                        style: TextStyle(fontSize: 30),
+                      ),
+                    ),
+
+                    // Add German
+                    const SizedBox(width: 10),
+                    const Text('/'),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () {
+                        Provider.of<LocaleProvider>(context, listen: false)
+                            .setLocale(const Locale('de'));
+                      },
+                      child: const Text(
+                        '🇩🇪',
                         style: TextStyle(fontSize: 30),
                       ),
                     ),
@@ -287,13 +301,11 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isPasswordValid = false;
       });
-
       ShowSnackbar.showSnackBar(
         message: S.of(context).invalidPasswordTooShortMessage,
         variant: SnackbarVariant.error,
         duration: SnackbarDuration.short,
       );
-
       error = true;
     }
 

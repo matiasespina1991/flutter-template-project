@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ThemeTextField extends StatefulWidget {
+class ThemeInputField extends StatefulWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final String hintText;
@@ -14,7 +14,7 @@ class ThemeTextField extends StatefulWidget {
   final String? errorText;
   final Function(String)? onChanged;
 
-  const ThemeTextField({
+  const ThemeInputField({
     required this.controller,
     required this.focusNode,
     required this.hintText,
@@ -31,10 +31,10 @@ class ThemeTextField extends StatefulWidget {
   });
 
   @override
-  ThemeTextFieldState createState() => ThemeTextFieldState();
+  ThemeInputFieldState createState() => ThemeInputFieldState();
 }
 
-class ThemeTextFieldState extends State<ThemeTextField> {
+class ThemeInputFieldState extends State<ThemeInputField> {
   bool _isPasswordVisible = false;
 
   @override

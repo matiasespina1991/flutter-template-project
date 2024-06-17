@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../providers/theme_notifier.dart';
 
-class TemplateAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const TemplateAppBar({super.key, this.appBarHeight, this.title});
+class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const ThemeAppBar({super.key, this.appBarHeight, this.title});
 
   final double? appBarHeight;
   final String? title;

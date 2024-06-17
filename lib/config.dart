@@ -10,7 +10,8 @@ class Config {
   static const bool useSafeArea =
       true; // If true, the app will adjust to the space below the status bar
   static const bool useTopAppBar = true;
-  static const bool useSpeedDial = true;
+  static const bool useFloatingSpeedDialMenu = true;
+  static const bool useAppDrawer = false;
 
   // DEBUG MODE:
   static const bool debugMode = true; // Set to true to skip login screen
@@ -29,7 +30,7 @@ class Config {
   static const bool allowEmailSignIn = false;
 
   static const String appDefaultLanguage = 'en';
-  static const List supportedLocales = ['en', 'es'];
+  static const List<String> supportedLocales = ['en', 'es', 'de'];
 
   /// NOTE: edit lib/l10n/intl_xx.arb files and use 'flutter pub run intl_utils:generate' to generate translations
 

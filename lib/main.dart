@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:template_app/generated/l10n.dart';
 import 'package:template_app/providers/authorization_provider.dart';
+import 'package:template_app/providers/locale_provider.dart';
 import 'package:template_app/screens/home_screen/home_screen.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';
 import 'package:template_app/screens/login_screen/login_screen.dart';
@@ -31,33 +32,17 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthorizationProvider()),
         ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
       ],
-      child: Consumer<ThemeNotifier>(
-        builder: (context, themeNotifier, child) {
+      child: Consumer2<ThemeNotifier, LocaleProvider>(
+        builder: (context, themeNotifier, localeProvider, child) {
           return MaterialApp(
             scaffoldMessengerKey: snackbarKey,
             title: Config.appName,
             theme: MainTheme.lightTheme,
             darkTheme: MainTheme.darkTheme,
             themeMode: themeNotifier.themeMode,
-            localeResolutionCallback: (locale, supportedLocales) {
-              if (locale != null) {
-                for (var supportedLocale in supportedLocales) {
-                  if (supportedLocale.languageCode == locale.languageCode) {
-                    debugPrint(
-                        'Supported locale found, changing app language to "${supportedLocale.languageCode}".');
-
-                    return supportedLocale;
-                  }
-                }
-                debugPrint(
-                    'Device locale returned "${locale.languageCode}". Supported locale not found, changing app language to ${supportedLocales.first.languageCode}".');
-                return supportedLocales.first;
-              }
-              return supportedLocales.first;
-            },
-            locale: const Locale.fromSubtags(
-                languageCode: Config.appDefaultLanguage),
+            locale: localeProvider.locale,
             supportedLocales: Config.supportedLocales
                 .map((e) => Locale.fromSubtags(languageCode: e))
                 .toList(),
@@ -67,6 +52,16 @@ class MyApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
+            localeResolutionCallback: (locale, supportedLocales) {
+              if (locale != null) {
+                for (var supportedLocale in supportedLocales) {
+                  if (supportedLocale.languageCode == locale.languageCode) {
+                    return supportedLocale;
+                  }
+                }
+              }
+              return supportedLocales.first;
+            },
             home: const MainScreen(),
           );
         },
