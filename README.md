@@ -44,7 +44,7 @@ Template Flutter project.
 2. **Setup Firebase in the App:**
     - Follow these instructions: https://firebase.google.com/docs/flutter/setup.
 
-# 3. Check locales and update the app's supported locales (Optional):
+# 3. Check the supported locales or add new locales (Optional):
 
 1. **Check Supported Locales:**
     - You can find the supported locales in the `lib/config.dart` file, under supportedLocales List.
