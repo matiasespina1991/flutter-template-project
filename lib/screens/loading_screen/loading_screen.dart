@@ -11,17 +11,15 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return Scaffold(
-      appBar: Config.useTopAppBar
-          ? ThemeAppBar(
-              title: '',
-            )
-          : null,
-      backgroundColor: isDarkMode
-          ? Config.scaffoldBackgroundColor.darkThemeColor
-          : Config.scaffoldBackgroundColor.lightThemeColor,
-      body: const Center(
-        child: LoadingCircle(),
+    return SafeArea(
+      top: Config.useSafeArea,
+      child: Scaffold(
+        backgroundColor: isDarkMode
+            ? Config.scaffoldBackgroundColor.darkThemeColor
+            : Config.scaffoldBackgroundColor.lightThemeColor,
+        body: const Center(
+          child: LoadingCircle(),
+        ),
       ),
     );
   }

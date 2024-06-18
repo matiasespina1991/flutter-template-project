@@ -6,7 +6,11 @@ import '../config.dart';
 
 class LocaleProvider with ChangeNotifier {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
-  Locale _locale = Locale(Config.appDefaultLanguage);
+
+  Locale _locale = Locale(
+      Config.supportedLocales.contains(Config.appDefaultLanguage)
+          ? Config.appDefaultLanguage
+          : Config.supportedLocales.first);
 
   LocaleProvider() {
     _loadLocale();
@@ -16,6 +20,15 @@ class LocaleProvider with ChangeNotifier {
 
   Future<void> setLocale(Locale locale) async {
     List<String> supportedLocales = Config.supportedLocales;
+
+    bool forcedLocale = Config.forceDefaultLanguage;
+
+    if (forcedLocale) {
+      debugPrint(
+          'Error: Language change forbidden. Forced locale is on. Set Config.forceLanguage to "false" in order to allow language change.');
+      locale = _locale;
+      return;
+    }
 
     if (!supportedLocales.contains(locale.languageCode)) {
       debugPrint(

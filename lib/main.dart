@@ -60,9 +60,19 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             localeResolutionCallback: (locale, supportedLocales) {
-              String? forcedLocale = Config.forceLanguage;
-              if (forcedLocale != null) {
-                return Locale(forcedLocale);
+              bool forceDefaultLanguage = Config.forceDefaultLanguage;
+
+              if (forceDefaultLanguage) {
+                if (Config.supportedLocales
+                    .contains(Config.appDefaultLanguage)) {
+                  return const Locale(Config.appDefaultLanguage);
+                } else {
+                  debugPrint(
+                      'Error: Default language "${Config.appDefaultLanguage.toUpperCase()}" not found in supportedLocales list. Defaulting to the first locale in the list. Please add the default language to the supportedLocales list in config.dart.');
+                  return Locale(Config.supportedLocales.first);
+                }
+
+                return Locale(LocaleProvider().locale.languageCode);
               }
               if (locale != null) {
                 for (var supportedLocale in supportedLocales) {
@@ -91,36 +101,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: Config.useSafeArea,
-      child: Consumer<AuthorizationProvider>(
-        builder: (BuildContext context, value, Widget? child) {
-          // bool isAuthenticated = value.isAuthenticated;
-          //
-          // if (Config.debugMode == true) {
-          //   isAuthenticated = true;
-          // }
-          //
-          // isAuthenticated = true;
-
-          return const HomeScreen();
-
-          // if (!isAuthenticated) {
-          // return Navigator(
-          //   onGenerateRoute: (settings) {
-          //     return createRoute(const LoginScreen());
-          //   },
-          // );
-          // }
-
-          // return Navigator(
-          //   onGenerateRoute: (settings) {
-          //     return createRoute(const HomeScreen());
-          //   },
-          // );
-        },
-        child: const LoadingScreen(),
-      ),
-    );
+    return const HomeScreen();
   }
 }

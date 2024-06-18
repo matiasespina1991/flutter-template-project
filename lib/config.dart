@@ -8,7 +8,7 @@ class Config {
 
   // APP CONFIG:
   static const bool useSafeArea =
-      true; // If true, the app will adjust to the space below the status bar
+      false; // If true, the app will adjust to the space below the status bar
   static const bool useTopAppBar = true;
   static const bool useFloatingSpeedDialMenu = true;
   static const bool useAppDrawer = false;
@@ -29,14 +29,16 @@ class Config {
   static const bool allowAnonymousSignIn = false;
   static const bool allowEmailSignIn = false;
 
-  static const String appDefaultLanguage = 'en';
-  static const String? forceLanguage = 'de'; // Set to null to disable
+  static const String appDefaultLanguage = 'es';
+  static const bool forceDefaultLanguage = false;
   static const List<String> supportedLocales = ['en', 'es', 'de'];
 
   /// NOTE: edit lib/l10n/intl_xx.arb files and use 'flutter pub run intl_utils:generate' to generate translations
 
   // APP STYLES:
 
+  static const String defaultThemeMode = 'light'; // 'light' | 'dark'
+  static const bool forceDefaultThemeMode = false;
   static const bool useFlutterToast =
       false; // Use FlutterToast package for snackbars
   static const bool useMaterial3 = true; // Use Material 3.0 // DEFAULT: true
