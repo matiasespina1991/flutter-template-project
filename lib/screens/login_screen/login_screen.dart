@@ -335,7 +335,8 @@ class _LoginScreenState extends State<LoginScreen> {
             variant: SnackbarVariant.success,
             duration: SnackbarDuration.short,
             delay: 1);
-        Navigator.of(context).pushReplacement(createRoute(const HomeScreen()));
+        Navigator.of(context).pushReplacement(
+            createRoute(const HomeScreen(), direction: SlideDirection.right));
       } else {
         NotificationSnackbar.showSnackBar(
           message: S.of(context).loginErrorMessage,

@@ -60,6 +60,10 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             localeResolutionCallback: (locale, supportedLocales) {
+              String? forcedLocale = Config.forceLanguage;
+              if (forcedLocale != null) {
+                return Locale(forcedLocale);
+              }
               if (locale != null) {
                 for (var supportedLocale in supportedLocales) {
                   if (supportedLocale.languageCode == locale.languageCode) {
@@ -91,25 +95,29 @@ class _MainScreenState extends State<MainScreen> {
       top: Config.useSafeArea,
       child: Consumer<AuthorizationProvider>(
         builder: (BuildContext context, value, Widget? child) {
-          bool isAuthenticated = value.isAuthenticated;
+          // bool isAuthenticated = value.isAuthenticated;
+          //
+          // if (Config.debugMode == true) {
+          //   isAuthenticated = true;
+          // }
+          //
+          // isAuthenticated = true;
 
-          if (Config.debugMode == true) {
-            isAuthenticated = true;
-          }
+          return const HomeScreen();
 
-          if (!isAuthenticated) {
-            return Navigator(
-              onGenerateRoute: (settings) {
-                return createRoute(const LoginScreen());
-              },
-            );
-          }
+          // if (!isAuthenticated) {
+          // return Navigator(
+          //   onGenerateRoute: (settings) {
+          //     return createRoute(const LoginScreen());
+          //   },
+          // );
+          // }
 
-          return Navigator(
-            onGenerateRoute: (settings) {
-              return createRoute(const HomeScreen());
-            },
-          );
+          // return Navigator(
+          //   onGenerateRoute: (settings) {
+          //     return createRoute(const HomeScreen());
+          //   },
+          // );
         },
         child: const LoadingScreen(),
       ),

@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
 
-Route createRoute(Widget page) {
+enum SlideDirection { left, top, right, bottom }
+
+Route createRoute(Widget page, {required SlideDirection direction}) {
+  Offset getBeginOffset() {
+    switch (direction) {
+      case SlideDirection.left:
+        return const Offset(-1.0, 0.0);
+      case SlideDirection.top:
+        return const Offset(0.0, -1.0);
+      case SlideDirection.right:
+        return const Offset(1.0, 0.0);
+      case SlideDirection.bottom:
+        return const Offset(0.0, 1.0);
+    }
+  }
+
   return PageRouteBuilder(
     transitionDuration: const Duration(milliseconds: 800),
     pageBuilder: (context, animation, secondaryAnimation) => page,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(1.0, 0.0);
+      var begin = getBeginOffset();
       const end = Offset.zero;
       const curve = Curves.easeInOutCubic;
 

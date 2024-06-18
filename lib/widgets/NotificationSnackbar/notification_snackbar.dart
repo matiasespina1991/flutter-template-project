@@ -28,6 +28,7 @@ class NotificationSnackbar {
     }
 
     if (Config.useFlutterToast) {
+      Fluttertoast.cancel();
       Fluttertoast.showToast(
         msg: message,
         toastLength: duration == SnackbarDuration.long
