@@ -6,7 +6,7 @@ import 'package:template_app/generated/l10n.dart';
 import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/home_screen/home_screen.dart';
 import 'package:template_app/theme/main_theme.dart';
-import 'package:template_app/utils/create_route.dart';
+import 'package:template_app/utils/notify_that_app_is_runing_in_debug_mode.dart';
 import 'config.dart';
 import 'globals.dart';
 
@@ -16,11 +16,7 @@ void main() async {
     await Firebase.initializeApp();
   }
   if (Config.debugMode) {
-    debugPrint('-------------------- DEBUG MODE: ON --------------------');
-    debugPrint(
-        'Login screen will be skipped and user will be automatically authenticated.');
-    debugPrint('Change Config.debugMode to false to disable this feature.');
-    debugPrint('--------------------------------------------------------');
+    notifyThatAppIsRunningInDebugMode();
   }
   runApp(const ProviderScope(child: MyApp()));
 }

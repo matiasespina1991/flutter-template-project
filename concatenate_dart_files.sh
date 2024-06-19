@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Nombres de los archivos Dart que querés concatenar
+files=(
+    "lib/config.dart"
+    "lib/main.dart"
+    "lib/screens/home_screen/home_screen.dart"
+    "lib/screens/login_screen/login_screen.dart"
+    "lib/widgets/AppScaffold/app_scaffold.dart"
+    "lib/providers/auth_provider.dart"
+    "lib/providers/debug_mode_notifier.dart"
+    "lib/providers/locale_provider.dart"
+    "lib/providers/providers_all.dart"
+    "lib/providers/theme_provider.dart"
+)
+
+# Archivo de salida
+output_file="combined.dart"
+
+# Limpiar el archivo de salida si ya existe
+> $output_file
+
+# Concatenar los archivos
+for file in "${files[@]}"
+do
+    cat "$file" >> $output_file
+    echo "" >> $output_file # Agregar una línea en blanco entre archivos
+done
+
+echo "Files concatenated into $output_file"

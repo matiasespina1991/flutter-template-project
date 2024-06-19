@@ -10,7 +10,7 @@ class Config {
   static const bool useSafeArea =
       false; // If true, the app will adjust to the space below the status bar
   static const bool useTopAppBar = false;
-  static const bool useFloatingSpeedDialMenu = false;
+  static const bool useFloatingSpeedDialMenu = true;
   static const bool useAppDrawer = false;
 
   // DEBUG MODE:

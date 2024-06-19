@@ -54,7 +54,7 @@ Template Flutter project.
     - Run `flutter pub run intl_utils:generate` to generate the locale files.
     - Remove a locale by deleting the corresponding `intl_{locale}.arb` file and taking it out of the supportedLocales List.
 
-# 3. Things to take in account for pre-production and should be ready prior to the deployment of the app:
+# 4. Things to take in account for pre-production and should be ready prior to the deployment of the app:
 ### (Check each completed item with a ✅)
 
 ### UI Design:
