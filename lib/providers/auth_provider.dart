@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-import '../config.dart';
+import 'package:template_app/config.dart';
 
 class AuthorizationProvider extends ChangeNotifier {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -53,7 +52,6 @@ class AuthorizationProvider extends ChangeNotifier {
   bool get isAuthenticated =>
       Config.debugMode || (_authToken != null && _authToken!.isNotEmpty);
 
-  /// Email/Password Sign In methods
   Future<bool> signInWithEmail(String email, String password) async {
     bool success = false;
     try {
@@ -62,11 +60,10 @@ class AuthorizationProvider extends ChangeNotifier {
       if (Config.useFirebase) {
         final UserCredential authResult = await _firebaseAuth!
             .signInWithEmailAndPassword(email: email, password: password);
-        _authToken = authResult.user!.uid; // Use user ID as auth token
+        _authToken = authResult.user!.uid;
         await setAuthToken(_authToken!);
       } else {
-        // Non-Firebase Sign In
-        _authToken = email; // Use email as auth token
+        _authToken = email;
         await setAuthToken(_authToken!);
       }
 
@@ -75,13 +72,11 @@ class AuthorizationProvider extends ChangeNotifier {
       return success;
     } catch (error) {
       debugPrint('Error during email/password Sign In: ${error.toString()}');
-
       success = false;
       return success;
     }
   }
 
-  /// Google Sign In methods
   Future<bool> signInWithGoogle() async {
     bool success = false;
     if (Config.allowGoogleSignIn) {
@@ -101,12 +96,10 @@ class AuthorizationProvider extends ChangeNotifier {
           if (Config.useFirebase) {
             final UserCredential? authResult =
                 await _firebaseAuth?.signInWithCredential(credential);
-            _authToken = authResult?.user!.uid; // Use user ID as auth token
+            _authToken = authResult?.user!.uid;
             await setAuthToken(_authToken!);
           } else {
-            /// Non-Firebase Sign In
-            _authToken =
-                googleAuth.accessToken; // Use access token as auth token
+            _authToken = googleAuth.accessToken;
             await setAuthToken(_authToken!);
           }
 

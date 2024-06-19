@@ -1,5 +1,5 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:template_app/generated/l10n.dart';
@@ -11,9 +11,13 @@ import 'config.dart';
 import 'globals.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   if (Config.useFirebase) {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
+    try {
+      await Firebase.initializeApp();
+    } catch (e) {
+      debugPrint('Error: Firebase initialization failed. $e');
+    }
   }
   if (Config.debugMode) {
     notifyThatAppIsRunningInDebugMode();
@@ -46,16 +50,8 @@ class MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       localeResolutionCallback: (locale, supportedLocales) {
-        bool forceDefaultLanguage = Config.forceDefaultLanguage;
-
-        if (forceDefaultLanguage) {
-          if (Config.supportedLocales.contains(Config.appDefaultLanguage)) {
-            return const Locale(Config.appDefaultLanguage);
-          } else {
-            debugPrint(
-                'Error: Default language "${Config.appDefaultLanguage.toUpperCase()}" not found in supportedLocales list. Defaulting to the first locale in the list. Please add the default language to the supportedLocales list in config.dart.');
-            return Locale(Config.supportedLocales.first);
-          }
+        if (Config.forceDefaultLanguage) {
+          return Locale(Config.appDefaultLanguage);
         }
         if (locale != null) {
           for (var supportedLocale in supportedLocales) {

@@ -41,6 +41,8 @@ class Config {
 
   static const String defaultThemeMode = 'light'; // 'light' | 'dark'
   static const bool forceDefaultThemeMode = false;
+  static const String defaultScrollPhysics =
+      'always'; // 'never', 'always', 'clamp'
   static const bool useFlutterToast =
       false; // Use FlutterToast package for snackbars
   static const bool useMaterial3 = true; // Use Material 3.0 // DEFAULT: true

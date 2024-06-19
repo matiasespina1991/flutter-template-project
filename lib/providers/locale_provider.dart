@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import '../config.dart';
 
 class LocaleProvider extends ChangeNotifier {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   Locale _locale = Locale(
-      Config.supportedLocales.contains(Config.appDefaultLanguage)
-          ? Config.appDefaultLanguage
-          : Config.supportedLocales.first);
+    Config.supportedLocales.contains(Config.appDefaultLanguage)
+        ? Config.appDefaultLanguage
+        : Config.supportedLocales.first,
+  );
 
   LocaleProvider() {
     _loadLocale();
@@ -18,25 +18,17 @@ class LocaleProvider extends ChangeNotifier {
   Locale get locale => _locale;
 
   Future<void> setLocale(Locale locale) async {
-    List<String> supportedLocales = Config.supportedLocales;
-
-    bool forcedLocale = Config.forceDefaultLanguage;
-
-    if (forcedLocale) {
+    if (Config.forceDefaultLanguage) {
       debugPrint(
           'Error: Language change forbidden. Forced locale is on. Set Config.forceLanguage to "false" in order to allow language change.');
-      locale = _locale;
       return;
     }
 
-    if (!supportedLocales.contains(locale.languageCode)) {
+    if (!Config.supportedLocales.contains(locale.languageCode)) {
       debugPrint(
-          'Unsupported locale: ${locale.languageCode.toUpperCase()}, please use one of the following: $supportedLocales. Or add the new locale to the supportedLocales list in config.dart');
+          'Unsupported locale: ${locale.languageCode.toUpperCase()}, please use one of the following: ${Config.supportedLocales}. Or add the new locale to the supportedLocales list in config.dart');
       return;
     }
-
-    debugPrint(
-        'App language switched to: ${locale.languageCode.toUpperCase()}.');
 
     _locale = locale;
     notifyListeners();

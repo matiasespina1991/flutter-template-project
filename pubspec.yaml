@@ -45,10 +45,10 @@ dependencies:
 #  # Skeletonizer is a Flutter plugin for creating skeleton loading animations in a Flutter app.
 #  skeletonizer: ^1.3.0
 
-#  # Device Info Plus is a Flutter plugin for getting information about the device the app is running on.
-#  device_info_plus: ^10.1.0
-#  # Package Info Plus is a Flutter plugin for getting information about the package the app is running on.
-#  package_info_plus: ^8.0.0
+  # Device Info Plus is a Flutter plugin for getting information about the device the app is running on.
+  device_info_plus: ^10.1.0
+  # Package Info Plus is a Flutter plugin for getting information about the package the app is running on.
+  package_info_plus: ^8.0.0
 #  # HTTP is a Flutter plugin for performing HTTP requests. It is a wrapper around the Dart http package.
 #  http: ^1.2.1
 #  # Webview is a Flutter plugin for rendering web content in a Flutter widget.

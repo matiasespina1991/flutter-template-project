@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 enum SlideDirection { left, top, right, bottom }
 
-Route createRoute(Widget page, {required SlideDirection direction}) {
+Route pushRouteWithAnimation(Widget page, {required SlideDirection direction}) {
   Offset getBeginOffset() {
     switch (direction) {
       case SlideDirection.left:

@@ -7,11 +7,11 @@ import 'package:template_app/generated/l10n.dart';
 
 import '../../config.dart';
 import '../../providers/providers_all.dart';
-import '../../utils/create_route.dart';
-import '../../utils/is_email_valid.dart';
+import '../../utils/navigation/push_route_with_animation.dart';
+import '../../utils/validation/is_email_valid.dart';
 import '../../widgets/AppScaffold/app_scaffold.dart';
 import '../../widgets/NotificationSnackbar/notification_snackbar.dart';
-import '../../widgets/ThemeInputField/theme_input_field.dart';
+import '../../widgets/ThemeInputTextField/theme_input_text_field.dart';
 import '../home_screen/home_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -35,7 +35,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       appBarTitle: S.of(context).loginScreenTitle,
-      protected: false,
+      isProtected: false,
       hideFloatingSpeedDialMenu: true,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -67,7 +67,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ],
                   ),
                 ),
-                ThemeInputField(
+                ThemeInputTextField(
                   controller: _emailController,
                   focusNode: _emailFocusNode,
                   hintText: S.of(context).emailHintText,
@@ -97,7 +97,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ],
                   ),
                 ),
-                ThemeInputField(
+                ThemeInputTextField(
                   controller: _passwordController,
                   focusNode: _passwordFocusNode,
                   hintText: S.of(context).passwordHintText,
@@ -325,8 +325,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             variant: SnackbarVariant.success,
             duration: SnackbarDuration.short,
             delay: 1);
-        Navigator.of(context).pushReplacement(
-            createRoute(const HomeScreen(), direction: SlideDirection.right));
+        Navigator.of(context).pushReplacement(pushRouteWithAnimation(
+            const HomeScreen(),
+            direction: SlideDirection.right));
       } else {
         NotificationSnackbar.showSnackBar(
           message: S.of(context).loginErrorMessage,
@@ -345,7 +346,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       setState(() {
         _attemptingLogin = false;
       });
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      NotificationSnackbar.hideCurrentSnackBar();
     }
   }
 }

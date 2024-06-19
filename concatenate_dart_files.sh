@@ -7,15 +7,17 @@ files=(
     "lib/screens/home_screen/home_screen.dart"
     "lib/screens/login_screen/login_screen.dart"
     "lib/widgets/AppScaffold/app_scaffold.dart"
+    "lib/theme/main_theme.dart"
     "lib/providers/auth_provider.dart"
     "lib/providers/debug_mode_notifier.dart"
     "lib/providers/locale_provider.dart"
     "lib/providers/providers_all.dart"
     "lib/providers/theme_provider.dart"
+    "pubspec.yaml"
 )
 
 # Archivo de salida
-output_file="combined.dart"
+output_file="_combined.txt"
 
 # Limpiar el archivo de salida si ya existe
 > $output_file
