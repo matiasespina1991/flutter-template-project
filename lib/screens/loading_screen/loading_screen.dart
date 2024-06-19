@@ -15,8 +15,8 @@ class LoadingScreen extends StatelessWidget {
       top: Config.useSafeArea,
       child: Scaffold(
         backgroundColor: isDarkMode
-            ? Config.scaffoldBackgroundColor.darkThemeColor
-            : Config.scaffoldBackgroundColor.lightThemeColor,
+            ? Config.scaffoldBackgroundColor.darkModePrimary
+            : Config.scaffoldBackgroundColor.lightModePrimary,
         body: const Center(
           child: LoadingCircle(),
         ),

@@ -9,9 +9,9 @@ class MainTheme {
   static ThemeData get lightTheme {
     final base = ThemeData.light(useMaterial3: Config.useMaterial3);
     return base.copyWith(
-      scaffoldBackgroundColor: Config.scaffoldBackgroundColor.lightThemeColor,
+      scaffoldBackgroundColor: Config.scaffoldBackgroundColor.lightModePrimary,
       hintColor: Config.hintTextColor
-          .lightThemeColor, // Define the hintColor for light theme
+          .lightModePrimary, // Define the hintColor for light theme
 
       textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
 
@@ -25,12 +25,12 @@ class MainTheme {
                 fontFamily: Config.appBarTextStyle.name,
                 fontSize: Config.appBarTitleFontSize),
         backgroundColor: Config
-            .appBarBackgroundColor.lightThemeColor, // AppBar background color
+            .appBarBackgroundColor.lightModePrimary, // AppBar background color
       ),
 
       colorScheme: ColorScheme.light(
-        primary: Config.primaryTextColor.lightThemeColor,
-        secondary: Config.secondaryTextColor.lightThemeColor,
+        primary: Config.primaryTextColor.lightModePrimary,
+        secondary: Config.secondaryTextColor.lightModePrimary,
         surface: Colors.white,
         error: Colors.red,
         onPrimary: Colors.white,
@@ -41,8 +41,9 @@ class MainTheme {
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          foregroundColor: Config.elevatedButtonTextColor.lightThemeColor,
-          backgroundColor: Config.elevatedButtonBackgroundColor.lightThemeColor,
+          foregroundColor: Config.elevatedButtonTextColor.lightModePrimary,
+          backgroundColor:
+              Config.elevatedButtonBackgroundColor.lightModePrimary,
           elevation: Config.buttonsElevation,
           minimumSize: const Size(double.infinity, 47),
           shape:
@@ -64,14 +65,14 @@ class MainTheme {
   static ThemeData get darkTheme {
     final base = ThemeData.dark(useMaterial3: Config.useMaterial3);
     return base.copyWith(
-      scaffoldBackgroundColor: Config.scaffoldBackgroundColor.darkThemeColor,
+      scaffoldBackgroundColor: Config.scaffoldBackgroundColor.darkModePrimary,
       hintColor: Config
-          .hintTextColor.darkThemeColor, // Define the hintColor for dark theme
+          .hintTextColor.darkModePrimary, // Define the hintColor for dark theme
       textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
       appBarTheme: AppBarTheme(
         foregroundColor: Colors.white, // AppBar text color
         backgroundColor: Config
-            .appBarBackgroundColor.darkThemeColor, // AppBar background color
+            .appBarBackgroundColor.darkModePrimary, // AppBar background color
         titleTextStyle: Config.appBarTextStyle.isGoogleFont
             ? GoogleFonts.getFont(Config.appBarTextStyle.name,
                 textStyle:
@@ -84,10 +85,11 @@ class MainTheme {
       // primary,   Color? onPrimary,   Color? primaryContainer,   Color? onPrimaryContainer,   Color? primaryFixed,   Color? primaryFixedDim,   Color? onPrimaryFixed,   Color? onPrimaryFixedVariant,   Color? secondary,   Color? onSecondary,   Color? secondaryContainer,   Color? onSecondaryContainer,   Color? secondaryFixed,   Color? secondaryFixedDim,   Color? onSecondaryFixed,   Color? onSecondaryFixedVariant,   Color? tertiary,   Color? onTertiary,   Color? tertiaryContainer,   Color? onTertiaryContainer,   Color? tertiaryFixed,   Color? tertiaryFixedDim,   Color? onTertiaryFixed,   Color? onTertiaryFixedVariant,   Color? error,   Color? onError,   Color? errorContainer,   Color? onErrorContainer,   Color? surface,   Color? onSurface,   Color? surfaceDim,   Color? surfaceBright,   Color? surfaceContainerLowest,   Color? surfaceContainerLow,   Color? surfaceContainer,   Color? surfaceContainerHigh,   Color? surfaceContainerHighest,   Color? onSurfaceVariant,   Color? outline,   Color? outlineVariant,   Color? shadow,   Color? scrim,   Color? inverseSurface,   Color? onInverseSurface,   Color? inversePrimary,   Color? surfaceTint,   Color? background,   Color? onBackground,   Color? surfaceVariant,
 
       colorScheme: base.colorScheme.copyWith(
-        primary: Config.primaryTextColor.darkThemeColor,
+        primary: Config.primaryTextColor.darkModePrimary,
         onPrimary: Colors.black,
-        primaryContainer: Config.primaryContainerBackgroundColor.darkThemeColor,
-        secondary: Config.secondaryTextColor.darkThemeColor,
+        primaryContainer:
+            Config.primaryContainerBackgroundColor.darkModePrimary,
+        secondary: Config.secondaryTextColor.darkModePrimary,
         error: Colors.red[900]!,
         onSecondary: Colors.black,
         onError: Colors.black,
@@ -95,8 +97,8 @@ class MainTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          foregroundColor: Config.elevatedButtonTextColor.darkThemeColor,
-          backgroundColor: Config.elevatedButtonBackgroundColor.darkThemeColor,
+          foregroundColor: Config.elevatedButtonTextColor.darkModePrimary,
+          backgroundColor: Config.elevatedButtonBackgroundColor.darkModePrimary,
           elevation: Config.buttonsElevation,
           minimumSize: const Size(double.infinity, 50),
           shape:

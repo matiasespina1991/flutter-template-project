@@ -25,10 +25,19 @@ class TextThemes {
 }
 
 class ThemeColors {
-  final Color lightThemeColor;
-  final Color darkThemeColor;
+  final Color lightModePrimary;
+  final Color darkModePrimary;
+  final Color? lightModeSecondary;
+  final Color? darkModeSecondary;
+  final Color? lightModeTertiary;
+  final Color? darkModeTertiary;
+
   const ThemeColors({
-    required this.lightThemeColor,
-    required this.darkThemeColor,
+    required this.lightModePrimary,
+    required this.darkModePrimary,
+    this.lightModeSecondary,
+    this.darkModeSecondary,
+    this.lightModeTertiary,
+    this.darkModeTertiary,
   });
 }

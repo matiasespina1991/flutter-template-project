@@ -9,18 +9,20 @@ class Config {
   // APP CONFIG:
   static const bool useSafeArea =
       false; // If true, the app will adjust to the space below the status bar
-  static const bool useTopAppBar = true;
-  static const bool useFloatingSpeedDialMenu = true;
+  static const bool useTopAppBar = false;
+  static const bool useFloatingSpeedDialMenu = false;
   static const bool useAppDrawer = false;
 
   // DEBUG MODE:
   static const bool debugMode = false; // Set to true to skip login screen
+  static const debugScreen =
+      '/home'; // Set to the screen you want to navigate to in debug mode
 
-  // AUTHENTICATION:
+  // AUTH:
   static const bool useProtectedRoutes =
       true; // If true, the app will always redirect to login screen if user is not authenticated
   static const bool useFirebase = false;
-  static const bool allowGoogleSignIn = true;
+  static const bool allowGoogleSignIn = false;
   static const List<String> googleSignInScopes = [
     'email'
   ]; // 'email', 'profile', 'openid', etc
@@ -63,43 +65,43 @@ class Config {
   // );
 
   static const ThemeColors scaffoldBackgroundColor = ThemeColors(
-    lightThemeColor: lightWhiteColor,
-    darkThemeColor: lightBlackColor,
+    lightModePrimary: lightWhiteColor,
+    darkModePrimary: lightBlackColor,
   );
 
   static const ThemeColors appBarBackgroundColor = ThemeColors(
-    lightThemeColor: Colors.black87,
-    darkThemeColor: Colors.blueGrey,
+    lightModePrimary: Colors.black87,
+    darkModePrimary: Colors.blueGrey,
   );
 
   static const ThemeColors primaryTextColor = ThemeColors(
-    lightThemeColor: Colors.black,
-    darkThemeColor: Colors.white,
+    lightModePrimary: Colors.black,
+    darkModePrimary: Colors.white,
   );
 
   static const ThemeColors secondaryTextColor = ThemeColors(
-    lightThemeColor: Colors.black,
-    darkThemeColor: Colors.white,
+    lightModePrimary: Colors.black,
+    darkModePrimary: Colors.white,
   );
 
   static const ThemeColors hintTextColor = ThemeColors(
-    lightThemeColor: Colors.grey,
-    darkThemeColor: Colors.grey,
+    lightModePrimary: Colors.grey,
+    darkModePrimary: Colors.grey,
   );
 
   static const ThemeColors primaryContainerBackgroundColor = ThemeColors(
-    lightThemeColor: Colors.blueGrey,
-    darkThemeColor: Colors.blueGrey,
+    lightModePrimary: Colors.blueGrey,
+    darkModePrimary: Colors.blueGrey,
   );
 
   static const ThemeColors elevatedButtonBackgroundColor = ThemeColors(
-    lightThemeColor: Colors.blueGrey,
-    darkThemeColor: Colors.blueGrey,
+    lightModePrimary: Colors.blueGrey,
+    darkModePrimary: Colors.blueGrey,
   );
 
   static const ThemeColors elevatedButtonTextColor = ThemeColors(
-    lightThemeColor: Colors.white,
-    darkThemeColor: Colors.white,
+    lightModePrimary: Colors.white,
+    darkModePrimary: Colors.white,
   );
 
   static const Color snackBarErrorBackgroundColor = Colors.red;

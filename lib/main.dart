@@ -4,7 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:template_app/generated/l10n.dart';
-import 'package:template_app/providers/authorization_provider.dart';
+import 'package:template_app/providers/auth_provider.dart';
 import 'package:template_app/providers/locale_provider.dart';
 import 'package:template_app/screens/home_screen/home_screen.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';

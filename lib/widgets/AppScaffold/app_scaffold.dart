@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:template_app/providers/authorization_provider.dart';
+import 'package:template_app/providers/auth_provider.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';
 import '../../config.dart';
 import '../../providers/theme_provider.dart';
@@ -52,7 +52,7 @@ class _AppScaffoldState extends State<AppScaffold> {
           return LoadingScreen();
         }
 
-        ValueNotifier<bool> isDialOpen = ValueNotifier(false);
+        ValueNotifier<bool> isFloatingMenuOpen = ValueNotifier(false);
 
         return SafeArea(
           top: Config.useSafeArea,
@@ -69,7 +69,7 @@ class _AppScaffoldState extends State<AppScaffold> {
                     Config.useFloatingSpeedDialMenu)
                   Positioned.fill(
                     child: ValueListenableBuilder(
-                      valueListenable: isDialOpen,
+                      valueListenable: isFloatingMenuOpen,
                       builder: (context, value, child) {
                         return value
                             ? BackdropFilter(
@@ -86,7 +86,7 @@ class _AppScaffoldState extends State<AppScaffold> {
             ),
             floatingActionButton: ThemeFloatingSpeedDialMenu(
               hideFloatingSpeedDialMenu: widget.hideFloatingSpeedDialMenu,
-              isDialOpenNotifier: isDialOpen,
+              isDialOpenNotifier: isFloatingMenuOpen,
             ),
           ),
         );

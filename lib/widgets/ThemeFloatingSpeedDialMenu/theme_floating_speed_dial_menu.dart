@@ -3,7 +3,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 import '../../config.dart';
 import '../../generated/l10n.dart';
-import '../../providers/authorization_provider.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/theme_provider.dart';
 
 class ThemeFloatingSpeedDialMenu extends StatefulWidget {

@@ -7,7 +7,7 @@ import 'package:template_app/generated/l10n.dart';
 
 import '../../config.dart';
 import '../../providers/theme_provider.dart';
-import '../../providers/authorization_provider.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/locale_provider.dart';
 import '../../utils/create_route.dart';
 import '../../utils/is_email_valid.dart';
