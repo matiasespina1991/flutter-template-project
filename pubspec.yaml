@@ -17,7 +17,10 @@ dependencies:
   # Cupertino Icons is a Flutter plugin for using Cupertino icons in a Flutter app. (Example of use: Icon(CupertinoIcons.share))
   cupertino_icons: ^1.0.8
   # Provider is a Flutter plugin for managing state in a Flutter app.
-  provider: ^6.1.2
+#  provider: ^6.1.2
+  # Riverpod is a Flutter plugin for managing state in a Flutter app.
+
+  flutter_riverpod: ^2.5.1
   # Flutter Secure Storage is a Flutter plugin for storing data securely on the device.
   flutter_secure_storage: ^9.2.2
   # Google Fonts is a Flutter plugin for using Google Fonts in a Flutter app.

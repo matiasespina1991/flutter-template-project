@@ -1,21 +1,21 @@
 import 'dart:ui';
 
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:template_app/widgets/AppScaffold/app_scaffold.dart';
 
 import '../../config.dart';
 import '../../generated/l10n.dart';
-import '../../providers/theme_provider.dart';
+import '../../providers/providers_all.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool useAppBar = Config.useTopAppBar;
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
 
@@ -27,9 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Text(
-            //   S.of(context).lightModeDarkMode,
-            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -59,8 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
               value: Theme.of(context).brightness == Brightness.dark,
               activeTrackColor: Theme.of(context).colorScheme.secondary,
               onChanged: (value) {
-                Provider.of<ThemeProvider>(context, listen: false)
-                    .toggleTheme(value);
+                ref.read(themeProvider).toggleTheme(value);
               },
             ),
           ],

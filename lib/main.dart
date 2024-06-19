@@ -1,19 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:template_app/generated/l10n.dart';
-import 'package:template_app/providers/auth_provider.dart';
-import 'package:template_app/providers/locale_provider.dart';
+import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/home_screen/home_screen.dart';
-import 'package:template_app/screens/loading_screen/loading_screen.dart';
-import 'package:template_app/screens/login_screen/login_screen.dart';
 import 'package:template_app/theme/main_theme.dart';
 import 'package:template_app/utils/create_route.dart';
 import 'config.dart';
 import 'globals.dart';
-import 'providers/theme_provider.dart';
 
 void main() async {
   if (Config.useFirebase) {
@@ -27,78 +22,62 @@ void main() async {
     debugPrint('Change Config.debugMode to false to disable this feature.');
     debugPrint('--------------------------------------------------------');
   }
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthorizationProvider()),
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => LocaleProvider()),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeNotifier = ref.watch(themeProvider);
+    final localeNotifier = ref.watch(localeProvider);
+
+    return MaterialApp(
+      scaffoldMessengerKey: snackbarKey,
+      title: Config.appName,
+      theme: MainTheme.lightTheme,
+      darkTheme: MainTheme.darkTheme,
+      themeMode: themeNotifier.themeMode,
+      locale: localeNotifier.locale,
+      supportedLocales: Config.supportedLocales
+          .map((e) => Locale.fromSubtags(languageCode: e))
+          .toList(),
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
-      child: Consumer2<ThemeProvider, LocaleProvider>(
-        builder: (context, themeNotifier, localeProvider, child) {
-          return MaterialApp(
-            scaffoldMessengerKey: snackbarKey,
-            title: Config.appName,
-            theme: MainTheme.lightTheme,
-            darkTheme: MainTheme.darkTheme,
-            themeMode: themeNotifier.themeMode,
-            locale: localeProvider.locale,
-            supportedLocales: Config.supportedLocales
-                .map((e) => Locale.fromSubtags(languageCode: e))
-                .toList(),
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            localeResolutionCallback: (locale, supportedLocales) {
-              bool forceDefaultLanguage = Config.forceDefaultLanguage;
+      localeResolutionCallback: (locale, supportedLocales) {
+        bool forceDefaultLanguage = Config.forceDefaultLanguage;
 
-              if (forceDefaultLanguage) {
-                if (Config.supportedLocales
-                    .contains(Config.appDefaultLanguage)) {
-                  return const Locale(Config.appDefaultLanguage);
-                } else {
-                  debugPrint(
-                      'Error: Default language "${Config.appDefaultLanguage.toUpperCase()}" not found in supportedLocales list. Defaulting to the first locale in the list. Please add the default language to the supportedLocales list in config.dart.');
-                  return Locale(Config.supportedLocales.first);
-                }
-
-                return Locale(LocaleProvider().locale.languageCode);
-              }
-              if (locale != null) {
-                for (var supportedLocale in supportedLocales) {
-                  if (supportedLocale.languageCode == locale.languageCode) {
-                    return supportedLocale;
-                  }
-                }
-              }
-              return supportedLocales.first;
-            },
-            home: const MainScreen(),
-          );
-        },
-      ),
+        if (forceDefaultLanguage) {
+          if (Config.supportedLocales.contains(Config.appDefaultLanguage)) {
+            return const Locale(Config.appDefaultLanguage);
+          } else {
+            debugPrint(
+                'Error: Default language "${Config.appDefaultLanguage.toUpperCase()}" not found in supportedLocales list. Defaulting to the first locale in the list. Please add the default language to the supportedLocales list in config.dart.');
+            return Locale(Config.supportedLocales.first);
+          }
+        }
+        if (locale != null) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode) {
+              return supportedLocale;
+            }
+          }
+        }
+        return supportedLocales.first;
+      },
+      home: const MainScreen(),
     );
   }
 }
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return const HomeScreen();

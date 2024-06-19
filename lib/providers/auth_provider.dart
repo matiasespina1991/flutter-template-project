@@ -5,7 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../config.dart';
 
-class AuthorizationProvider with ChangeNotifier {
+class AuthorizationProvider extends ChangeNotifier {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
   final FirebaseAuth? _firebaseAuth =
       Config.useFirebase ? FirebaseAuth.instance : null;

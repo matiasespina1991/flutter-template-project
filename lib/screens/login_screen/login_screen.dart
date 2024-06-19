@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
 import 'package:flutter/services.dart';
 import 'package:template_app/generated/l10n.dart';
 
 import '../../config.dart';
-import '../../providers/theme_provider.dart';
-import '../../providers/auth_provider.dart';
-import '../../providers/locale_provider.dart';
+import '../../providers/providers_all.dart';
 import '../../utils/create_route.dart';
 import '../../utils/is_email_valid.dart';
 import '../../widgets/AppScaffold/app_scaffold.dart';
@@ -16,14 +14,14 @@ import '../../widgets/NotificationSnackbar/notification_snackbar.dart';
 import '../../widgets/ThemeInputField/theme_input_field.dart';
 import '../home_screen/home_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FocusNode _emailFocusNode = FocusNode();
@@ -35,8 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthorizationProvider>(context);
-
     return AppScaffold(
       appBarTitle: S.of(context).loginScreenTitle,
       protected: false,
@@ -122,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: 233,
                   child: ElevatedButton(
                     onPressed:
-                        _attemptingLogin ? null : () => attemptLogin(context),
+                        _attemptingLogin ? null : () => attemptLogin(ref),
                     child: Text(S.of(context).loginButton),
                   ),
                 ),
@@ -147,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
 
                         try {
-                          await authProvider.signInWithGoogle();
+                          await ref.read(authProvider).signInWithGoogle();
                         } on PlatformException catch (error) {
                           NotificationSnackbar.showSnackBar(
                             message: S
@@ -178,8 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Switch(
                   value: Theme.of(context).brightness == Brightness.dark,
                   onChanged: (value) {
-                    Provider.of<ThemeProvider>(context, listen: false)
-                        .toggleTheme(value);
+                    ref.read(themeProvider).toggleTheme(value);
                   },
                 ),
                 const SizedBox(height: 10),
@@ -188,8 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Provider.of<LocaleProvider>(context, listen: false)
-                            .setLocale(const Locale('en'));
+                        ref.read(localeProvider).setLocale(const Locale('en'));
                       },
                       child: const Text(
                         '🇺🇸',
@@ -201,23 +195,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(width: 10),
                     GestureDetector(
                       onTap: () {
-                        Provider.of<LocaleProvider>(context, listen: false)
-                            .setLocale(const Locale('es'));
+                        ref.read(localeProvider).setLocale(const Locale('es'));
                       },
                       child: const Text(
                         '🇪🇸',
                         style: TextStyle(fontSize: 30),
                       ),
                     ),
-
-                    // Add German
                     const SizedBox(width: 10),
                     const Text('/'),
                     const SizedBox(width: 10),
                     GestureDetector(
                       onTap: () {
-                        Provider.of<LocaleProvider>(context, listen: false)
-                            .setLocale(const Locale('de'));
+                        ref.read(localeProvider).setLocale(const Locale('de'));
                       },
                       child: const Text(
                         '🇩🇪',
@@ -234,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void attemptLogin(BuildContext context) async {
+  void attemptLogin(WidgetRef ref) async {
     debugPrint('Attempting login...');
     var error = false;
     setState(() {
@@ -324,9 +314,9 @@ class _LoginScreenState extends State<LoginScreen> {
       duration: SnackbarDuration.long,
     );
     try {
-      bool userSignedIn =
-          await Provider.of<AuthorizationProvider>(context, listen: false)
-              .signInWithEmail(_emailController.text, _passwordController.text);
+      bool userSignedIn = await ref
+          .read(authProvider)
+          .signInWithEmail(_emailController.text, _passwordController.text);
 
       if (userSignedIn) {
         NotificationSnackbar.hideCurrentSnackBar();

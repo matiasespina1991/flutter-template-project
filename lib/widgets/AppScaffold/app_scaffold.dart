@@ -1,16 +1,15 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:template_app/providers/auth_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';
 import '../../config.dart';
-import '../../providers/theme_provider.dart';
 import '../../screens/login_screen/login_screen.dart';
 import '../../utils/create_route.dart';
 import '../ThemeAppBar/template_app_bar.dart';
 import '../ThemeFloatingSpeedDialMenu/theme_floating_speed_dial_menu.dart';
 
-class AppScaffold extends StatefulWidget {
+class AppScaffold extends ConsumerStatefulWidget {
   final Widget body;
   final bool hideFloatingSpeedDialMenu;
   final String appBarTitle;
@@ -28,69 +27,67 @@ class AppScaffold extends StatefulWidget {
   _AppScaffoldState createState() => _AppScaffoldState();
 }
 
-class _AppScaffoldState extends State<AppScaffold> {
+class _AppScaffoldState extends ConsumerState<AppScaffold> {
   bool _navigated = false;
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<AuthorizationProvider, ThemeProvider>(
-      builder: (context, auth, theme, child) {
-        if (!Config.debugMode &&
-            Config.useProtectedRoutes &&
-            widget.protected &&
-            !auth.isAuthenticated &&
-            !_navigated) {
-          _navigated = true;
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pushReplacement(createRoute(
-                const LoginScreen(),
-                direction: SlideDirection.left));
-          });
-        }
+    final auth = ref.watch(authProvider);
+    final theme = ref.watch(themeProvider);
 
-        if (!auth.isAuthenticated && widget.protected) {
-          return LoadingScreen();
-        }
+    if (!Config.debugMode &&
+        Config.useProtectedRoutes &&
+        widget.protected &&
+        !auth.isAuthenticated &&
+        !_navigated) {
+      _navigated = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushReplacement(
+            createRoute(const LoginScreen(), direction: SlideDirection.left));
+      });
+    }
 
-        ValueNotifier<bool> isFloatingMenuOpen = ValueNotifier(false);
+    if (!auth.isAuthenticated && widget.protected) {
+      return LoadingScreen();
+    }
 
-        return SafeArea(
-          top: Config.useSafeArea,
-          child: Scaffold(
-            appBar: Config.useTopAppBar
-                ? ThemeAppBar(
-                    title: widget.appBarTitle,
-                  )
-                : null,
-            body: Stack(
-              children: [
-                widget.body,
-                if (!widget.hideFloatingSpeedDialMenu &&
-                    Config.useFloatingSpeedDialMenu)
-                  Positioned.fill(
-                    child: ValueListenableBuilder(
-                      valueListenable: isFloatingMenuOpen,
-                      builder: (context, value, child) {
-                        return value
-                            ? BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                                child: Container(
-                                  color: Colors.black.withOpacity(0.1),
-                                ),
-                              )
-                            : SizedBox.shrink();
-                      },
-                    ),
-                  ),
-              ],
-            ),
-            floatingActionButton: ThemeFloatingSpeedDialMenu(
-              hideFloatingSpeedDialMenu: widget.hideFloatingSpeedDialMenu,
-              isDialOpenNotifier: isFloatingMenuOpen,
-            ),
-          ),
-        );
-      },
+    ValueNotifier<bool> isFloatingMenuOpen = ValueNotifier(false);
+
+    return SafeArea(
+      top: Config.useSafeArea,
+      child: Scaffold(
+        appBar: Config.useTopAppBar
+            ? ThemeAppBar(
+                title: widget.appBarTitle,
+              )
+            : null,
+        body: Stack(
+          children: [
+            widget.body,
+            if (!widget.hideFloatingSpeedDialMenu &&
+                Config.useFloatingSpeedDialMenu)
+              Positioned.fill(
+                child: ValueListenableBuilder(
+                  valueListenable: isFloatingMenuOpen,
+                  builder: (context, value, child) {
+                    return value
+                        ? BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                            child: Container(
+                              color: Colors.black.withOpacity(0.1),
+                            ),
+                          )
+                        : SizedBox.shrink();
+                  },
+                ),
+              ),
+          ],
+        ),
+        floatingActionButton: ThemeFloatingSpeedDialMenu(
+          hideFloatingSpeedDialMenu: widget.hideFloatingSpeedDialMenu,
+          isDialOpenNotifier: isFloatingMenuOpen,
+        ),
+      ),
     );
   }
 }
