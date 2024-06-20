@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../config.dart';
 
 class ThemeInputTextField extends StatefulWidget {
@@ -39,22 +38,46 @@ class ThemeInputTextField extends StatefulWidget {
 class ThemeInputTextFieldState extends State<ThemeInputTextField> {
   bool _isPasswordVisible = false;
 
-  /// create a copy of InputDecorationTheme().fillColor
-  Color? _defaultInputFillColor = const InputDecorationTheme().fillColor;
-
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: widget.controller,
-      focusNode: widget.focusNode,
-      onChanged: widget.onChanged,
-      decoration: InputDecoration(
-        /// apply default fill color
-        fillColor: _defaultInputFillColor?.withOpacity(0),
+    InputDecoration inputDecoration;
+
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    if (Config.textInputStyle == 'no-border') {
+      inputDecoration = InputDecoration(
+        hintText: widget.hintText,
+        hintStyle: TextStyle(
+          fontSize: 15.5,
+          color: (Config.glassTextInputs && !isDark) ? Colors.black87 : null,
+        ),
+        border: InputBorder.none,
+        contentPadding: const EdgeInsets.all(16.0),
+        errorText: widget.isValid ? null : widget.errorText,
+        suffixIcon: widget.isPasswordInput && !widget.hidePasswordVisibilityIcon
+            ? IconButton(
+                icon: Icon(
+                  _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+                ),
+                onPressed: widget.disabled
+                    ? null
+                    : () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+              )
+            : widget.suffixIcon,
+      );
+    } else {
+      inputDecoration = InputDecoration(
+        fillColor:
+            Config.glassTextInputs ? Colors.white.withOpacity(0.1) : null,
         filled: true,
         hintText: widget.hintText,
-        hintStyle: const TextStyle(
+        hintStyle: TextStyle(
           fontSize: 15.5,
+          color: (Config.glassTextInputs && !isDark) ? Colors.black87 : null,
         ),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(7)),
@@ -74,10 +97,25 @@ class ThemeInputTextFieldState extends State<ThemeInputTextField> {
                       },
               )
             : widget.suffixIcon,
+      );
+    }
+
+    return Container(
+      decoration: Config.textInputStyle == 'no-border'
+          ? BoxDecoration(
+              color: Colors.grey.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(7),
+            )
+          : null,
+      child: TextField(
+        controller: widget.controller,
+        focusNode: widget.focusNode,
+        onChanged: widget.onChanged,
+        decoration: inputDecoration,
+        obscureText: widget.isPasswordInput && !_isPasswordVisible,
+        enabled: !widget.disabled,
+        onTap: widget.disabled ? null : () {},
       ),
-      obscureText: widget.isPasswordInput && !_isPasswordVisible,
-      enabled: !widget.disabled,
-      onTap: widget.disabled ? null : () {},
     );
   }
 }

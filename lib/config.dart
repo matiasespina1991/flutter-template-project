@@ -54,12 +54,13 @@ class Config {
     x: 0,
     y: 0,
     blur: 100,
-    active: false,
+    active: true,
     opacity: 0.8,
   );
 
   static const double buttonsOpacity = 0.8;
-  static const double inputsOpacity = 0;
+  static const bool glassTextInputs = true;
+  static const String textInputStyle = 'border'; // or 'no-border'
 
   // COLOR THEME:
 
