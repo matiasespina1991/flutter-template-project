@@ -26,10 +26,10 @@ class AppScaffold extends ConsumerStatefulWidget {
   });
 
   @override
-  _AppScaffoldState createState() => _AppScaffoldState();
+  AppScaffoldState createState() => AppScaffoldState();
 }
 
-class _AppScaffoldState extends ConsumerState<AppScaffold> {
+class AppScaffoldState extends ConsumerState<AppScaffold> {
   bool _navigated = false;
 
   ScrollPhysics getScrollPhysics() {

@@ -19,7 +19,7 @@ class ErrorReportingService {
       'error': error.toString(),
       'user': userData != null
           ? {
-              'id': userData.id,
+              'id': userData.userId,
               'email': userData.email,
               'isAnonymous': userData.isAnonymous,
             }

@@ -67,7 +67,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   throw Exception("Test exception for ErrorReportingService");
                 } catch (error, stackTrace) {
                   ErrorReportingService.reportError(error, stackTrace,
-                      CurrentUserData(id: 'demoid', isAnonymous: true));
+                      CurrentUserData(userId: 'demoid', isAnonymous: true));
                 }
               },
               child: const Text("Trigger Error"),

@@ -41,6 +41,8 @@ class Config {
 
   static const String defaultThemeMode = 'light'; // 'light' | 'dark'
   static const bool forceDefaultThemeMode = false;
+  static const String defaultScrollPhysics =
+      'always'; // 'never', 'always', 'clamp'
   static const bool useFlutterToast =
       false; // Use FlutterToast package for snackbars
   static const bool useMaterial3 = true; // Use Material 3.0 // DEFAULT: true
@@ -250,11 +252,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:template_app/models/current_user_data.dart';
 import 'package:template_app/widgets/AppScaffold/app_scaffold.dart';
 
 import '../../config.dart';
 import '../../generated/l10n.dart';
 import '../../providers/providers_all.dart';
+import '../../services/error_reporting_service.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -307,6 +311,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ref.read(themeProvider).toggleTheme(value);
               },
             ),
+            ElevatedButton(
+              onPressed: () {
+                try {
+                  throw Exception("Test exception for ErrorReportingService");
+                } catch (error, stackTrace) {
+                  ErrorReportingService.reportError(error, stackTrace,
+                      CurrentUserData(id: 'demoid', isAnonymous: true));
+                }
+              },
+              child: const Text("Trigger Error"),
+            ),
           ],
         ),
       ),
@@ -323,11 +338,11 @@ import 'package:template_app/generated/l10n.dart';
 
 import '../../config.dart';
 import '../../providers/providers_all.dart';
-import '../../utils/create_route.dart';
-import '../../utils/is_email_valid.dart';
+import '../../utils/navigation/push_route_with_animation.dart';
+import '../../utils/validation/is_email_valid.dart';
 import '../../widgets/AppScaffold/app_scaffold.dart';
 import '../../widgets/NotificationSnackbar/notification_snackbar.dart';
-import '../../widgets/ThemeInputField/theme_input_field.dart';
+import '../../widgets/ThemeInputTextField/theme_input_text_field.dart';
 import '../home_screen/home_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -351,7 +366,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       appBarTitle: S.of(context).loginScreenTitle,
-      protected: false,
+      isProtected: false,
       hideFloatingSpeedDialMenu: true,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -383,7 +398,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ],
                   ),
                 ),
-                ThemeInputField(
+                ThemeInputTextField(
                   controller: _emailController,
                   focusNode: _emailFocusNode,
                   hintText: S.of(context).emailHintText,
@@ -413,7 +428,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ],
                   ),
                 ),
-                ThemeInputField(
+                ThemeInputTextField(
                   controller: _passwordController,
                   focusNode: _passwordFocusNode,
                   hintText: S.of(context).passwordHintText,
@@ -641,8 +656,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             variant: SnackbarVariant.success,
             duration: SnackbarDuration.short,
             delay: 1);
-        Navigator.of(context).pushReplacement(
-            createRoute(const HomeScreen(), direction: SlideDirection.right));
+        Navigator.of(context).pushReplacement(pushRouteWithAnimation(
+            const HomeScreen(),
+            direction: SlideDirection.right));
       } else {
         NotificationSnackbar.showSnackBar(
           message: S.of(context).loginErrorMessage,
@@ -661,7 +677,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       setState(() {
         _attemptingLogin = false;
       });
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      NotificationSnackbar.hideCurrentSnackBar();
     }
   }
 }
@@ -673,7 +689,7 @@ import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';
 import '../../config.dart';
 import '../../screens/login_screen/login_screen.dart';
-import '../../utils/create_route.dart';
+import '../../utils/navigation/push_route_with_animation.dart';
 import '../ThemeAppBar/template_app_bar.dart';
 import '../ThemeFloatingSpeedDialMenu/theme_floating_speed_dial_menu.dart';
 
@@ -681,14 +697,16 @@ class AppScaffold extends ConsumerStatefulWidget {
   final Widget body;
   final bool hideFloatingSpeedDialMenu;
   final String appBarTitle;
-  final bool protected;
+  final bool isProtected;
+  final ScrollPhysics? scrollPhysics;
 
   const AppScaffold({
     super.key,
     required this.body,
     required this.appBarTitle,
     this.hideFloatingSpeedDialMenu = false,
-    this.protected = true,
+    this.isProtected = true,
+    this.scrollPhysics,
   });
 
   @override
@@ -698,6 +716,18 @@ class AppScaffold extends ConsumerStatefulWidget {
 class _AppScaffoldState extends ConsumerState<AppScaffold> {
   bool _navigated = false;
 
+  ScrollPhysics getScrollPhysics() {
+    switch (Config.defaultScrollPhysics) {
+      case 'never':
+        return const NeverScrollableScrollPhysics();
+      case 'always':
+        return const AlwaysScrollableScrollPhysics();
+      case 'clamp':
+      default:
+        return const AlwaysScrollableScrollPhysics();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider);
@@ -705,17 +735,18 @@ class _AppScaffoldState extends ConsumerState<AppScaffold> {
 
     if (!Config.debugMode &&
         Config.useProtectedRoutes &&
-        widget.protected &&
+        widget.isProtected &&
         !auth.isAuthenticated &&
         !_navigated) {
       _navigated = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pushReplacement(
-            createRoute(const LoginScreen(), direction: SlideDirection.left));
+        Navigator.of(context).pushReplacement(pushRouteWithAnimation(
+            const LoginScreen(),
+            direction: SlideDirection.left));
       });
     }
 
-    if (!auth.isAuthenticated && widget.protected) {
+    if (!auth.isAuthenticated && widget.isProtected) {
       return LoadingScreen();
     }
 
@@ -731,7 +762,17 @@ class _AppScaffoldState extends ConsumerState<AppScaffold> {
             : null,
         body: Stack(
           children: [
-            widget.body,
+            SingleChildScrollView(
+              physics: widget.scrollPhysics ?? getScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height,
+                ),
+                child: IntrinsicHeight(
+                  child: widget.body,
+                ),
+              ),
+            ),
             if (!widget.hideFloatingSpeedDialMenu &&
                 Config.useFloatingSpeedDialMenu)
               Positioned.fill(
@@ -921,8 +962,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-import '../config.dart';
+import 'package:template_app/config.dart';
 
 class AuthorizationProvider extends ChangeNotifier {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -972,7 +1012,6 @@ class AuthorizationProvider extends ChangeNotifier {
   bool get isAuthenticated =>
       Config.debugMode || (_authToken != null && _authToken!.isNotEmpty);
 
-  /// Email/Password Sign In methods
   Future<bool> signInWithEmail(String email, String password) async {
     bool success = false;
     try {
@@ -981,11 +1020,10 @@ class AuthorizationProvider extends ChangeNotifier {
       if (Config.useFirebase) {
         final UserCredential authResult = await _firebaseAuth!
             .signInWithEmailAndPassword(email: email, password: password);
-        _authToken = authResult.user!.uid; // Use user ID as auth token
+        _authToken = authResult.user!.uid;
         await setAuthToken(_authToken!);
       } else {
-        // Non-Firebase Sign In
-        _authToken = email; // Use email as auth token
+        _authToken = email;
         await setAuthToken(_authToken!);
       }
 
@@ -994,13 +1032,11 @@ class AuthorizationProvider extends ChangeNotifier {
       return success;
     } catch (error) {
       debugPrint('Error during email/password Sign In: ${error.toString()}');
-
       success = false;
       return success;
     }
   }
 
-  /// Google Sign In methods
   Future<bool> signInWithGoogle() async {
     bool success = false;
     if (Config.allowGoogleSignIn) {
@@ -1020,12 +1056,10 @@ class AuthorizationProvider extends ChangeNotifier {
           if (Config.useFirebase) {
             final UserCredential? authResult =
                 await _firebaseAuth?.signInWithCredential(credential);
-            _authToken = authResult?.user!.uid; // Use user ID as auth token
+            _authToken = authResult?.user!.uid;
             await setAuthToken(_authToken!);
           } else {
-            /// Non-Firebase Sign In
-            _authToken =
-                googleAuth.accessToken; // Use access token as auth token
+            _authToken = googleAuth.accessToken;
             await setAuthToken(_authToken!);
           }
 
@@ -1043,19 +1077,18 @@ class AuthorizationProvider extends ChangeNotifier {
   }
 }
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import '../config.dart';
 
 class LocaleProvider extends ChangeNotifier {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   Locale _locale = Locale(
-      Config.supportedLocales.contains(Config.appDefaultLanguage)
-          ? Config.appDefaultLanguage
-          : Config.supportedLocales.first);
+    Config.supportedLocales.contains(Config.appDefaultLanguage)
+        ? Config.appDefaultLanguage
+        : Config.supportedLocales.first,
+  );
 
   LocaleProvider() {
     _loadLocale();
@@ -1064,25 +1097,17 @@ class LocaleProvider extends ChangeNotifier {
   Locale get locale => _locale;
 
   Future<void> setLocale(Locale locale) async {
-    List<String> supportedLocales = Config.supportedLocales;
-
-    bool forcedLocale = Config.forceDefaultLanguage;
-
-    if (forcedLocale) {
+    if (Config.forceDefaultLanguage) {
       debugPrint(
           'Error: Language change forbidden. Forced locale is on. Set Config.forceLanguage to "false" in order to allow language change.');
-      locale = _locale;
       return;
     }
 
-    if (!supportedLocales.contains(locale.languageCode)) {
+    if (!Config.supportedLocales.contains(locale.languageCode)) {
       debugPrint(
-          'Unsupported locale: ${locale.languageCode.toUpperCase()}, please use one of the following: $supportedLocales. Or add the new locale to the supportedLocales list in config.dart');
+          'Unsupported locale: ${locale.languageCode.toUpperCase()}, please use one of the following: ${Config.supportedLocales}. Or add the new locale to the supportedLocales list in config.dart');
       return;
     }
-
-    debugPrint(
-        'App language switched to: ${locale.languageCode.toUpperCase()}.');
 
     _locale = locale;
     notifyListeners();
@@ -1110,13 +1135,11 @@ final localeProvider = ChangeNotifierProvider((ref) => LocaleProvider());
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import '../config.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
-  final FlutterSecureStorage _storage = FlutterSecureStorage();
-  bool forceDefaultTheme = Config.forceDefaultThemeMode;
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   ThemeProvider() {
     _loadThemeMode();
@@ -1124,10 +1147,8 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeMode get themeMode => _themeMode;
 
-  ThemeMode get userDefinedThemeMode => _themeMode;
-
   void toggleTheme(bool isDarkMode) async {
-    if (forceDefaultTheme) {
+    if (Config.forceDefaultThemeMode) {
       debugPrint(
           'Error: Theme mode change forbidden. Forced theme is on. Disable it from Config.forceDefaultThemeMode in order to proceed with theme change.');
       return;
@@ -1136,13 +1157,13 @@ class ThemeProvider extends ChangeNotifier {
     _themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
 
-    String? userDefinedTheme = isDarkMode ? 'dark' : 'light';
+    String userDefinedTheme = isDarkMode ? 'dark' : 'light';
     await _storage.write(
         key: 'user_defined_theme_mode', value: userDefinedTheme);
   }
 
   void _loadThemeMode() async {
-    if (forceDefaultTheme) {
+    if (Config.forceDefaultThemeMode) {
       _themeMode =
           Config.defaultThemeMode == 'dark' ? ThemeMode.dark : ThemeMode.light;
       notifyListeners();
@@ -1153,7 +1174,7 @@ class ThemeProvider extends ChangeNotifier {
         await _storage.read(key: 'user_defined_theme_mode');
 
     if (userDefinedTheme != null) {
-      bool isDarkMode = userDefinedTheme == 'dark' ? true : false;
+      bool isDarkMode = userDefinedTheme == 'dark';
       _themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
       notifyListeners();
     }
@@ -1207,10 +1228,10 @@ dependencies:
 #  # Skeletonizer is a Flutter plugin for creating skeleton loading animations in a Flutter app.
 #  skeletonizer: ^1.3.0
 
-#  # Device Info Plus is a Flutter plugin for getting information about the device the app is running on.
-#  device_info_plus: ^10.1.0
-#  # Package Info Plus is a Flutter plugin for getting information about the package the app is running on.
-#  package_info_plus: ^8.0.0
+  # Device Info Plus is a Flutter plugin for getting information about the device the app is running on.
+  device_info_plus: ^10.1.0
+  # Package Info Plus is a Flutter plugin for getting information about the package the app is running on.
+  package_info_plus: ^8.0.0
 #  # HTTP is a Flutter plugin for performing HTTP requests. It is a wrapper around the Dart http package.
 #  http: ^1.2.1
 #  # Webview is a Flutter plugin for rendering web content in a Flutter widget.

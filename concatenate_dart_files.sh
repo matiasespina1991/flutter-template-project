@@ -9,7 +9,6 @@ files=(
     "lib/widgets/AppScaffold/app_scaffold.dart"
     "lib/theme/main_theme.dart"
     "lib/providers/auth_provider.dart"
-    "lib/providers/debug_mode_notifier.dart"
     "lib/providers/locale_provider.dart"
     "lib/providers/providers_all.dart"
     "lib/providers/theme_provider.dart"
