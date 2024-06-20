@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../config.dart';
+
 class ThemeInputTextField extends StatefulWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
@@ -37,6 +39,9 @@ class ThemeInputTextField extends StatefulWidget {
 class ThemeInputTextFieldState extends State<ThemeInputTextField> {
   bool _isPasswordVisible = false;
 
+  /// create a copy of InputDecorationTheme().fillColor
+  Color? _defaultInputFillColor = const InputDecorationTheme().fillColor;
+
   @override
   Widget build(BuildContext context) {
     return TextField(
@@ -44,6 +49,8 @@ class ThemeInputTextFieldState extends State<ThemeInputTextField> {
       focusNode: widget.focusNode,
       onChanged: widget.onChanged,
       decoration: InputDecoration(
+        /// apply default fill color
+        fillColor: _defaultInputFillColor?.withOpacity(0),
         filled: true,
         hintText: widget.hintText,
         hintStyle: const TextStyle(

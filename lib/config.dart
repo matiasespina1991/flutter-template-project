@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'models/general_models.dart';
 import 'models/theme_models.dart';
 
 class Config {
@@ -46,6 +47,19 @@ class Config {
   static const bool useFlutterToast =
       false; // Use FlutterToast package for snackbars
   static const bool useMaterial3 = true; // Use Material 3.0 // DEFAULT: true
+  static const LottieAnimationBackground loginScreenLottieBackgroundAnimation =
+      LottieAnimationBackground(
+    animationPath: 'lib/assets/animation.json',
+    width: 200,
+    x: 0,
+    y: 0,
+    blur: 100,
+    active: false,
+    opacity: 0.8,
+  );
+
+  static const double buttonsOpacity = 0.8;
+  static const double inputsOpacity = 0;
 
   // COLOR THEME:
 

@@ -42,8 +42,8 @@ class MainTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           foregroundColor: Config.elevatedButtonTextColor.lightModePrimary,
-          backgroundColor:
-              Config.elevatedButtonBackgroundColor.lightModePrimary,
+          backgroundColor: Config.elevatedButtonBackgroundColor.lightModePrimary
+              .withOpacity(Config.buttonsOpacity),
           elevation: Config.buttonsElevation,
           minimumSize: const Size(double.infinity, 47),
           shape:
@@ -98,9 +98,10 @@ class MainTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           foregroundColor: Config.elevatedButtonTextColor.darkModePrimary,
-          backgroundColor: Config.elevatedButtonBackgroundColor.darkModePrimary,
+          backgroundColor: Config.elevatedButtonBackgroundColor.darkModePrimary
+              .withOpacity(Config.buttonsOpacity),
           elevation: Config.buttonsElevation,
-          minimumSize: const Size(double.infinity, 50),
+          minimumSize: const Size(double.infinity, 47),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),

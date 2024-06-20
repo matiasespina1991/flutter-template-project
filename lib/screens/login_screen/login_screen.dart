@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sign_in_button/sign_in_button.dart';
-
 import 'package:flutter/services.dart';
 import 'package:template_app/generated/l10n.dart';
-
 import '../../config.dart';
 import '../../providers/providers_all.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
@@ -13,6 +12,7 @@ import '../../widgets/AppScaffold/app_scaffold.dart';
 import '../../widgets/NotificationSnackbar/notification_snackbar.dart';
 import '../../widgets/ThemeInputTextField/theme_input_text_field.dart';
 import '../home_screen/home_screen.dart';
+import 'dart:ui';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -33,193 +33,236 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final animationConfig = Config.loginScreenLottieBackgroundAnimation;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return AppScaffold(
       appBarTitle: S.of(context).loginScreenTitle,
       isProtected: false,
       hideFloatingSpeedDialMenu: true,
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Center(
-          child: SizedBox(
-            width: 300,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Config.useTopAppBar
-                    ? const SizedBox()
-                    : Config.useSafeArea
-                        ? const SizedBox(height: 40)
-                        : const SizedBox(
-                            height: 100,
-                          ),
-                const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Icon(Icons.email_outlined),
-                      const SizedBox(width: 5),
-                      Text(
-                        S.of(context).emailLabel,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
+      body: Stack(
+        children: [
+          // Lottie Animation as background
+          if (animationConfig.active)
+            Positioned(
+              left: (screenWidth / 2) +
+                  animationConfig.x -
+                  (screenWidth * (animationConfig.width / 100) / 2),
+              top: (screenHeight / 2) +
+                  animationConfig.y -
+                  (screenWidth * (animationConfig.width / 100) / 2),
+              width: screenWidth * (animationConfig.width / 100),
+              child: Opacity(
+                opacity: animationConfig.opacity,
+                child: Lottie.asset(
+                  animationConfig.animationPath,
+                  fit: BoxFit.cover,
                 ),
-                ThemeInputTextField(
-                  controller: _emailController,
-                  focusNode: _emailFocusNode,
-                  hintText: S.of(context).emailHintText,
-                  isEmailInput: true,
-                  isValid: _isEmailValid,
-                  errorText: S.of(context).invalidEmailMessage,
-                  onChanged: (value) {
-                    if (isEmailValid(value)) {
-                      setState(() {
-                        _isEmailValid = true;
-                      });
-                    }
-                  },
-                ),
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Icon(Icons.lock_outline),
-                      const SizedBox(width: 5),
-                      Text(
-                        S.of(context).passwordLabel,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-                ThemeInputTextField(
-                  controller: _passwordController,
-                  focusNode: _passwordFocusNode,
-                  hintText: S.of(context).passwordHintText,
-                  isPasswordInput: true,
-                  hidePasswordVisibilityIcon: false,
-                  isValid: _isPasswordValid,
-                  errorText: S.of(context).invalidPasswordMessage,
-                  onChanged: (value) {
-                    if (value.isNotEmpty && value.length >= minPasswordLength) {
-                      setState(() {
-                        _isPasswordValid = true;
-                      });
-                    }
-                  },
-                ),
-                const SizedBox(height: 32.0),
-                SizedBox(
-                  width: 233,
-                  child: ElevatedButton(
-                    onPressed:
-                        _attemptingLogin ? null : () => attemptLogin(ref),
-                    child: Text(S.of(context).loginButton),
-                  ),
-                ),
-                Visibility(
-                  visible: Config.allowGoogleSignIn,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 22.0),
-                      SignInButton(Buttons.google,
-                          elevation: Config.buttonsElevation,
-                          padding: const EdgeInsets.all(5.5),
-                          clipBehavior: Clip.hardEdge,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          text: S.of(context).signInWithGoogleButtonLabel,
-                          onPressed: () async {
-                        NotificationSnackbar.showSnackBar(
-                          message:
-                              S.of(context).signingInWithGoogleSnackbarMessage,
-                          variant: SnackbarVariant.info,
-                          duration: SnackbarDuration.long,
-                        );
-
-                        try {
-                          await ref.read(authProvider).signInWithGoogle();
-                        } on PlatformException catch (error) {
-                          NotificationSnackbar.showSnackBar(
-                            message: S
-                                .of(context)
-                                .errorSigningInWithGoogleSnackbarMessage,
-                            variant: SnackbarVariant.error,
-                            duration: SnackbarDuration.long,
-                          );
-
-                          debugPrint(
-                              'Error signing in with Google: ${error.toString()}');
-                        } catch (error) {
-                          NotificationSnackbar.showSnackBar(
-                            message: S
-                                .of(context)
-                                .errorSigningInWithGoogleSnackbarMessage,
-                            variant: SnackbarVariant.error,
-                            duration: SnackbarDuration.long,
-                          );
-                          debugPrint('Error: ${error.toString()}');
-                        }
-                      }),
-                    ],
-                  ),
-                ),
-                const Divider(),
-                Text(S.of(context).lightModeDarkMode),
-                Switch(
-                  value: Theme.of(context).brightness == Brightness.dark,
-                  onChanged: (value) {
-                    ref.read(themeProvider).toggleTheme(value);
-                  },
-                ),
-                const SizedBox(height: 10),
-                Row(
+              ),
+            ),
+          if (animationConfig.blur > 0 && animationConfig.active)
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                    sigmaX: animationConfig.blur, sigmaY: animationConfig.blur),
+                child: Container(),
+              ),
+            ),
+          // Login form content
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Center(
+              child: SizedBox(
+                width: 300,
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        ref.read(localeProvider).setLocale(const Locale('en'));
-                      },
-                      child: const Text(
-                        '🇺🇸',
-                        style: TextStyle(fontSize: 30),
+                  children: <Widget>[
+                    Config.useTopAppBar
+                        ? const SizedBox()
+                        : Config.useSafeArea
+                            ? const SizedBox(height: 40)
+                            : const SizedBox(
+                                height: 100,
+                              ),
+                    const SizedBox(height: 50),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const Icon(Icons.email_outlined),
+                          const SizedBox(width: 5),
+                          Text(
+                            S.of(context).emailLabel,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    const Text('/'),
-                    const SizedBox(width: 10),
-                    GestureDetector(
-                      onTap: () {
-                        ref.read(localeProvider).setLocale(const Locale('es'));
+                    ThemeInputTextField(
+                      controller: _emailController,
+                      focusNode: _emailFocusNode,
+                      hintText: S.of(context).emailHintText,
+                      isEmailInput: true,
+                      isValid: _isEmailValid,
+                      errorText: S.of(context).invalidEmailMessage,
+                      onChanged: (value) {
+                        if (isEmailValid(value)) {
+                          setState(() {
+                            _isEmailValid = true;
+                          });
+                        }
                       },
-                      child: const Text(
-                        '🇪🇸',
-                        style: TextStyle(fontSize: 30),
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const Icon(Icons.lock_outline),
+                          const SizedBox(width: 5),
+                          Text(
+                            S.of(context).passwordLabel,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    const Text('/'),
-                    const SizedBox(width: 10),
-                    GestureDetector(
-                      onTap: () {
-                        ref.read(localeProvider).setLocale(const Locale('de'));
+                    ThemeInputTextField(
+                      controller: _passwordController,
+                      focusNode: _passwordFocusNode,
+                      hintText: S.of(context).passwordHintText,
+                      isPasswordInput: true,
+                      hidePasswordVisibilityIcon: false,
+                      isValid: _isPasswordValid,
+                      errorText: S.of(context).invalidPasswordMessage,
+                      onChanged: (value) {
+                        if (value.isNotEmpty &&
+                            value.length >= minPasswordLength) {
+                          setState(() {
+                            _isPasswordValid = true;
+                          });
+                        }
                       },
-                      child: const Text(
-                        '🇩🇪',
-                        style: TextStyle(fontSize: 30),
+                    ),
+                    const SizedBox(height: 32.0),
+                    SizedBox(
+                      width: 233,
+                      child: ElevatedButton(
+                        onPressed:
+                            _attemptingLogin ? null : () => attemptLogin(ref),
+                        child: Text(S.of(context).loginButton),
                       ),
+                    ),
+                    Visibility(
+                      visible: Config.allowGoogleSignIn,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 22.0),
+                          SignInButton(Buttons.google,
+                              elevation: Config.buttonsElevation,
+                              padding: const EdgeInsets.all(5.5),
+                              clipBehavior: Clip.hardEdge,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              text: S.of(context).signInWithGoogleButtonLabel,
+                              onPressed: () async {
+                            NotificationSnackbar.showSnackBar(
+                              message: S
+                                  .of(context)
+                                  .signingInWithGoogleSnackbarMessage,
+                              variant: SnackbarVariant.info,
+                              duration: SnackbarDuration.long,
+                            );
+
+                            try {
+                              await ref.read(authProvider).signInWithGoogle();
+                            } on PlatformException catch (error) {
+                              NotificationSnackbar.showSnackBar(
+                                message: S
+                                    .of(context)
+                                    .errorSigningInWithGoogleSnackbarMessage,
+                                variant: SnackbarVariant.error,
+                                duration: SnackbarDuration.long,
+                              );
+
+                              debugPrint(
+                                  'Error signing in with Google: ${error.toString()}');
+                            } catch (error) {
+                              NotificationSnackbar.showSnackBar(
+                                message: S
+                                    .of(context)
+                                    .errorSigningInWithGoogleSnackbarMessage,
+                                variant: SnackbarVariant.error,
+                                duration: SnackbarDuration.long,
+                              );
+                              debugPrint('Error: ${error.toString()}');
+                            }
+                          }),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    Text(S.of(context).lightModeDarkMode),
+                    Switch(
+                      value: Theme.of(context).brightness == Brightness.dark,
+                      onChanged: (value) {
+                        ref.read(themeProvider).toggleTheme(value);
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            ref
+                                .read(localeProvider)
+                                .setLocale(const Locale('en'));
+                          },
+                          child: const Text(
+                            '🇺🇸',
+                            style: TextStyle(fontSize: 30),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        const Text('/'),
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () {
+                            ref
+                                .read(localeProvider)
+                                .setLocale(const Locale('es'));
+                          },
+                          child: const Text(
+                            '🇪🇸',
+                            style: TextStyle(fontSize: 30),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        const Text('/'),
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () {
+                            ref
+                                .read(localeProvider)
+                                .setLocale(const Locale('de'));
+                          },
+                          child: const Text(
+                            '🇩🇪',
+                            style: TextStyle(fontSize: 30),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
