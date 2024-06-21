@@ -60,7 +60,7 @@ class Config {
 
   static const double buttonsOpacity = 0.8;
   static const bool glassTextInputs = true;
-  static const String textInputStyle = 'border'; // or 'no-border'
+  static const String textInputBorderStyle = 'border'; // 'border' / 'no-border'
 
   // COLOR THEME:
 

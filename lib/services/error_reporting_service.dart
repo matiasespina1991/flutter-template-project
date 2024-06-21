@@ -4,19 +4,22 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 import '../models/current_user_data.dart';
 
 class ErrorReportingService {
   static Future<void> reportError(
-      dynamic error, dynamic stackTrace, CurrentUserData? userData) async {
+      dynamic error, dynamic stackTrace, CurrentUserData? userData,
+      {String screen = 'Not Specified',
+      errorLocation = 'Not Specified'}) async {
     final deviceData = await _getDeviceData();
     final appInfo = await _getAppInfo();
 
     final errorReport = {
       'timestamp': DateTime.now().toIso8601String(),
       'error': error.toString(),
+      'screen': screen,
+      'errorLocation': errorLocation,
       'user': userData != null
           ? {
               'id': userData.userId,

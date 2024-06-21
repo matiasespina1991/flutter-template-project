@@ -44,7 +44,7 @@ class ThemeInputTextFieldState extends State<ThemeInputTextField> {
 
     bool isDark = Theme.of(context).brightness == Brightness.dark;
 
-    if (Config.textInputStyle == 'no-border') {
+    if (Config.textInputBorderStyle == 'no-border') {
       inputDecoration = InputDecoration(
         hintText: widget.hintText,
         hintStyle: TextStyle(
@@ -101,7 +101,7 @@ class ThemeInputTextFieldState extends State<ThemeInputTextField> {
     }
 
     return Container(
-      decoration: Config.textInputStyle == 'no-border'
+      decoration: Config.textInputBorderStyle == 'no-border'
           ? BoxDecoration(
               color: Colors.grey.withOpacity(0.2),
               borderRadius: BorderRadius.circular(7),
