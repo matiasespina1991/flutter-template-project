@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:flutter/services.dart';
 import 'package:template_app/generated/l10n.dart';
+import 'package:template_app/utils/ui/is_dark_mode.dart';
 import '../../config.dart';
 import '../../providers/providers_all.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
@@ -33,7 +34,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final animationConfig = Config.loginScreenLottieBackgroundAnimation;
+    final animationConfig = isDarkMode(context)
+        ? Config.loginScreenLottieBackgroundAnimationDarkMode
+        : Config.loginScreenLottieBackgroundAnimationLightMode;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 

@@ -28,16 +28,18 @@ class MainTheme {
             .appBarBackgroundColor.lightModePrimary, // AppBar background color
       ),
 
-      colorScheme: ColorScheme.light(
-        primary: Config.primaryTextColor.lightModePrimary,
-        secondary: Config.secondaryTextColor.lightModePrimary,
-        surface: Colors.white,
-        error: Colors.red,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-        brightness: Brightness.light,
-      ),
+      colorScheme: Config.themeSeedColor.forceSeedColor
+          ? ColorScheme.fromSeed(seedColor: Config.themeSeedColor.seedColor)
+          : ColorScheme.light(
+              primary: Config.primaryTextColor.lightModePrimary,
+              secondary: Config.secondaryTextColor.lightModePrimary,
+              surface: Colors.white,
+              error: Colors.red,
+              onPrimary: Colors.white,
+              onSecondary: Colors.white,
+              onError: Colors.white,
+              brightness: Brightness.light,
+            ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -84,17 +86,19 @@ class MainTheme {
 
       // primary,   Color? onPrimary,   Color? primaryContainer,   Color? onPrimaryContainer,   Color? primaryFixed,   Color? primaryFixedDim,   Color? onPrimaryFixed,   Color? onPrimaryFixedVariant,   Color? secondary,   Color? onSecondary,   Color? secondaryContainer,   Color? onSecondaryContainer,   Color? secondaryFixed,   Color? secondaryFixedDim,   Color? onSecondaryFixed,   Color? onSecondaryFixedVariant,   Color? tertiary,   Color? onTertiary,   Color? tertiaryContainer,   Color? onTertiaryContainer,   Color? tertiaryFixed,   Color? tertiaryFixedDim,   Color? onTertiaryFixed,   Color? onTertiaryFixedVariant,   Color? error,   Color? onError,   Color? errorContainer,   Color? onErrorContainer,   Color? surface,   Color? onSurface,   Color? surfaceDim,   Color? surfaceBright,   Color? surfaceContainerLowest,   Color? surfaceContainerLow,   Color? surfaceContainer,   Color? surfaceContainerHigh,   Color? surfaceContainerHighest,   Color? onSurfaceVariant,   Color? outline,   Color? outlineVariant,   Color? shadow,   Color? scrim,   Color? inverseSurface,   Color? onInverseSurface,   Color? inversePrimary,   Color? surfaceTint,   Color? background,   Color? onBackground,   Color? surfaceVariant,
 
-      colorScheme: base.colorScheme.copyWith(
-        primary: Config.primaryTextColor.darkModePrimary,
-        onPrimary: Colors.black,
-        primaryContainer:
-            Config.primaryContainerBackgroundColor.darkModePrimary,
-        secondary: Config.secondaryTextColor.darkModePrimary,
-        error: Colors.red[900]!,
-        onSecondary: Colors.black,
-        onError: Colors.black,
-        brightness: Brightness.dark,
-      ),
+      colorScheme: Config.themeSeedColor.forceSeedColor
+          ? ColorScheme.fromSeed(seedColor: Config.themeSeedColor.seedColor)
+          : ColorScheme.dark(
+              primary: Config.primaryTextColor.darkModePrimary,
+              onPrimary: Colors.black,
+              primaryContainer:
+                  Config.primaryContainerBackgroundColor.darkModePrimary,
+              secondary: Config.secondaryTextColor.darkModePrimary,
+              error: Colors.red[900]!,
+              onSecondary: Colors.black,
+              onError: Colors.black,
+              brightness: Brightness.dark,
+            ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           foregroundColor: Config.elevatedButtonTextColor.darkModePrimary,

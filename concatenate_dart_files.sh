@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  Para imprimir el directorio: tree -L 3 -I "android|ios|test|build"
+#  Para imprimir el directorio: tree -L 4 -I "android|ios|test|build"
 # Nombres de los archivos Dart que querés concatenar
 files=(
     "lib/config.dart"

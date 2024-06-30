@@ -49,17 +49,19 @@ class Config {
   static const bool useMaterial3 = true; // Use Material 3.0 // DEFAULT: true
   static const LottieAnimationBackground loginScreenLottieBackgroundAnimation =
       LottieAnimationBackground(
-    animationPath: 'lib/assets/animation.json',
+    animationPath: 'lib/assets/animation9.json',
+    // animationPath: 'lib/assets/animation7.json',
+    // animationPath: 'lib/assets/animation4.json', // dark mode
     width: 200,
     x: 0,
     y: 0,
-    blur: 100,
+    blur: 80,
     active: true,
     opacity: 0.8,
   );
 
   static const double buttonsOpacity = 0.8;
-  static const bool glassTextInputs = true;
+  static const bool glassTextInputs = false;
   static const String textInputBorderStyle = 'border'; // 'border' / 'no-border'
 
   // COLOR THEME:
@@ -326,20 +328,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ref.read(themeProvider).toggleTheme(value);
               },
             ),
-            ElevatedButton(
-              onPressed: () {
-                try {
-                  throw Exception("Test exception for ErrorReportingService");
-                } catch (error, stackTrace) {
-                  ErrorReportingService.reportError(
-                    error,
-                    stackTrace,
-                    CurrentUserData(userId: 'demoid', isAnonymous: true),
-                  );
-                }
-              },
-              child: const Text("Trigger Error"),
-            ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     try {
+            //       throw Exception("Test exception for ErrorReportingService");
+            //     } catch (error, stackTrace) {
+            //       ErrorReportingService.reportError(
+            //         error,
+            //         stackTrace,
+            //         CurrentUserData(userId: 'demoid', isAnonymous: true),
+            //       );
+            //     }
+            //   },
+            //   child: const Text("Trigger Error"),
+            // ),
           ],
         ),
       ),

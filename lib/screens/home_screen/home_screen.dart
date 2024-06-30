@@ -61,20 +61,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ref.read(themeProvider).toggleTheme(value);
               },
             ),
-            ElevatedButton(
-              onPressed: () {
-                try {
-                  throw Exception("Test exception for ErrorReportingService");
-                } catch (error, stackTrace) {
-                  ErrorReportingService.reportError(
-                    error,
-                    stackTrace,
-                    CurrentUserData(userId: 'demoid', isAnonymous: true),
-                  );
-                }
-              },
-              child: const Text("Trigger Error"),
-            ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     try {
+            //       throw Exception("Test exception for ErrorReportingService");
+            //     } catch (error, stackTrace) {
+            //       ErrorReportingService.reportError(
+            //         error,
+            //         stackTrace,
+            //         CurrentUserData(userId: 'demoid', isAnonymous: true),
+            //       );
+            //     }
+            //   },
+            //   child: const Text("Trigger Error"),
+            // ),
           ],
         ),
       ),

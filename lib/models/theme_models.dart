@@ -41,3 +41,13 @@ class ThemeColors {
     this.darkModeTertiary,
   });
 }
+
+class ThemeConfig {
+  final bool forceSeedColor;
+  final Color seedColor;
+
+  const ThemeConfig({
+    required this.forceSeedColor,
+    required this.seedColor,
+  });
+}

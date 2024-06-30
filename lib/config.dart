@@ -47,19 +47,35 @@ class Config {
   static const bool useFlutterToast =
       false; // Use FlutterToast package for snackbars
   static const bool useMaterial3 = true; // Use Material 3.0 // DEFAULT: true
-  static const LottieAnimationBackground loginScreenLottieBackgroundAnimation =
-      LottieAnimationBackground(
-    animationPath: 'lib/assets/animation.json',
+
+  static const LottieAnimationBackground
+      loginScreenLottieBackgroundAnimationLightMode = LottieAnimationBackground(
+    animationPath: 'lib/assets/animation9.json',
+    // animationPath: 'lib/assets/animation7.json',
+    // animationPath: 'lib/assets/animation4.json', // dark mode
     width: 200,
     x: 0,
     y: 0,
-    blur: 100,
+    blur: 80,
+    active: true,
+    opacity: 0.8,
+  );
+
+  static const LottieAnimationBackground
+      loginScreenLottieBackgroundAnimationDarkMode = LottieAnimationBackground(
+    animationPath: 'lib/assets/animation4.json',
+    // animationPath: 'lib/assets/animation7.json',
+    // animationPath: 'lib/assets/animation4.json', // dark mode
+    width: 200,
+    x: 0,
+    y: 250,
+    blur: 80,
     active: true,
     opacity: 0.8,
   );
 
   static const double buttonsOpacity = 0.8;
-  static const bool glassTextInputs = true;
+  static const bool glassTextInputs = false;
   static const String textInputBorderStyle = 'border'; // 'border' / 'no-border'
 
   // COLOR THEME:
@@ -80,6 +96,12 @@ class Config {
   //   warning: Color(0xFFFFAB00),
   //   error: Color(0xFFFF453A),
   // );
+
+  /// Theme Seed Color
+  static const ThemeConfig themeSeedColor = ThemeConfig(
+    forceSeedColor: false,
+    seedColor: Color(0xFF6200EE),
+  );
 
   static const ThemeColors scaffoldBackgroundColor = ThemeColors(
     lightModePrimary: lightWhiteColor,
