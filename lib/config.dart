@@ -57,7 +57,7 @@ class Config {
     x: 0,
     y: 0,
     blur: 80,
-    active: true,
+    active: false,
     opacity: 0.8,
   );
 
@@ -71,7 +71,7 @@ class Config {
     y: 250,
     // y: 0,
     blur: 80,
-    active: true,
+    active: false,
     opacity: 0.8,
   );
 
@@ -100,10 +100,11 @@ class Config {
 
   /// Theme Seed Color
   static const ThemeConfig themeSeedColor = ThemeConfig(
-    forceSeedColor: false,
-    seedColor: Color(0xFF6200EE),
+    forceSeedColor: false, // Set to true to use the seed color
+    seedColor: Colors.yellow,
   );
 
+  /// NOTE: If seed color is forced, then all the values below will be ignored
   static const ThemeColors scaffoldBackgroundColor = ThemeColors(
     lightModePrimary: lightWhiteColor,
     darkModePrimary: lightBlackColor,

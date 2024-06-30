@@ -47,14 +47,29 @@ class Config {
   static const bool useFlutterToast =
       false; // Use FlutterToast package for snackbars
   static const bool useMaterial3 = true; // Use Material 3.0 // DEFAULT: true
-  static const LottieAnimationBackground loginScreenLottieBackgroundAnimation =
-      LottieAnimationBackground(
+
+  static const LottieAnimationBackground
+      loginScreenLottieBackgroundAnimationLightMode = LottieAnimationBackground(
     animationPath: 'lib/assets/animation9.json',
     // animationPath: 'lib/assets/animation7.json',
     // animationPath: 'lib/assets/animation4.json', // dark mode
     width: 200,
     x: 0,
     y: 0,
+    blur: 80,
+    active: true,
+    opacity: 0.8,
+  );
+
+  static const LottieAnimationBackground
+      loginScreenLottieBackgroundAnimationDarkMode = LottieAnimationBackground(
+    animationPath: 'lib/assets/animation4.json',
+    // animationPath: 'lib/assets/animation7.json',
+    // animationPath: 'lib/assets/animation4.json', // dark mode
+    width: 200,
+    x: 0,
+    y: 250,
+    // y: 0,
     blur: 80,
     active: true,
     opacity: 0.8,
@@ -82,6 +97,12 @@ class Config {
   //   warning: Color(0xFFFFAB00),
   //   error: Color(0xFFFF453A),
   // );
+
+  /// Theme Seed Color
+  static const ThemeConfig themeSeedColor = ThemeConfig(
+    forceSeedColor: false,
+    seedColor: Colors.red,
+  );
 
   static const ThemeColors scaffoldBackgroundColor = ThemeColors(
     lightModePrimary: lightWhiteColor,
@@ -195,7 +216,8 @@ import 'package:template_app/generated/l10n.dart';
 import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/home_screen/home_screen.dart';
 import 'package:template_app/theme/main_theme.dart';
-import 'package:template_app/utils/notify_that_app_is_runing_in_debug_mode.dart';
+import 'package:template_app/utils/debug/log_configurations.dart';
+import 'package:template_app/utils/debug/notify_that_app_is_runing_in_debug_mode.dart';
 import 'config.dart';
 import 'globals.dart';
 
@@ -208,9 +230,7 @@ void main() async {
       debugPrint('Error: Firebase initialization failed. $e');
     }
   }
-  if (Config.debugMode) {
-    notifyThatAppIsRunningInDebugMode();
-  }
+  logConfigurations();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -355,6 +375,7 @@ import 'package:lottie/lottie.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:flutter/services.dart';
 import 'package:template_app/generated/l10n.dart';
+import 'package:template_app/utils/ui/is_dark_mode.dart';
 import '../../config.dart';
 import '../../providers/providers_all.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
@@ -384,7 +405,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final animationConfig = Config.loginScreenLottieBackgroundAnimation;
+    final animationConfig = isDarkMode(context)
+        ? Config.loginScreenLottieBackgroundAnimationDarkMode
+        : Config.loginScreenLottieBackgroundAnimationLightMode;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -415,8 +438,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           if (animationConfig.blur > 0 && animationConfig.active)
             Positioned.fill(
               child: BackdropFilter(
+                // blendMode: BlendMode.difference,
                 filter: ImageFilter.blur(
-                    sigmaX: animationConfig.blur, sigmaY: animationConfig.blur),
+                    sigmaX: animationConfig.blur,
+                    sigmaY: animationConfig.blur,
+                    tileMode: TileMode.clamp),
                 child: Container(),
               ),
             ),
@@ -745,125 +771,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 }
 
-import 'dart:ui';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:template_app/providers/providers_all.dart';
-import 'package:template_app/screens/loading_screen/loading_screen.dart';
-import '../../config.dart';
-import '../../screens/login_screen/login_screen.dart';
-import '../../utils/navigation/push_route_with_animation.dart';
-import '../ThemeAppBar/template_app_bar.dart';
-import '../ThemeFloatingSpeedDialMenu/theme_floating_speed_dial_menu.dart';
-
-class AppScaffold extends ConsumerStatefulWidget {
-  final Widget body;
-  final bool hideFloatingSpeedDialMenu;
-  final String appBarTitle;
-  final bool isProtected;
-  final ScrollPhysics? scrollPhysics;
-
-  const AppScaffold({
-    super.key,
-    required this.body,
-    required this.appBarTitle,
-    this.hideFloatingSpeedDialMenu = false,
-    this.isProtected = true,
-    this.scrollPhysics,
-  });
-
-  @override
-  AppScaffoldState createState() => AppScaffoldState();
-}
-
-class AppScaffoldState extends ConsumerState<AppScaffold> {
-  bool _navigated = false;
-
-  ScrollPhysics getScrollPhysics() {
-    switch (Config.defaultScrollPhysics) {
-      case 'never':
-        return const NeverScrollableScrollPhysics();
-      case 'always':
-        return const AlwaysScrollableScrollPhysics();
-      case 'clamp':
-      default:
-        return const AlwaysScrollableScrollPhysics();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final auth = ref.watch(authProvider);
-    final theme = ref.watch(themeProvider);
-
-    if (!Config.debugMode &&
-        Config.useProtectedRoutes &&
-        widget.isProtected &&
-        !auth.isAuthenticated &&
-        !_navigated) {
-      _navigated = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pushReplacement(pushRouteWithAnimation(
-            const LoginScreen(),
-            direction: SlideDirection.left));
-      });
-    }
-
-    if (!auth.isAuthenticated && widget.isProtected) {
-      return LoadingScreen();
-    }
-
-    ValueNotifier<bool> isFloatingMenuOpen = ValueNotifier(false);
-
-    return SafeArea(
-      top: Config.useSafeArea,
-      child: Scaffold(
-        appBar: Config.useTopAppBar
-            ? ThemeAppBar(
-                title: widget.appBarTitle,
-              )
-            : null,
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              physics: widget.scrollPhysics ?? getScrollPhysics(),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height,
-                ),
-                child: IntrinsicHeight(
-                  child: widget.body,
-                ),
-              ),
-            ),
-            if (!widget.hideFloatingSpeedDialMenu &&
-                Config.useFloatingSpeedDialMenu)
-              Positioned.fill(
-                child: ValueListenableBuilder(
-                  valueListenable: isFloatingMenuOpen,
-                  builder: (context, value, child) {
-                    return value
-                        ? BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                            child: Container(
-                              color: Colors.black.withOpacity(0.1),
-                            ),
-                          )
-                        : SizedBox.shrink();
-                  },
-                ),
-              ),
-          ],
-        ),
-        floatingActionButton: ThemeFloatingSpeedDialMenu(
-          hideFloatingSpeedDialMenu: widget.hideFloatingSpeedDialMenu,
-          isDialOpenNotifier: isFloatingMenuOpen,
-        ),
-      ),
-    );
-  }
-}
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -875,6 +782,7 @@ class MainTheme {
   static ThemeData get lightTheme {
     final base = ThemeData.light(useMaterial3: Config.useMaterial3);
     return base.copyWith(
+      brightness: Brightness.light,
       scaffoldBackgroundColor: Config.scaffoldBackgroundColor.lightModePrimary,
       hintColor: Config.hintTextColor
           .lightModePrimary, // Define the hintColor for light theme
@@ -894,16 +802,18 @@ class MainTheme {
             .appBarBackgroundColor.lightModePrimary, // AppBar background color
       ),
 
-      colorScheme: ColorScheme.light(
-        primary: Config.primaryTextColor.lightModePrimary,
-        secondary: Config.secondaryTextColor.lightModePrimary,
-        surface: Colors.white,
-        error: Colors.red,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onError: Colors.white,
-        brightness: Brightness.light,
-      ),
+      colorScheme: Config.themeSeedColor.forceSeedColor
+          ? ColorScheme.fromSeed(seedColor: Config.themeSeedColor.seedColor)
+          : ColorScheme.light(
+              primary: Config.primaryTextColor.lightModePrimary,
+              secondary: Config.secondaryTextColor.lightModePrimary,
+              surface: Colors.white,
+              error: Colors.red,
+              onPrimary: Colors.white,
+              onSecondary: Colors.white,
+              onError: Colors.white,
+              brightness: Brightness.light,
+            ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -931,6 +841,7 @@ class MainTheme {
   static ThemeData get darkTheme {
     final base = ThemeData.dark(useMaterial3: Config.useMaterial3);
     return base.copyWith(
+      brightness: Brightness.dark,
       scaffoldBackgroundColor: Config.scaffoldBackgroundColor.darkModePrimary,
       hintColor: Config
           .hintTextColor.darkModePrimary, // Define the hintColor for dark theme
@@ -950,17 +861,19 @@ class MainTheme {
 
       // primary,   Color? onPrimary,   Color? primaryContainer,   Color? onPrimaryContainer,   Color? primaryFixed,   Color? primaryFixedDim,   Color? onPrimaryFixed,   Color? onPrimaryFixedVariant,   Color? secondary,   Color? onSecondary,   Color? secondaryContainer,   Color? onSecondaryContainer,   Color? secondaryFixed,   Color? secondaryFixedDim,   Color? onSecondaryFixed,   Color? onSecondaryFixedVariant,   Color? tertiary,   Color? onTertiary,   Color? tertiaryContainer,   Color? onTertiaryContainer,   Color? tertiaryFixed,   Color? tertiaryFixedDim,   Color? onTertiaryFixed,   Color? onTertiaryFixedVariant,   Color? error,   Color? onError,   Color? errorContainer,   Color? onErrorContainer,   Color? surface,   Color? onSurface,   Color? surfaceDim,   Color? surfaceBright,   Color? surfaceContainerLowest,   Color? surfaceContainerLow,   Color? surfaceContainer,   Color? surfaceContainerHigh,   Color? surfaceContainerHighest,   Color? onSurfaceVariant,   Color? outline,   Color? outlineVariant,   Color? shadow,   Color? scrim,   Color? inverseSurface,   Color? onInverseSurface,   Color? inversePrimary,   Color? surfaceTint,   Color? background,   Color? onBackground,   Color? surfaceVariant,
 
-      colorScheme: base.colorScheme.copyWith(
-        primary: Config.primaryTextColor.darkModePrimary,
-        onPrimary: Colors.black,
-        primaryContainer:
-            Config.primaryContainerBackgroundColor.darkModePrimary,
-        secondary: Config.secondaryTextColor.darkModePrimary,
-        error: Colors.red[900]!,
-        onSecondary: Colors.black,
-        onError: Colors.black,
-        brightness: Brightness.dark,
-      ),
+      colorScheme: Config.themeSeedColor.forceSeedColor
+          ? ColorScheme.fromSeed(seedColor: Config.themeSeedColor.seedColor)
+          : ColorScheme.dark(
+              primary: Config.primaryTextColor.darkModePrimary,
+              onPrimary: Colors.black,
+              primaryContainer:
+                  Config.primaryContainerBackgroundColor.darkModePrimary,
+              secondary: Config.secondaryTextColor.darkModePrimary,
+              error: Colors.red[900]!,
+              onSecondary: Colors.black,
+              onError: Colors.black,
+              brightness: Brightness.dark,
+            ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           foregroundColor: Config.elevatedButtonTextColor.darkModePrimary,
@@ -1022,172 +935,6 @@ class MainTheme {
   }
 }
 
-import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:template_app/config.dart';
-
-class AuthorizationProvider extends ChangeNotifier {
-  final FlutterSecureStorage storage = const FlutterSecureStorage();
-  final FirebaseAuth? _firebaseAuth =
-      Config.useFirebase ? FirebaseAuth.instance : null;
-
-  final GoogleSignIn _googleSignIn =
-      GoogleSignIn(scopes: Config.googleSignInScopes);
-  String? _authToken;
-
-  AuthorizationProvider() {
-    _loadAuthToken();
-  }
-
-  String? get authToken => _authToken;
-
-  Future<void> _loadAuthToken() async {
-    _authToken = await storage.read(key: 'auth_token');
-    notifyListeners();
-  }
-
-  Future<void> setAuthToken(String token) async {
-    await storage.write(key: 'auth_token', value: token);
-    _authToken = token;
-    notifyListeners();
-  }
-
-  Future<void> clearAuthToken() async {
-    await storage.delete(key: 'auth_token');
-    _authToken = null;
-    debugPrint('Auth token cleared. User will be logged out.');
-    notifyListeners();
-  }
-
-  Future<void> signOut(BuildContext context) async {
-    if (Config.debugMode) {
-      debugPrint(
-          'Error: Debug mode is on. Disable it from Config.debugMode in order to proceed with sign out.');
-      return;
-    }
-    await clearAuthToken();
-    if (Config.useFirebase) {
-      await _firebaseAuth?.signOut();
-    }
-  }
-
-  bool get isAuthenticated =>
-      Config.debugMode || (_authToken != null && _authToken!.isNotEmpty);
-
-  Future<bool> signInWithEmail(String email, String password) async {
-    bool success = false;
-    try {
-      debugPrint('Attempting to sign in with email and password.');
-
-      if (Config.useFirebase) {
-        final UserCredential authResult = await _firebaseAuth!
-            .signInWithEmailAndPassword(email: email, password: password);
-        _authToken = authResult.user!.uid;
-        await setAuthToken(_authToken!);
-      } else {
-        _authToken = email;
-        await setAuthToken(_authToken!);
-      }
-
-      notifyListeners();
-      success = true;
-      return success;
-    } catch (error) {
-      debugPrint('Error during email/password Sign In: ${error.toString()}');
-      success = false;
-      return success;
-    }
-  }
-
-  Future<bool> signInWithGoogle() async {
-    bool success = false;
-    if (Config.allowGoogleSignIn) {
-      try {
-        debugPrint('Attempting to sign in with Google.');
-
-        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-        if (googleUser != null) {
-          debugPrint('Google Sign In successful.');
-          final GoogleSignInAuthentication googleAuth =
-              await googleUser.authentication;
-          final credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth.accessToken,
-            idToken: googleAuth.idToken,
-          );
-
-          if (Config.useFirebase) {
-            final UserCredential? authResult =
-                await _firebaseAuth?.signInWithCredential(credential);
-            _authToken = authResult?.user!.uid;
-            await setAuthToken(_authToken!);
-          } else {
-            _authToken = googleAuth.accessToken;
-            await setAuthToken(_authToken!);
-          }
-
-          notifyListeners();
-          success = true;
-          return success;
-        }
-      } catch (error) {
-        debugPrint('Error during Google Sign In: ${error.toString()}');
-        success = false;
-        return success;
-      }
-    }
-    return success;
-  }
-}
-
-import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../config.dart';
-
-class LocaleProvider extends ChangeNotifier {
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
-
-  Locale _locale = Locale(
-    Config.supportedLocales.contains(Config.appDefaultLanguage)
-        ? Config.appDefaultLanguage
-        : Config.supportedLocales.first,
-  );
-
-  LocaleProvider() {
-    _loadLocale();
-  }
-
-  Locale get locale => _locale;
-
-  Future<void> setLocale(Locale locale) async {
-    if (Config.forceDefaultLanguage) {
-      debugPrint(
-          'Error: Language change forbidden. Forced locale is on. Set Config.forceLanguage to "false" in order to allow language change.');
-      return;
-    }
-
-    if (!Config.supportedLocales.contains(locale.languageCode)) {
-      debugPrint(
-          'Unsupported locale: ${locale.languageCode.toUpperCase()}, please use one of the following: ${Config.supportedLocales}. Or add the new locale to the supportedLocales list in config.dart');
-      return;
-    }
-
-    _locale = locale;
-    notifyListeners();
-    await _storage.write(
-        key: 'user_defined_locale', value: locale.languageCode);
-  }
-
-  Future<void> _loadLocale() async {
-    String? languageCode = await _storage.read(key: 'user_defined_locale');
-    if (languageCode != null) {
-      _locale = Locale(languageCode);
-      notifyListeners();
-    }
-  }
-}
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:template_app/providers/auth_provider.dart';
 import 'package:template_app/providers/locale_provider.dart';
@@ -1243,15 +990,6 @@ class ThemeProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-}
-
-class CurrentUserData {
-  final String userId;
-  final String? email;
-  final bool isAnonymous;
-
-  CurrentUserData(
-      {required this.userId, this.email, required this.isAnonymous});
 }
 
 name: template_app

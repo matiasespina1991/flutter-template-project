@@ -8,86 +8,39 @@ class MainTheme {
   /// --------------- LIGHT THEME ---------------
   static ThemeData get lightTheme {
     final base = ThemeData.light(useMaterial3: Config.useMaterial3);
-    return base.copyWith(
-      scaffoldBackgroundColor: Config.scaffoldBackgroundColor.lightModePrimary,
-      hintColor: Config.hintTextColor
-          .lightModePrimary, // Define the hintColor for light theme
-
-      textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
-
-      appBarTheme: AppBarTheme(
-        foregroundColor: Colors.white, // AppBar text color
-        titleTextStyle: Config.appBarTextStyle.isGoogleFont
-            ? GoogleFonts.getFont(Config.appBarTextStyle.name,
-                textStyle:
-                    const TextStyle(fontSize: Config.appBarTitleFontSize))
-            : TextStyle(
-                fontFamily: Config.appBarTextStyle.name,
-                fontSize: Config.appBarTitleFontSize),
-        backgroundColor: Config
-            .appBarBackgroundColor.lightModePrimary, // AppBar background color
-      ),
-
-      colorScheme: Config.themeSeedColor.forceSeedColor
-          ? ColorScheme.fromSeed(seedColor: Config.themeSeedColor.seedColor)
-          : ColorScheme.light(
-              primary: Config.primaryTextColor.lightModePrimary,
-              secondary: Config.secondaryTextColor.lightModePrimary,
-              surface: Colors.white,
-              error: Colors.red,
-              onPrimary: Colors.white,
-              onSecondary: Colors.white,
-              onError: Colors.white,
-              brightness: Brightness.light,
-            ),
-
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Config.elevatedButtonTextColor.lightModePrimary,
-          backgroundColor: Config.elevatedButtonBackgroundColor.lightModePrimary
-              .withOpacity(Config.buttonsOpacity),
-          elevation: Config.buttonsElevation,
-          minimumSize: const Size(double.infinity, 47),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      ),
-      dividerTheme: base.dividerTheme.copyWith(
-        space: 70,
-        color: Colors.black26,
-        thickness: 1,
-        indent: 50,
-        endIndent: 50,
-      ),
-    );
+    return _buildTheme(base, Brightness.light);
   }
 
   /// --------------- DARK THEME ---------------
 
   static ThemeData get darkTheme {
     final base = ThemeData.dark(useMaterial3: Config.useMaterial3);
-    return base.copyWith(
-      scaffoldBackgroundColor: Config.scaffoldBackgroundColor.darkModePrimary,
-      hintColor: Config
-          .hintTextColor.darkModePrimary, // Define the hintColor for dark theme
-      textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
-      appBarTheme: AppBarTheme(
-        foregroundColor: Colors.white, // AppBar text color
-        backgroundColor: Config
-            .appBarBackgroundColor.darkModePrimary, // AppBar background color
-        titleTextStyle: Config.appBarTextStyle.isGoogleFont
-            ? GoogleFonts.getFont(Config.appBarTextStyle.name,
-                textStyle:
-                    const TextStyle(fontSize: Config.appBarTitleFontSize))
-            : TextStyle(
-                fontFamily: Config.appBarTextStyle.name,
-                fontSize: Config.appBarTitleFontSize),
-      ),
+    return _buildTheme(base, Brightness.dark);
+  }
 
-      // primary,   Color? onPrimary,   Color? primaryContainer,   Color? onPrimaryContainer,   Color? primaryFixed,   Color? primaryFixedDim,   Color? onPrimaryFixed,   Color? onPrimaryFixedVariant,   Color? secondary,   Color? onSecondary,   Color? secondaryContainer,   Color? onSecondaryContainer,   Color? secondaryFixed,   Color? secondaryFixedDim,   Color? onSecondaryFixed,   Color? onSecondaryFixedVariant,   Color? tertiary,   Color? onTertiary,   Color? tertiaryContainer,   Color? onTertiaryContainer,   Color? tertiaryFixed,   Color? tertiaryFixedDim,   Color? onTertiaryFixed,   Color? onTertiaryFixedVariant,   Color? error,   Color? onError,   Color? errorContainer,   Color? onErrorContainer,   Color? surface,   Color? onSurface,   Color? surfaceDim,   Color? surfaceBright,   Color? surfaceContainerLowest,   Color? surfaceContainerLow,   Color? surfaceContainer,   Color? surfaceContainerHigh,   Color? surfaceContainerHighest,   Color? onSurfaceVariant,   Color? outline,   Color? outlineVariant,   Color? shadow,   Color? scrim,   Color? inverseSurface,   Color? onInverseSurface,   Color? inversePrimary,   Color? surfaceTint,   Color? background,   Color? onBackground,   Color? surfaceVariant,
+  static ThemeData _buildTheme(ThemeData base, Brightness brightness) {
+    ColorScheme colorScheme;
 
-      colorScheme: Config.themeSeedColor.forceSeedColor
-          ? ColorScheme.fromSeed(seedColor: Config.themeSeedColor.seedColor)
+    if (Config.themeSeedColor.forceSeedColor) {
+      colorScheme = ColorScheme.fromSeed(
+        seedColor: Config.themeSeedColor.seedColor,
+        brightness: brightness,
+      );
+    } else {
+      colorScheme = brightness == Brightness.light
+          ? ColorScheme.light(
+              primary: Config.primaryTextColor.lightModePrimary,
+              secondary: Config.secondaryTextColor.lightModePrimary,
+              background: Config.scaffoldBackgroundColor.lightModePrimary,
+              surface: Colors.white,
+              error: Colors.red,
+              onPrimary: Colors.white,
+              onSecondary: Colors.white,
+              onBackground: Config.primaryTextColor.lightModePrimary,
+              onSurface: Config.primaryTextColor.lightModePrimary,
+              onError: Colors.white,
+              brightness: brightness,
+            )
           : ColorScheme.dark(
               primary: Config.primaryTextColor.darkModePrimary,
               onPrimary: Colors.black,
@@ -95,15 +48,49 @@ class MainTheme {
                   Config.primaryContainerBackgroundColor.darkModePrimary,
               secondary: Config.secondaryTextColor.darkModePrimary,
               error: Colors.red[900]!,
+              background: Config.scaffoldBackgroundColor.darkModePrimary,
+              onBackground: Config.primaryTextColor.darkModePrimary,
               onSecondary: Colors.black,
               onError: Colors.black,
-              brightness: Brightness.dark,
-            ),
+              brightness: brightness,
+            );
+    }
+
+    return base.copyWith(
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: colorScheme.background,
+      hintColor: colorScheme.onSurface,
+      textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
+      appBarTheme: AppBarTheme(
+        foregroundColor: colorScheme.onPrimary,
+        titleTextStyle: Config.appBarTextStyle.isGoogleFont
+            ? GoogleFonts.getFont(Config.appBarTextStyle.name,
+                textStyle: TextStyle(
+                    fontSize: Config.appBarTitleFontSize,
+                    color: colorScheme.onPrimary))
+            : TextStyle(
+                fontFamily: Config.appBarTextStyle.name,
+                fontSize: Config.appBarTitleFontSize,
+                color: colorScheme.onPrimary),
+        backgroundColor: Config.themeSeedColor.forceSeedColor
+            ? colorScheme.primary
+            : (brightness == Brightness.light
+                ? Config.appBarBackgroundColor.lightModePrimary
+                : Config.appBarBackgroundColor.darkModePrimary),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          foregroundColor: Config.elevatedButtonTextColor.darkModePrimary,
-          backgroundColor: Config.elevatedButtonBackgroundColor.darkModePrimary
-              .withOpacity(Config.buttonsOpacity),
+          foregroundColor: Config.themeSeedColor.forceSeedColor
+              ? colorScheme.onPrimary
+              : (brightness == Brightness.light
+                  ? Config.elevatedButtonTextColor.lightModePrimary
+                  : Config.elevatedButtonTextColor.darkModePrimary),
+          backgroundColor: Config.themeSeedColor.forceSeedColor
+              ? colorScheme.primary.withOpacity(Config.buttonsOpacity)
+              : (brightness == Brightness.light
+                      ? Config.elevatedButtonBackgroundColor.lightModePrimary
+                      : Config.elevatedButtonBackgroundColor.darkModePrimary)
+                  .withOpacity(Config.buttonsOpacity),
           elevation: Config.buttonsElevation,
           minimumSize: const Size(double.infinity, 47),
           shape:
@@ -112,7 +99,7 @@ class MainTheme {
       ),
       dividerTheme: base.dividerTheme.copyWith(
         space: 70,
-        color: Colors.white60,
+        color: colorScheme.onSurface.withOpacity(0.2),
         thickness: 1,
         indent: 50,
         endIndent: 50,
