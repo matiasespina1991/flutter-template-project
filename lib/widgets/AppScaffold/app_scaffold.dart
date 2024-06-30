@@ -42,6 +42,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
       case 'always':
         return const AlwaysScrollableScrollPhysics();
       case 'clamp':
+        return const ClampingScrollPhysics();
       default:
         return const AlwaysScrollableScrollPhysics();
     }

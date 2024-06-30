@@ -9,7 +9,8 @@ class ThemeSettings {
   static const bool useMaterial3 = true;
   static const Color seedColor = Colors.yellow;
   static const bool forceSeedColor = false;
-  static const String defaultScrollPhysics = 'always';
+  static const String defaultScrollPhysics =
+      'always'; // 'never', 'always', 'clamp'
   static const bool useFlutterToast = false;
   static const String textInputBorderStyle = 'border'; // 'border' / 'no-border'
   static const bool glassTextInputs = true;
