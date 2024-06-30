@@ -1,9 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:template_app/app_settings/app_general_settings.dart';
+import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';
-import '../../config.dart';
+import '../../app_settings/theme_settings.dart';
+import '../../_bin/config.dart';
 import '../../screens/login_screen/login_screen.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
 import '../ThemeAppBar/template_app_bar.dart';
@@ -33,7 +36,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
   bool _navigated = false;
 
   ScrollPhysics getScrollPhysics() {
-    switch (Config.defaultScrollPhysics) {
+    switch (ThemeSettings.defaultScrollPhysics) {
       case 'never':
         return const NeverScrollableScrollPhysics();
       case 'always':
@@ -49,8 +52,8 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     final auth = ref.watch(authProvider);
     final theme = ref.watch(themeProvider);
 
-    if (!Config.debugMode &&
-        Config.useProtectedRoutes &&
+    if (!DebugConfig.debugMode &&
+        AuthConfig.useProtectedRoutes &&
         widget.isProtected &&
         !auth.isAuthenticated &&
         !_navigated) {
@@ -69,9 +72,9 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     ValueNotifier<bool> isFloatingMenuOpen = ValueNotifier(false);
 
     return SafeArea(
-      top: Config.useSafeArea,
+      top: AppGeneralSettings.useSafeArea,
       child: Scaffold(
-        appBar: Config.useTopAppBar
+        appBar: AppGeneralSettings.useTopAppBar
             ? ThemeAppBar(
                 title: widget.appBarTitle,
               )
@@ -90,7 +93,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
               ),
             ),
             if (!widget.hideFloatingSpeedDialMenu &&
-                Config.useFloatingSpeedDialMenu)
+                AppGeneralSettings.useFloatingSpeedDialMenu)
               Positioned.fill(
                 child: ValueListenableBuilder(
                   valueListenable: isFloatingMenuOpen,

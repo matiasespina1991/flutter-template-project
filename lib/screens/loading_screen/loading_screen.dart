@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:template_app/app_settings/app_general_settings.dart';
 
-import '../../config.dart';
+import '../../app_settings/theme_settings.dart';
 import '../../widgets/LoadingCircle/loading_circle.dart';
-import '../../widgets/ThemeAppBar/template_app_bar.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});
@@ -12,11 +12,11 @@ class LoadingScreen extends StatelessWidget {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return SafeArea(
-      top: Config.useSafeArea,
+      top: AppGeneralSettings.useSafeArea,
       child: Scaffold(
         backgroundColor: isDarkMode
-            ? Config.scaffoldBackgroundColor.darkModePrimary
-            : Config.scaffoldBackgroundColor.lightModePrimary,
+            ? ThemeSettings.scaffoldBackgroundColor.darkModePrimary
+            : ThemeSettings.scaffoldBackgroundColor.lightModePrimary,
         body: const Center(
           child: LoadingCircle(),
         ),

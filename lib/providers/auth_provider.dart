@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:template_app/config.dart';
+import 'package:template_app/app_settings/app_general_settings.dart';
+import 'package:template_app/app_settings/auth_config.dart';
+import 'package:template_app/_bin/config.dart';
 
 class AuthorizationProvider extends ChangeNotifier {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
   final FirebaseAuth? _firebaseAuth =
-      Config.useFirebase ? FirebaseAuth.instance : null;
+      AuthConfig.useFirebase ? FirebaseAuth.instance : null;
 
   final GoogleSignIn _googleSignIn =
-      GoogleSignIn(scopes: Config.googleSignInScopes);
+      GoogleSignIn(scopes: AuthConfig.googleSignInScopes);
   String? _authToken;
 
   AuthorizationProvider() {
@@ -38,26 +40,26 @@ class AuthorizationProvider extends ChangeNotifier {
   }
 
   Future<void> signOut(BuildContext context) async {
-    if (Config.debugMode) {
+    if (DebugConfig.debugMode) {
       debugPrint(
           'Error: Debug mode is on. Disable it from Config.debugMode in order to proceed with sign out.');
       return;
     }
     await clearAuthToken();
-    if (Config.useFirebase) {
+    if (AuthConfig.useFirebase) {
       await _firebaseAuth?.signOut();
     }
   }
 
   bool get isAuthenticated =>
-      Config.debugMode || (_authToken != null && _authToken!.isNotEmpty);
+      DebugConfig.debugMode || (_authToken != null && _authToken!.isNotEmpty);
 
   Future<bool> signInWithEmail(String email, String password) async {
     bool success = false;
     try {
       debugPrint('Attempting to sign in with email and password.');
 
-      if (Config.useFirebase) {
+      if (AuthConfig.useFirebase) {
         final UserCredential authResult = await _firebaseAuth!
             .signInWithEmailAndPassword(email: email, password: password);
         _authToken = authResult.user!.uid;
@@ -79,7 +81,7 @@ class AuthorizationProvider extends ChangeNotifier {
 
   Future<bool> signInWithGoogle() async {
     bool success = false;
-    if (Config.allowGoogleSignIn) {
+    if (AuthConfig.allowGoogleSignIn) {
       try {
         debugPrint('Attempting to sign in with Google.');
 
@@ -93,7 +95,7 @@ class AuthorizationProvider extends ChangeNotifier {
             idToken: googleAuth.idToken,
           );
 
-          if (Config.useFirebase) {
+          if (AuthConfig.useFirebase) {
             final UserCredential? authResult =
                 await _firebaseAuth?.signInWithCredential(credential);
             _authToken = authResult?.user!.uid;

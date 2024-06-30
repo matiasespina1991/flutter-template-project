@@ -3,12 +3,18 @@ import 'package:flutter/material.dart';
 import '../models/general_models.dart';
 import '../models/theme_models.dart';
 
-class ThemeConfig {
+class ThemeSettings {
   static const String defaultThemeMode = 'light';
   static const bool forceDefaultThemeMode = false;
-  static const String defaultScrollPhysics = 'always';
-  static const bool forceSeedColor = true;
+  static const bool useMaterial3 = true;
   static const Color seedColor = Colors.yellow;
+  static const bool forceSeedColor = false;
+  static const String defaultScrollPhysics = 'always';
+  static const bool useFlutterToast = false;
+  static const String textInputBorderStyle = 'border'; // 'border' / 'no-border'
+  static const bool glassTextInputs = true;
+  static const double buttonsElevation = 1.1;
+  static const double buttonsOpacity = 0.8;
 
   static const LottieAnimationBackground
       loginScreenLottieBackgroundAnimationLightMode = LottieAnimationBackground(
@@ -17,7 +23,7 @@ class ThemeConfig {
     x: 0,
     y: 0,
     blur: 80,
-    active: false,
+    active: true,
     opacity: 0.8,
   );
 
@@ -28,7 +34,7 @@ class ThemeConfig {
     x: 0,
     y: 250,
     blur: 80,
-    active: false,
+    active: true,
     opacity: 0.8,
   );
 
@@ -109,8 +115,6 @@ class ThemeConfig {
   static const double bodyMediumFontSize = 13;
   static const double bodySmallFontSize = 12;
   static const double snackbarFontSize = 14;
-
-  static const double buttonsElevation = 1.1;
 
   static const TextThemes textThemes = TextThemes(
     primaryFont: primaryTextStyle,

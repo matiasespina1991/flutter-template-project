@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:flutter/services.dart';
+import 'package:template_app/app_settings/app_general_settings.dart';
+import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/generated/l10n.dart';
 import 'package:template_app/utils/ui/is_dark_mode.dart';
-import '../../config.dart';
+import '../../app_settings/theme_settings.dart';
 import '../../providers/providers_all.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
 import '../../utils/validation/is_email_valid.dart';
@@ -35,8 +37,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final animationConfig = isDarkMode(context)
-        ? Config.loginScreenLottieBackgroundAnimationDarkMode
-        : Config.loginScreenLottieBackgroundAnimationLightMode;
+        ? ThemeSettings.loginScreenLottieBackgroundAnimationDarkMode
+        : ThemeSettings.loginScreenLottieBackgroundAnimationLightMode;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -84,9 +86,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Config.useTopAppBar
+                    AppGeneralSettings.useTopAppBar
                         ? const SizedBox()
-                        : Config.useSafeArea
+                        : AppGeneralSettings.useSafeArea
                             ? const SizedBox(height: 40)
                             : const SizedBox(
                                 height: 100,
@@ -163,12 +165,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     Visibility(
-                      visible: Config.allowGoogleSignIn,
+                      visible: AuthConfig.allowGoogleSignIn,
                       child: Column(
                         children: [
                           const SizedBox(height: 22.0),
                           SignInButton(Buttons.google,
-                              elevation: Config.buttonsElevation,
+                              elevation: ThemeSettings.buttonsElevation,
                               padding: const EdgeInsets.all(5.5),
                               clipBehavior: Clip.hardEdge,
                               shape: RoundedRectangleBorder(

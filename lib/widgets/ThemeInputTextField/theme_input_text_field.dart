@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../config.dart';
+import '../../app_settings/theme_settings.dart';
+import '../../_bin/config.dart';
 
 class ThemeInputTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -44,12 +45,14 @@ class ThemeInputTextFieldState extends State<ThemeInputTextField> {
 
     bool isDark = Theme.of(context).brightness == Brightness.dark;
 
-    if (Config.textInputBorderStyle == 'no-border') {
+    if (ThemeSettings.textInputBorderStyle == 'no-border') {
       inputDecoration = InputDecoration(
         hintText: widget.hintText,
         hintStyle: TextStyle(
           fontSize: 15.5,
-          color: (Config.glassTextInputs && !isDark) ? Colors.black87 : null,
+          color: (ThemeSettings.glassTextInputs && !isDark)
+              ? Colors.black87
+              : null,
         ),
         border: InputBorder.none,
         contentPadding: const EdgeInsets.all(16.0),
@@ -71,13 +74,16 @@ class ThemeInputTextFieldState extends State<ThemeInputTextField> {
       );
     } else {
       inputDecoration = InputDecoration(
-        fillColor:
-            Config.glassTextInputs ? Colors.white.withOpacity(0.1) : null,
+        fillColor: ThemeSettings.glassTextInputs
+            ? Colors.white.withOpacity(0.1)
+            : null,
         filled: true,
         hintText: widget.hintText,
         hintStyle: TextStyle(
           fontSize: 15.5,
-          color: (Config.glassTextInputs && !isDark) ? Colors.black87 : null,
+          color: (ThemeSettings.glassTextInputs && !isDark)
+              ? Colors.black87
+              : null,
         ),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(7)),
@@ -101,7 +107,7 @@ class ThemeInputTextFieldState extends State<ThemeInputTextField> {
     }
 
     return Container(
-      decoration: Config.textInputBorderStyle == 'no-border'
+      decoration: ThemeSettings.textInputBorderStyle == 'no-border'
           ? BoxDecoration(
               color: Colors.grey.withOpacity(0.2),
               borderRadius: BorderRadius.circular(7),

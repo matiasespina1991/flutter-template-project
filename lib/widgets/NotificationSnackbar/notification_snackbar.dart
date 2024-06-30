@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:template_app/app_settings/theme_settings.dart';
 
-import '../../config.dart';
+import '../../_bin/config.dart';
 import '../../globals.dart';
 
 class SnackbarDuration {
@@ -27,7 +28,7 @@ class NotificationSnackbar {
       await Future.delayed(Duration(seconds: delay));
     }
 
-    if (Config.useFlutterToast) {
+    if (ThemeSettings.useFlutterToast) {
       Fluttertoast.cancel();
       Fluttertoast.showToast(
         msg: message,
@@ -37,12 +38,12 @@ class NotificationSnackbar {
         gravity: ToastGravity.SNACKBAR,
         timeInSecForIosWeb: duration == SnackbarDuration.long ? 3 : 2,
         backgroundColor: variant == SnackbarVariant.success
-            ? Config.snackBarSuccessBackgroundColor
+            ? ThemeSettings.snackBarSuccessBackgroundColor
             : variant == SnackbarVariant.info
-                ? Config.snackBarInfoBackgroundColor
-                : Config.snackBarErrorBackgroundColor,
-        textColor: Config.snackBarErrorTextColor,
-        fontSize: Config.snackbarFontSize,
+                ? ThemeSettings.snackBarInfoBackgroundColor
+                : ThemeSettings.snackBarErrorBackgroundColor,
+        textColor: ThemeSettings.snackBarErrorTextColor,
+        fontSize: ThemeSettings.snackbarFontSize,
       );
       return;
     }
@@ -52,23 +53,23 @@ class NotificationSnackbar {
           ? const Duration(seconds: 2)
           : const Duration(seconds: 5),
       backgroundColor: variant == SnackbarVariant.success
-          ? Config.snackBarSuccessBackgroundColor
+          ? ThemeSettings.snackBarSuccessBackgroundColor
           : variant == SnackbarVariant.info
-              ? Config.snackBarInfoBackgroundColor
-              : Config.snackBarErrorBackgroundColor,
+              ? ThemeSettings.snackBarInfoBackgroundColor
+              : ThemeSettings.snackBarErrorBackgroundColor,
       content: Text(message,
           style: TextStyle(
               color: variant == SnackbarVariant.success
-                  ? Config.snackBarSuccessTextColor
+                  ? ThemeSettings.snackBarSuccessTextColor
                   : variant == SnackbarVariant.info
-                      ? Config.snackBarInfoTextColor
-                      : Config.snackBarErrorTextColor,
-              fontSize: Config.snackbarFontSize)),
+                      ? ThemeSettings.snackBarInfoTextColor
+                      : ThemeSettings.snackBarErrorTextColor,
+              fontSize: ThemeSettings.snackbarFontSize)),
     ));
   }
 
   static void hideCurrentSnackBar() {
-    if (Config.useFlutterToast) {
+    if (ThemeSettings.useFlutterToast) {
       Fluttertoast.cancel();
       return;
     }

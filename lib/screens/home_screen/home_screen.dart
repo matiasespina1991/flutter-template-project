@@ -1,14 +1,10 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:template_app/models/current_user_data.dart';
+import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/widgets/AppScaffold/app_scaffold.dart';
 
-import '../../config.dart';
 import '../../generated/l10n.dart';
 import '../../providers/providers_all.dart';
-import '../../services/error_reporting_service.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -18,7 +14,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  bool useAppBar = Config.useTopAppBar;
+  bool useAppBar = AppGeneralSettings.useTopAppBar;
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
 
   @override

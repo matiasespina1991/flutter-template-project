@@ -1,55 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:template_app/app_settings/theme_settings.dart';
 
-import '../config.dart';
 import '../models/theme_models.dart';
 
 class MainTheme {
   /// --------------- LIGHT THEME ---------------
   static ThemeData get lightTheme {
-    final base = ThemeData.light(useMaterial3: Config.useMaterial3);
+    final base = ThemeData.light(useMaterial3: ThemeSettings.useMaterial3);
     return _buildTheme(base, Brightness.light);
   }
 
   /// --------------- DARK THEME ---------------
 
   static ThemeData get darkTheme {
-    final base = ThemeData.dark(useMaterial3: Config.useMaterial3);
+    final base = ThemeData.dark(useMaterial3: ThemeSettings.useMaterial3);
     return _buildTheme(base, Brightness.dark);
   }
 
   static ThemeData _buildTheme(ThemeData base, Brightness brightness) {
     ColorScheme colorScheme;
 
-    if (Config.themeSeedColor.forceSeedColor) {
+    if (ThemeSettings.forceSeedColor) {
       colorScheme = ColorScheme.fromSeed(
-        seedColor: Config.themeSeedColor.seedColor,
+        seedColor: ThemeSettings.seedColor,
         brightness: brightness,
       );
     } else {
       colorScheme = brightness == Brightness.light
           ? ColorScheme.light(
-              primary: Config.primaryTextColor.lightModePrimary,
-              secondary: Config.secondaryTextColor.lightModePrimary,
-              background: Config.scaffoldBackgroundColor.lightModePrimary,
+              // primary: Config.primaryTextColor.lightModePrimary,
+              primary: ThemeSettings.primaryTextColor.lightModePrimary,
+              // secondary: Config.secondaryTextColor.lightModePrimary,
+              secondary: ThemeSettings.secondaryTextColor.lightModePrimary,
               surface: Colors.white,
               error: Colors.red,
               onPrimary: Colors.white,
               onSecondary: Colors.white,
-              onBackground: Config.primaryTextColor.lightModePrimary,
-              onSurface: Config.primaryTextColor.lightModePrimary,
+              onSurface: ThemeSettings.primaryTextColor.lightModePrimary,
               onError: Colors.white,
               brightness: brightness,
             )
           : ColorScheme.dark(
-              primary: Config.primaryTextColor.darkModePrimary,
+              primary: ThemeSettings.primaryTextColor.darkModePrimary,
               onPrimary: Colors.black,
               primaryContainer:
-                  Config.primaryContainerBackgroundColor.darkModePrimary,
-              secondary: Config.secondaryTextColor.darkModePrimary,
+                  ThemeSettings.primaryContainerBackgroundColor.darkModePrimary,
+              secondary: ThemeSettings.secondaryTextColor.darkModePrimary,
               error: Colors.red[900]!,
-              background: Config.scaffoldBackgroundColor.darkModePrimary,
-              onBackground: Config.primaryTextColor.darkModePrimary,
+              surface: ThemeSettings.scaffoldBackgroundColor.darkModePrimary,
+              onSurface: ThemeSettings.primaryTextColor.darkModePrimary,
               onSecondary: Colors.black,
               onError: Colors.black,
               brightness: brightness,
@@ -58,40 +58,43 @@ class MainTheme {
 
     return base.copyWith(
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: colorScheme.background,
+      scaffoldBackgroundColor: colorScheme.surface,
       hintColor: colorScheme.onSurface,
-      textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
+      textTheme:
+          _buildTextTheme(base.textTheme, ThemeSettings.primaryTextStyle),
       appBarTheme: AppBarTheme(
         foregroundColor: colorScheme.onPrimary,
-        titleTextStyle: Config.appBarTextStyle.isGoogleFont
-            ? GoogleFonts.getFont(Config.appBarTextStyle.name,
+        titleTextStyle: ThemeSettings.appBarTextStyle.isGoogleFont
+            ? GoogleFonts.getFont(ThemeSettings.appBarTextStyle.name,
                 textStyle: TextStyle(
-                    fontSize: Config.appBarTitleFontSize,
+                    fontSize: ThemeSettings.appBarTitleFontSize,
                     color: colorScheme.onPrimary))
             : TextStyle(
-                fontFamily: Config.appBarTextStyle.name,
-                fontSize: Config.appBarTitleFontSize,
+                fontFamily: ThemeSettings.appBarTextStyle.name,
+                fontSize: ThemeSettings.appBarTitleFontSize,
                 color: colorScheme.onPrimary),
-        backgroundColor: Config.themeSeedColor.forceSeedColor
+        backgroundColor: ThemeSettings.forceSeedColor
             ? colorScheme.primary
             : (brightness == Brightness.light
-                ? Config.appBarBackgroundColor.lightModePrimary
-                : Config.appBarBackgroundColor.darkModePrimary),
+                ? ThemeSettings.appBarBackgroundColor.lightModePrimary
+                : ThemeSettings.appBarBackgroundColor.darkModePrimary),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          foregroundColor: Config.themeSeedColor.forceSeedColor
+          foregroundColor: ThemeSettings.forceSeedColor
               ? colorScheme.onPrimary
               : (brightness == Brightness.light
-                  ? Config.elevatedButtonTextColor.lightModePrimary
-                  : Config.elevatedButtonTextColor.darkModePrimary),
-          backgroundColor: Config.themeSeedColor.forceSeedColor
-              ? colorScheme.primary.withOpacity(Config.buttonsOpacity)
+                  ? ThemeSettings.elevatedButtonTextColor.lightModePrimary
+                  : ThemeSettings.elevatedButtonTextColor.darkModePrimary),
+          backgroundColor: ThemeSettings.forceSeedColor
+              ? colorScheme.primary.withOpacity(ThemeSettings.buttonsOpacity)
               : (brightness == Brightness.light
-                      ? Config.elevatedButtonBackgroundColor.lightModePrimary
-                      : Config.elevatedButtonBackgroundColor.darkModePrimary)
-                  .withOpacity(Config.buttonsOpacity),
-          elevation: Config.buttonsElevation,
+                      ? ThemeSettings
+                          .elevatedButtonBackgroundColor.lightModePrimary
+                      : ThemeSettings
+                          .elevatedButtonBackgroundColor.darkModePrimary)
+                  .withOpacity(ThemeSettings.buttonsOpacity),
+          elevation: ThemeSettings.buttonsElevation,
           minimumSize: const Size(double.infinity, 47),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -120,17 +123,17 @@ class MainTheme {
       titleSmall: _applyFont(base.titleSmall, font),
       bodyLarge: _applyFont(
           base.bodyLarge?.copyWith(
-            fontSize: Config.bodyLargeFontSize,
+            fontSize: ThemeSettings.bodyLargeFontSize,
           ),
           font),
       bodyMedium: _applyFont(
           base.bodyMedium?.copyWith(
-            fontSize: Config.bodyMediumFontSize,
+            fontSize: ThemeSettings.bodyMediumFontSize,
           ),
           font),
       bodySmall: _applyFont(
           base.bodySmall?.copyWith(
-            fontSize: Config.bodySmallFontSize,
+            fontSize: ThemeSettings.bodySmallFontSize,
           ),
           font),
       labelLarge: _applyFont(base.labelLarge, font),

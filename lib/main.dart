@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:template_app/app_settings/app_general_settings.dart';
+import 'package:template_app/app_settings/app_info.dart';
+import 'package:template_app/app_settings/auth_config.dart';
+import 'package:template_app/app_settings/language_settings.dart';
 import 'package:template_app/generated/l10n.dart';
 import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/home_screen/home_screen.dart';
 import 'package:template_app/theme/main_theme.dart';
 import 'package:template_app/utils/debug/log_configurations.dart';
-import 'package:template_app/utils/debug/notify_that_app_is_runing_in_debug_mode.dart';
-import 'config.dart';
 import 'globals.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Config.useFirebase) {
+  if (AuthConfig.useFirebase) {
     try {
       await Firebase.initializeApp();
     } catch (e) {
@@ -34,12 +36,12 @@ class MyApp extends ConsumerWidget {
 
     return MaterialApp(
       scaffoldMessengerKey: snackbarKey,
-      title: Config.appName,
+      title: AppInfo.appName,
       theme: MainTheme.lightTheme,
       darkTheme: MainTheme.darkTheme,
       themeMode: themeNotifier.themeMode,
       locale: localeNotifier.locale,
-      supportedLocales: Config.supportedLocales
+      supportedLocales: LanguageSettings.supportedLocales
           .map((e) => Locale.fromSubtags(languageCode: e))
           .toList(),
       localizationsDelegates: const [
@@ -49,8 +51,8 @@ class MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       localeResolutionCallback: (locale, supportedLocales) {
-        if (Config.forceDefaultLanguage) {
-          return Locale(Config.appDefaultLanguage);
+        if (LanguageSettings.forceDefaultLanguage) {
+          return const Locale(LanguageSettings.appDefaultLanguage);
         }
         if (locale != null) {
           for (var supportedLocale in supportedLocales) {

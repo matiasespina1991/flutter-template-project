@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../config.dart';
+import 'package:template_app/app_settings/theme_settings.dart';
+import '../_bin/config.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
@@ -13,7 +14,7 @@ class ThemeProvider extends ChangeNotifier {
   ThemeMode get themeMode => _themeMode;
 
   void toggleTheme(bool isDarkMode) async {
-    if (Config.forceDefaultThemeMode) {
+    if (ThemeSettings.forceDefaultThemeMode) {
       debugPrint(
           'Error: Theme mode change forbidden. Forced theme is on. Disable it from Config.forceDefaultThemeMode in order to proceed with theme change.');
       return;
@@ -28,9 +29,10 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   void _loadThemeMode() async {
-    if (Config.forceDefaultThemeMode) {
-      _themeMode =
-          Config.defaultThemeMode == 'dark' ? ThemeMode.dark : ThemeMode.light;
+    if (ThemeSettings.forceDefaultThemeMode) {
+      _themeMode = ThemeSettings.defaultThemeMode == 'dark'
+          ? ThemeMode.dark
+          : ThemeMode.light;
       notifyListeners();
       return;
     }

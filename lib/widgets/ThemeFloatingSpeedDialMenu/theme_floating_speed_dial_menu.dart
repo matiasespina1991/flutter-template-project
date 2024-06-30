@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-import '../../config.dart';
+import '../../app_settings/app_general_settings.dart';
+import '../../_bin/config.dart';
 import '../../generated/l10n.dart';
 import '../../providers/providers_all.dart';
 
@@ -35,10 +36,10 @@ class _ThemeFloatingSpeedDialMenuState
       animationDuration: const Duration(milliseconds: 200),
       elevation: 1.5,
       spacing: 10.0,
-      visible:
-          widget.hideFloatingSpeedDialMenu | !Config.useFloatingSpeedDialMenu
-              ? false
-              : true,
+      visible: widget.hideFloatingSpeedDialMenu |
+              !AppGeneralSettings.useFloatingSpeedDialMenu
+          ? false
+          : true,
       icon: Icons.add,
       activeIcon: Icons.close,
       iconTheme: const IconThemeData(color: Colors.white),
