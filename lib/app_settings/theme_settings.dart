@@ -7,8 +7,8 @@ class ThemeSettings {
   static const String defaultThemeMode = 'light';
   static const bool forceDefaultThemeMode = false;
   static const bool useMaterial3 = true;
-  static const Color seedColor = Colors.yellow;
-  static const bool forceSeedColor = false;
+  static const Color seedColor = Colors.lightBlueAccent;
+  static const bool forceSeedColor = true;
   static const String defaultScrollPhysics =
       'always'; // 'never', 'always', 'clamp'
   static const bool useFlutterToast = false;
