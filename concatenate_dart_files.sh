@@ -10,10 +10,10 @@ files=(
 #    "lib/widgets/AppScaffold/app_scaffold.dart"
     "lib/theme/main_theme.dart"
 #    "lib/providers/auth_provider.dart"
-#    "lib/providers/locale_provider.dart"
+    "lib/providers/locale_provider.dart"
     "lib/providers/providers_all.dart"
     "lib/providers/theme_provider.dart"
-#    "lib/models/current_user_data.dart"
+    "lib/models/current_user_data.dart"
     "pubspec.yaml"
 )
 

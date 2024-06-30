@@ -57,7 +57,7 @@ class Config {
     x: 0,
     y: 0,
     blur: 80,
-    active: true,
+    active: false,
     opacity: 0.8,
   );
 
@@ -71,7 +71,7 @@ class Config {
     y: 250,
     // y: 0,
     blur: 80,
-    active: true,
+    active: false,
     opacity: 0.8,
   );
 
@@ -100,10 +100,11 @@ class Config {
 
   /// Theme Seed Color
   static const ThemeConfig themeSeedColor = ThemeConfig(
-    forceSeedColor: false,
-    seedColor: Colors.red,
+    forceSeedColor: true, // Set to true to use the seed color
+    seedColor: Colors.yellow,
   );
 
+  /// NOTE: If seed color is forced, then all the values below will be ignored
   static const ThemeColors scaffoldBackgroundColor = ThemeColors(
     lightModePrimary: lightWhiteColor,
     darkModePrimary: lightBlackColor,
@@ -781,88 +782,39 @@ class MainTheme {
   /// --------------- LIGHT THEME ---------------
   static ThemeData get lightTheme {
     final base = ThemeData.light(useMaterial3: Config.useMaterial3);
-    return base.copyWith(
-      brightness: Brightness.light,
-      scaffoldBackgroundColor: Config.scaffoldBackgroundColor.lightModePrimary,
-      hintColor: Config.hintTextColor
-          .lightModePrimary, // Define the hintColor for light theme
-
-      textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
-
-      appBarTheme: AppBarTheme(
-        foregroundColor: Colors.white, // AppBar text color
-        titleTextStyle: Config.appBarTextStyle.isGoogleFont
-            ? GoogleFonts.getFont(Config.appBarTextStyle.name,
-                textStyle:
-                    const TextStyle(fontSize: Config.appBarTitleFontSize))
-            : TextStyle(
-                fontFamily: Config.appBarTextStyle.name,
-                fontSize: Config.appBarTitleFontSize),
-        backgroundColor: Config
-            .appBarBackgroundColor.lightModePrimary, // AppBar background color
-      ),
-
-      colorScheme: Config.themeSeedColor.forceSeedColor
-          ? ColorScheme.fromSeed(seedColor: Config.themeSeedColor.seedColor)
-          : ColorScheme.light(
-              primary: Config.primaryTextColor.lightModePrimary,
-              secondary: Config.secondaryTextColor.lightModePrimary,
-              surface: Colors.white,
-              error: Colors.red,
-              onPrimary: Colors.white,
-              onSecondary: Colors.white,
-              onError: Colors.white,
-              brightness: Brightness.light,
-            ),
-
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Config.elevatedButtonTextColor.lightModePrimary,
-          backgroundColor: Config.elevatedButtonBackgroundColor.lightModePrimary
-              .withOpacity(Config.buttonsOpacity),
-          elevation: Config.buttonsElevation,
-          minimumSize: const Size(double.infinity, 47),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      ),
-      dividerTheme: base.dividerTheme.copyWith(
-        space: 70,
-        color: Colors.black26,
-        thickness: 1,
-        indent: 50,
-        endIndent: 50,
-      ),
-    );
+    return _buildTheme(base, Brightness.light);
   }
 
   /// --------------- DARK THEME ---------------
 
   static ThemeData get darkTheme {
     final base = ThemeData.dark(useMaterial3: Config.useMaterial3);
-    return base.copyWith(
-      brightness: Brightness.dark,
-      scaffoldBackgroundColor: Config.scaffoldBackgroundColor.darkModePrimary,
-      hintColor: Config
-          .hintTextColor.darkModePrimary, // Define the hintColor for dark theme
-      textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
-      appBarTheme: AppBarTheme(
-        foregroundColor: Colors.white, // AppBar text color
-        backgroundColor: Config
-            .appBarBackgroundColor.darkModePrimary, // AppBar background color
-        titleTextStyle: Config.appBarTextStyle.isGoogleFont
-            ? GoogleFonts.getFont(Config.appBarTextStyle.name,
-                textStyle:
-                    const TextStyle(fontSize: Config.appBarTitleFontSize))
-            : TextStyle(
-                fontFamily: Config.appBarTextStyle.name,
-                fontSize: Config.appBarTitleFontSize),
-      ),
+    return _buildTheme(base, Brightness.dark);
+  }
 
-      // primary,   Color? onPrimary,   Color? primaryContainer,   Color? onPrimaryContainer,   Color? primaryFixed,   Color? primaryFixedDim,   Color? onPrimaryFixed,   Color? onPrimaryFixedVariant,   Color? secondary,   Color? onSecondary,   Color? secondaryContainer,   Color? onSecondaryContainer,   Color? secondaryFixed,   Color? secondaryFixedDim,   Color? onSecondaryFixed,   Color? onSecondaryFixedVariant,   Color? tertiary,   Color? onTertiary,   Color? tertiaryContainer,   Color? onTertiaryContainer,   Color? tertiaryFixed,   Color? tertiaryFixedDim,   Color? onTertiaryFixed,   Color? onTertiaryFixedVariant,   Color? error,   Color? onError,   Color? errorContainer,   Color? onErrorContainer,   Color? surface,   Color? onSurface,   Color? surfaceDim,   Color? surfaceBright,   Color? surfaceContainerLowest,   Color? surfaceContainerLow,   Color? surfaceContainer,   Color? surfaceContainerHigh,   Color? surfaceContainerHighest,   Color? onSurfaceVariant,   Color? outline,   Color? outlineVariant,   Color? shadow,   Color? scrim,   Color? inverseSurface,   Color? onInverseSurface,   Color? inversePrimary,   Color? surfaceTint,   Color? background,   Color? onBackground,   Color? surfaceVariant,
+  static ThemeData _buildTheme(ThemeData base, Brightness brightness) {
+    ColorScheme colorScheme;
 
-      colorScheme: Config.themeSeedColor.forceSeedColor
-          ? ColorScheme.fromSeed(seedColor: Config.themeSeedColor.seedColor)
+    if (Config.themeSeedColor.forceSeedColor) {
+      colorScheme = ColorScheme.fromSeed(
+        seedColor: Config.themeSeedColor.seedColor,
+        brightness: brightness,
+      );
+    } else {
+      colorScheme = brightness == Brightness.light
+          ? ColorScheme.light(
+              primary: Config.primaryTextColor.lightModePrimary,
+              secondary: Config.secondaryTextColor.lightModePrimary,
+              background: Config.scaffoldBackgroundColor.lightModePrimary,
+              surface: Colors.white,
+              error: Colors.red,
+              onPrimary: Colors.white,
+              onSecondary: Colors.white,
+              onBackground: Config.primaryTextColor.lightModePrimary,
+              onSurface: Config.primaryTextColor.lightModePrimary,
+              onError: Colors.white,
+              brightness: brightness,
+            )
           : ColorScheme.dark(
               primary: Config.primaryTextColor.darkModePrimary,
               onPrimary: Colors.black,
@@ -870,15 +822,49 @@ class MainTheme {
                   Config.primaryContainerBackgroundColor.darkModePrimary,
               secondary: Config.secondaryTextColor.darkModePrimary,
               error: Colors.red[900]!,
+              background: Config.scaffoldBackgroundColor.darkModePrimary,
+              onBackground: Config.primaryTextColor.darkModePrimary,
               onSecondary: Colors.black,
               onError: Colors.black,
-              brightness: Brightness.dark,
-            ),
+              brightness: brightness,
+            );
+    }
+
+    return base.copyWith(
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: colorScheme.background,
+      hintColor: colorScheme.onSurface,
+      textTheme: _buildTextTheme(base.textTheme, Config.primaryTextStyle),
+      appBarTheme: AppBarTheme(
+        foregroundColor: colorScheme.onPrimary,
+        titleTextStyle: Config.appBarTextStyle.isGoogleFont
+            ? GoogleFonts.getFont(Config.appBarTextStyle.name,
+                textStyle: TextStyle(
+                    fontSize: Config.appBarTitleFontSize,
+                    color: colorScheme.onPrimary))
+            : TextStyle(
+                fontFamily: Config.appBarTextStyle.name,
+                fontSize: Config.appBarTitleFontSize,
+                color: colorScheme.onPrimary),
+        backgroundColor: Config.themeSeedColor.forceSeedColor
+            ? colorScheme.primary
+            : (brightness == Brightness.light
+                ? Config.appBarBackgroundColor.lightModePrimary
+                : Config.appBarBackgroundColor.darkModePrimary),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          foregroundColor: Config.elevatedButtonTextColor.darkModePrimary,
-          backgroundColor: Config.elevatedButtonBackgroundColor.darkModePrimary
-              .withOpacity(Config.buttonsOpacity),
+          foregroundColor: Config.themeSeedColor.forceSeedColor
+              ? colorScheme.onPrimary
+              : (brightness == Brightness.light
+                  ? Config.elevatedButtonTextColor.lightModePrimary
+                  : Config.elevatedButtonTextColor.darkModePrimary),
+          backgroundColor: Config.themeSeedColor.forceSeedColor
+              ? colorScheme.primary.withOpacity(Config.buttonsOpacity)
+              : (brightness == Brightness.light
+                      ? Config.elevatedButtonBackgroundColor.lightModePrimary
+                      : Config.elevatedButtonBackgroundColor.darkModePrimary)
+                  .withOpacity(Config.buttonsOpacity),
           elevation: Config.buttonsElevation,
           minimumSize: const Size(double.infinity, 47),
           shape:
@@ -887,7 +873,7 @@ class MainTheme {
       ),
       dividerTheme: base.dividerTheme.copyWith(
         space: 70,
-        color: Colors.white60,
+        color: colorScheme.onSurface.withOpacity(0.2),
         thickness: 1,
         indent: 50,
         endIndent: 50,
@@ -932,6 +918,53 @@ class MainTheme {
     return font.isGoogleFont
         ? GoogleFonts.getFont(font.name, textStyle: style)
         : style.copyWith(fontFamily: font.name, fontSize: style.fontSize);
+  }
+}
+
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../config.dart';
+
+class LocaleProvider extends ChangeNotifier {
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+
+  Locale _locale = Locale(
+    Config.supportedLocales.contains(Config.appDefaultLanguage)
+        ? Config.appDefaultLanguage
+        : Config.supportedLocales.first,
+  );
+
+  LocaleProvider() {
+    _loadLocale();
+  }
+
+  Locale get locale => _locale;
+
+  Future<void> setLocale(Locale locale) async {
+    if (Config.forceDefaultLanguage) {
+      debugPrint(
+          'Error: Language change forbidden. Forced locale is on. Set Config.forceLanguage to "false" in order to allow language change.');
+      return;
+    }
+
+    if (!Config.supportedLocales.contains(locale.languageCode)) {
+      debugPrint(
+          'Unsupported locale: ${locale.languageCode.toUpperCase()}, please use one of the following: ${Config.supportedLocales}. Or add the new locale to the supportedLocales list in config.dart');
+      return;
+    }
+
+    _locale = locale;
+    notifyListeners();
+    await _storage.write(
+        key: 'user_defined_locale', value: locale.languageCode);
+  }
+
+  Future<void> _loadLocale() async {
+    String? languageCode = await _storage.read(key: 'user_defined_locale');
+    if (languageCode != null) {
+      _locale = Locale(languageCode);
+      notifyListeners();
+    }
   }
 }
 
@@ -990,6 +1023,15 @@ class ThemeProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+}
+
+class CurrentUserData {
+  final String userId;
+  final String? email;
+  final bool isAnonymous;
+
+  CurrentUserData(
+      {required this.userId, this.email, required this.isAnonymous});
 }
 
 name: template_app

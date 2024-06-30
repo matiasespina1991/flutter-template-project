@@ -100,7 +100,7 @@ class Config {
 
   /// Theme Seed Color
   static const ThemeConfig themeSeedColor = ThemeConfig(
-    forceSeedColor: false, // Set to true to use the seed color
+    forceSeedColor: true, // Set to true to use the seed color
     seedColor: Colors.yellow,
   );
 
