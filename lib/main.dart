@@ -6,7 +6,8 @@ import 'package:template_app/generated/l10n.dart';
 import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/home_screen/home_screen.dart';
 import 'package:template_app/theme/main_theme.dart';
-import 'package:template_app/utils/notify_that_app_is_runing_in_debug_mode.dart';
+import 'package:template_app/utils/debug/log_configurations.dart';
+import 'package:template_app/utils/debug/notify_that_app_is_runing_in_debug_mode.dart';
 import 'config.dart';
 import 'globals.dart';
 
@@ -19,9 +20,7 @@ void main() async {
       debugPrint('Error: Firebase initialization failed. $e');
     }
   }
-  if (Config.debugMode) {
-    notifyThatAppIsRunningInDebugMode();
-  }
+  logConfigurations();
   runApp(const ProviderScope(child: MyApp()));
 }
 

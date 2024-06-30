@@ -69,6 +69,7 @@ class Config {
     width: 200,
     x: 0,
     y: 250,
+    // y: 0,
     blur: 80,
     active: true,
     opacity: 0.8,

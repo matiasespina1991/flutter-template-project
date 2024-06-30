@@ -67,8 +67,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           if (animationConfig.blur > 0 && animationConfig.active)
             Positioned.fill(
               child: BackdropFilter(
+                // blendMode: BlendMode.difference,
                 filter: ImageFilter.blur(
-                    sigmaX: animationConfig.blur, sigmaY: animationConfig.blur),
+                    sigmaX: animationConfig.blur,
+                    sigmaY: animationConfig.blur,
+                    tileMode: TileMode.clamp),
                 child: Container(),
               ),
             ),
