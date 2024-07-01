@@ -1,14 +1,16 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';
 import '../../app_settings/theme_settings.dart';
-import '../../_bin/config.dart';
+
 import '../../screens/login_screen/login_screen.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
+import '../../utils/ui/is_dark_mode.dart';
 import '../ThemeAppBar/template_app_bar.dart';
 import '../ThemeFloatingSpeedDialMenu/theme_floating_speed_dial_menu.dart';
 
@@ -53,7 +55,6 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider);
-    final theme = ref.watch(themeProvider);
 
     if (!DebugConfig.debugMode &&
         AuthConfig.useProtectedRoutes &&
@@ -69,10 +70,16 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     }
 
     if (!auth.isAuthenticated && widget.isProtected) {
-      return LoadingScreen();
+      return const LoadingScreen();
     }
 
     ValueNotifier<bool> isFloatingMenuOpen = ValueNotifier(false);
+
+    final animationConfig = isDarkMode(context)
+        ? ThemeSettings.loginScreenLottieBackgroundAnimationDarkMode
+        : ThemeSettings.loginScreenLottieBackgroundAnimationLightMode;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
       top: AppGeneralSettings.useTopAppBar,
@@ -84,6 +91,35 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
             : null,
         body: Stack(
           children: [
+            // Lottie Animation as background
+            if (animationConfig.active)
+              Positioned(
+                left: (screenWidth / 2) +
+                    animationConfig.x -
+                    (screenWidth * (animationConfig.width / 100) / 2),
+                top: (screenHeight / 2) +
+                    animationConfig.y -
+                    (screenWidth * (animationConfig.width / 100) / 2),
+                width: screenWidth * (animationConfig.width / 100),
+                child: Opacity(
+                  opacity: animationConfig.opacity,
+                  child: Lottie.asset(
+                    animationConfig.animationPath,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            if (animationConfig.blur > 0 && animationConfig.active)
+              Positioned.fill(
+                child: BackdropFilter(
+                  // blendMode: BlendMode.difference,
+                  filter: ImageFilter.blur(
+                      sigmaX: animationConfig.blur,
+                      sigmaY: animationConfig.blur,
+                      tileMode: TileMode.clamp),
+                  child: Container(),
+                ),
+              ),
             SingleChildScrollView(
               physics: widget.scrollPhysics ?? getScrollPhysics(),
               child: ConstrainedBox(
@@ -91,6 +127,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
                   minHeight: MediaQuery.of(context).size.height,
                 ),
                 child: Column(
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     SizedBox(
                       height: widget.addSafeAreaMargin ? 70 : 0,

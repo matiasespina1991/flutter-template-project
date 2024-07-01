@@ -6,6 +6,6 @@ class AppGeneralSettings {
 }
 
 class DebugConfig {
-  static const bool debugMode = true;
+  static const bool debugMode = false;
   static const String debugScreen = '/home'; //TODO
 }

@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/generated/l10n.dart';
-import 'package:template_app/utils/ui/is_dark_mode.dart';
 import '../../app_settings/theme_settings.dart';
 import '../../providers/providers_all.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
@@ -15,7 +14,6 @@ import '../../widgets/AppScaffold/app_scaffold.dart';
 import '../../widgets/NotificationSnackbar/notification_snackbar.dart';
 import '../../widgets/ThemeInputTextField/theme_input_text_field.dart';
 import '../home_screen/home_screen.dart';
-import 'dart:ui';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -36,48 +34,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final animationConfig = isDarkMode(context)
-        ? ThemeSettings.loginScreenLottieBackgroundAnimationDarkMode
-        : ThemeSettings.loginScreenLottieBackgroundAnimationLightMode;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return AppScaffold(
       appBarTitle: S.of(context).loginScreenTitle,
       isProtected: false,
       hideFloatingSpeedDialMenu: true,
       body: Stack(
+        clipBehavior: Clip.none,
         children: [
-          // Lottie Animation as background
-          if (animationConfig.active)
-            Positioned(
-              left: (screenWidth / 2) +
-                  animationConfig.x -
-                  (screenWidth * (animationConfig.width / 100) / 2),
-              top: (screenHeight / 2) +
-                  animationConfig.y -
-                  (screenWidth * (animationConfig.width / 100) / 2),
-              width: screenWidth * (animationConfig.width / 100),
-              child: Opacity(
-                opacity: animationConfig.opacity,
-                child: Lottie.asset(
-                  animationConfig.animationPath,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          if (animationConfig.blur > 0 && animationConfig.active)
-            Positioned.fill(
-              child: BackdropFilter(
-                // blendMode: BlendMode.difference,
-                filter: ImageFilter.blur(
-                    sigmaX: animationConfig.blur,
-                    sigmaY: animationConfig.blur,
-                    tileMode: TileMode.clamp),
-                child: Container(),
-              ),
-            ),
-          // Login form content
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Center(
