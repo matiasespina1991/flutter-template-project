@@ -56,7 +56,8 @@
 │   ├── services
 │   │   └── error_reporting_service.dart
 │   ├── theme
-│   │   └── main_theme.dart
+│   │   └── main_theme
+│   │       └── main_theme.dart
 │   ├── utils
 │   │   ├── debug
 │   │   │   ├── log_configurations.dart
@@ -86,7 +87,7 @@
 ├── pubspec.yaml
 └── template_app.iml
 
-29 directories, 58 files
+30 directories, 58 files
 ///// lib/main.dart /////
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -99,7 +100,7 @@ import 'package:template_app/app_settings/language_settings.dart';
 import 'package:template_app/generated/l10n.dart';
 import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/home_screen/home_screen.dart';
-import 'package:template_app/theme/main_theme.dart';
+import 'package:template_app/theme/main_theme/main_theme.dart';
 import 'package:template_app/utils/debug/log_configurations.dart';
 import 'globals.dart';
 
@@ -176,7 +177,7 @@ class AppGeneralSettings {
 }
 
 class DebugConfig {
-  static const bool debugMode = false;
+  static const bool debugMode = true;
   static const String debugScreen = '/home'; //TODO
 }
 
@@ -215,7 +216,7 @@ class ThemeSettings {
   static const String defaultThemeMode = 'light';
   static const bool forceDefaultThemeMode = false;
   static const bool useMaterial3 = true;
-  static const Color seedColor = Colors.yellow;
+  static const Color seedColor = Colors.red;
   static const bool forceSeedColor = false;
   static const String defaultScrollPhysics =
       'always'; // 'never', 'always', 'clamp'
@@ -253,7 +254,7 @@ class ThemeSettings {
   );
 
   static const ThemeColors appBarBackgroundColor = ThemeColors(
-    lightModePrimary: Colors.black87,
+    lightModePrimary: Colors.blueGrey,
     darkModePrimary: Colors.blueGrey,
   );
 
@@ -337,7 +338,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/widgets/AppScaffold/app_scaffold.dart';
-
 import '../../generated/l10n.dart';
 import '../../providers/providers_all.dart';
 
@@ -351,15 +351,68 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool useAppBar = AppGeneralSettings.useTopAppBar;
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
+  double _sliderValue = 0.0;
+  int _stepperIndex = 0;
+  bool exampleSwitchValue = false;
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      appBarTitle: 'Home Screen',
-      body: Center(
+      addSafeAreaMargin: true,
+      appBarTitle: S.of(context).homeScreenTitle,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Text(S.of(context).exampleTitle,
+                style: Theme.of(context).textTheme.headlineSmall),
+            const SizedBox(height: 10),
+            Text(S.of(context).exampleDescription,
+                style: Theme.of(context).textTheme.bodyMedium),
+            const SizedBox(height: 20),
+            Text(S.of(context).buttonsSectionTitle,
+                style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {},
+              child: Text(S.of(context).elevatedButtonLabel),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Text(S.of(context).textButtonLabel),
+            ),
+            OutlinedButton(
+              onPressed: () {},
+              child: Text(S.of(context).outlinedButtonLabel),
+            ),
+            const SizedBox(height: 20),
+            Text(S.of(context).switchesSectionTitle,
+                style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 10),
+            SwitchListTile(
+              title: Text(S.of(context).exampleSwitch),
+              value: exampleSwitchValue,
+              onChanged: (value) {
+                setState(() {
+                  exampleSwitchValue = value;
+                });
+              },
+            ),
+            const SizedBox(height: 20),
+            Text(S.of(context).inputsSectionTitle,
+                style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 10),
+            TextField(
+              decoration: InputDecoration(
+                labelText: S.of(context).textFieldLabel,
+                border: const OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(S.of(context).steppersSectionTitle,
+                style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -384,28 +437,123 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-            Switch(
-              value: Theme.of(context).brightness == Brightness.dark,
-              activeTrackColor: Theme.of(context).colorScheme.secondary,
-              onChanged: (value) {
-                ref.read(themeProvider).toggleTheme(value);
-              },
+            const SizedBox(height: 7),
+            Center(
+              child: Switch(
+                value: Theme.of(context).brightness == Brightness.dark,
+                activeTrackColor: Theme.of(context).colorScheme.secondary,
+                onChanged: (value) {
+                  ref.read(themeProvider).toggleTheme(value);
+                },
+              ),
             ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     try {
-            //       throw Exception("Test exception for ErrorReportingService");
-            //     } catch (error, stackTrace) {
-            //       ErrorReportingService.reportError(
-            //         error,
-            //         stackTrace,
-            //         CurrentUserData(userId: 'demoid', isAnonymous: true),
-            //       );
-            //     }
-            //   },
-            //   child: const Text("Trigger Error"),
-            // ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    ref.read(localeProvider).setLocale(const Locale('en'));
+                  },
+                  child: const Text(
+                    '🇺🇸',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                const Text('/'),
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    ref.read(localeProvider).setLocale(const Locale('es'));
+                  },
+                  child: const Text(
+                    '🇪🇸',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                const Text('/'),
+                const SizedBox(width: 10),
+                GestureDetector(
+                  onTap: () {
+                    ref.read(localeProvider).setLocale(const Locale('de'));
+                  },
+                  child: const Text(
+                    '🇩🇪',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Text(S.of(context).chipsSectionTitle,
+                style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 10,
+              children: [
+                Chip(label: Text(S.of(context).chipOneLabel)),
+                Chip(label: Text(S.of(context).chipTwoLabel)),
+                Chip(label: Text(S.of(context).chipThreeLabel)),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Text(S.of(context).slidersSectionTitle,
+                style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 10),
+            Slider(
+              value: _sliderValue,
+              onChanged: (value) {
+                setState(() {
+                  _sliderValue = value;
+                });
+              },
+              min: 0,
+              max: 100,
+            ),
+            Text(
+                '${S.of(context).sliderValueLabel}: ${_sliderValue.toStringAsFixed(1)}'),
+            Stepper(
+              currentStep: _stepperIndex,
+              onStepTapped: (index) {
+                setState(() {
+                  _stepperIndex = index;
+                });
+              },
+              onStepContinue: () {
+                if (_stepperIndex < 2) {
+                  setState(() {
+                    _stepperIndex++;
+                  });
+                }
+              },
+              onStepCancel: () {
+                if (_stepperIndex > 0) {
+                  setState(() {
+                    _stepperIndex--;
+                  });
+                }
+              },
+              steps: [
+                Step(
+                  title: Text(S.of(context).stepOneTitle),
+                  content: Text(S.of(context).stepOneContent),
+                  isActive: _stepperIndex == 0,
+                ),
+                Step(
+                  title: Text(S.of(context).stepTwoTitle),
+                  content: Text(S.of(context).stepTwoContent),
+                  isActive: _stepperIndex == 1,
+                ),
+                Step(
+                  title: Text(S.of(context).stepThreeTitle),
+                  content: Text(S.of(context).stepThreeContent),
+                  isActive: _stepperIndex == 2,
+                ),
+              ],
+            ),
+            const SizedBox(height: 80),
           ],
         ),
       ),
@@ -818,12 +966,143 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 }
 
-///// lib/theme/main_theme.dart /////
+///// lib/widgets/AppScaffold/app_scaffold.dart /////
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:template_app/app_settings/app_general_settings.dart';
+import 'package:template_app/app_settings/auth_config.dart';
+import 'package:template_app/providers/providers_all.dart';
+import 'package:template_app/screens/loading_screen/loading_screen.dart';
+import '../../app_settings/theme_settings.dart';
+import '../../_bin/config.dart';
+import '../../screens/login_screen/login_screen.dart';
+import '../../utils/navigation/push_route_with_animation.dart';
+import '../ThemeAppBar/template_app_bar.dart';
+import '../ThemeFloatingSpeedDialMenu/theme_floating_speed_dial_menu.dart';
+
+class AppScaffold extends ConsumerStatefulWidget {
+  final Widget body;
+  final bool hideFloatingSpeedDialMenu;
+  final String appBarTitle;
+  final bool isProtected;
+  final ScrollPhysics? scrollPhysics;
+  final bool addSafeAreaMargin;
+
+  const AppScaffold({
+    super.key,
+    required this.body,
+    required this.appBarTitle,
+    this.hideFloatingSpeedDialMenu = false,
+    this.isProtected = true,
+    this.scrollPhysics,
+    this.addSafeAreaMargin = false,
+  });
+
+  @override
+  AppScaffoldState createState() => AppScaffoldState();
+}
+
+class AppScaffoldState extends ConsumerState<AppScaffold> {
+  bool _navigated = false;
+
+  ScrollPhysics getScrollPhysics() {
+    switch (ThemeSettings.defaultScrollPhysics) {
+      case 'never':
+        return const NeverScrollableScrollPhysics();
+      case 'always':
+        return const AlwaysScrollableScrollPhysics();
+      case 'clamp':
+        return const ClampingScrollPhysics();
+      default:
+        return const AlwaysScrollableScrollPhysics();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final auth = ref.watch(authProvider);
+    final theme = ref.watch(themeProvider);
+
+    if (!DebugConfig.debugMode &&
+        AuthConfig.useProtectedRoutes &&
+        widget.isProtected &&
+        !auth.isAuthenticated &&
+        !_navigated) {
+      _navigated = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushReplacement(pushRouteWithAnimation(
+            const LoginScreen(),
+            direction: SlideDirection.left));
+      });
+    }
+
+    if (!auth.isAuthenticated && widget.isProtected) {
+      return LoadingScreen();
+    }
+
+    ValueNotifier<bool> isFloatingMenuOpen = ValueNotifier(false);
+
+    return SafeArea(
+      top: AppGeneralSettings.useTopAppBar,
+      child: Scaffold(
+        appBar: AppGeneralSettings.useTopAppBar
+            ? ThemeAppBar(
+                title: widget.appBarTitle,
+              )
+            : null,
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              physics: widget.scrollPhysics ?? getScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height,
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: widget.addSafeAreaMargin ? 70 : 0,
+                    ),
+                    widget.body,
+                  ],
+                ),
+              ),
+            ),
+            if (!widget.hideFloatingSpeedDialMenu &&
+                AppGeneralSettings.useFloatingSpeedDialMenu)
+              Positioned.fill(
+                child: ValueListenableBuilder(
+                  valueListenable: isFloatingMenuOpen,
+                  builder: (context, value, child) {
+                    return value
+                        ? BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                            child: Container(
+                              color: Colors.black.withOpacity(0.1),
+                            ),
+                          )
+                        : const SizedBox.shrink();
+                  },
+                ),
+              ),
+          ],
+        ),
+        floatingActionButton: ThemeFloatingSpeedDialMenu(
+          hideFloatingSpeedDialMenu: widget.hideFloatingSpeedDialMenu,
+          isDialOpenNotifier: isFloatingMenuOpen,
+        ),
+      ),
+    );
+  }
+}
+
+///// lib/theme/main_theme/main_theme.dart /////
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:template_app/app_settings/theme_settings.dart';
 
-import '../models/theme_models.dart';
+import '../../models/theme_models.dart';
 
 class MainTheme {
   /// --------------- LIGHT THEME ---------------
@@ -968,6 +1247,128 @@ class MainTheme {
     return font.isGoogleFont
         ? GoogleFonts.getFont(font.name, textStyle: style)
         : style.copyWith(fontFamily: font.name, fontSize: style.fontSize);
+  }
+}
+
+///// lib/providers/auth_provider.dart /////
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:template_app/app_settings/app_general_settings.dart';
+import 'package:template_app/app_settings/auth_config.dart';
+import 'package:template_app/_bin/config.dart';
+
+class AuthorizationProvider extends ChangeNotifier {
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
+  final FirebaseAuth? _firebaseAuth =
+      AuthConfig.useFirebase ? FirebaseAuth.instance : null;
+
+  final GoogleSignIn _googleSignIn =
+      GoogleSignIn(scopes: AuthConfig.googleSignInScopes);
+  String? _authToken;
+
+  AuthorizationProvider() {
+    _loadAuthToken();
+  }
+
+  String? get authToken => _authToken;
+
+  Future<void> _loadAuthToken() async {
+    _authToken = await storage.read(key: 'auth_token');
+    notifyListeners();
+  }
+
+  Future<void> setAuthToken(String token) async {
+    await storage.write(key: 'auth_token', value: token);
+    _authToken = token;
+    notifyListeners();
+  }
+
+  Future<void> clearAuthToken() async {
+    await storage.delete(key: 'auth_token');
+    _authToken = null;
+    debugPrint('Auth token cleared. User will be logged out.');
+    notifyListeners();
+  }
+
+  Future<void> signOut(BuildContext context) async {
+    if (DebugConfig.debugMode) {
+      debugPrint(
+          'Error: Debug mode is on. Disable it from Config.debugMode in order to proceed with sign out.');
+      return;
+    }
+    await clearAuthToken();
+    if (AuthConfig.useFirebase) {
+      await _firebaseAuth?.signOut();
+    }
+  }
+
+  bool get isAuthenticated =>
+      DebugConfig.debugMode || (_authToken != null && _authToken!.isNotEmpty);
+
+  Future<bool> signInWithEmail(String email, String password) async {
+    bool success = false;
+    try {
+      debugPrint('Attempting to sign in with email and password.');
+
+      if (AuthConfig.useFirebase) {
+        final UserCredential authResult = await _firebaseAuth!
+            .signInWithEmailAndPassword(email: email, password: password);
+        _authToken = authResult.user!.uid;
+        await setAuthToken(_authToken!);
+      } else {
+        _authToken = email;
+        await setAuthToken(_authToken!);
+      }
+
+      notifyListeners();
+      success = true;
+      return success;
+    } catch (error) {
+      debugPrint('Error during email/password Sign In: ${error.toString()}');
+      success = false;
+      return success;
+    }
+  }
+
+  Future<bool> signInWithGoogle() async {
+    bool success = false;
+    if (AuthConfig.allowGoogleSignIn) {
+      try {
+        debugPrint('Attempting to sign in with Google.');
+
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+        if (googleUser != null) {
+          debugPrint('Google Sign In successful.');
+          final GoogleSignInAuthentication googleAuth =
+              await googleUser.authentication;
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+
+          if (AuthConfig.useFirebase) {
+            final UserCredential? authResult =
+                await _firebaseAuth?.signInWithCredential(credential);
+            _authToken = authResult?.user!.uid;
+            await setAuthToken(_authToken!);
+          } else {
+            _authToken = googleAuth.accessToken;
+            await setAuthToken(_authToken!);
+          }
+
+          notifyListeners();
+          success = true;
+          return success;
+        }
+      } catch (error) {
+        debugPrint('Error during Google Sign In: ${error.toString()}');
+        success = false;
+        return success;
+      }
+    }
+    return success;
   }
 }
 

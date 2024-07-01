@@ -15,15 +15,21 @@ import 'globals.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeApp();
+  logConfigurations();
+  runApp(const ProviderScope(child: MyApp()));
+}
+
+Future<void> initializeApp() async {
   if (AuthConfig.useFirebase) {
     try {
       await Firebase.initializeApp();
     } catch (e) {
       debugPrint('Error: Firebase initialization failed. $e');
+
+      ///TODO: Show an error screen here or retry the initialization.
     }
   }
-  logConfigurations();
-  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
