@@ -23,13 +23,28 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("de"),
+        "buttonsSectionTitle": MessageLookupByLibrary.simpleMessage("Tasten"),
+        "chipOneLabel": MessageLookupByLibrary.simpleMessage("Chip Eins"),
+        "chipThreeLabel": MessageLookupByLibrary.simpleMessage("Chip Drei"),
+        "chipTwoLabel": MessageLookupByLibrary.simpleMessage("Chip Zwei"),
+        "chipsSectionTitle": MessageLookupByLibrary.simpleMessage("Chips"),
         "darkMode": MessageLookupByLibrary.simpleMessage("Dunkelmodus"),
+        "elevatedButtonLabel":
+            MessageLookupByLibrary.simpleMessage("Erhöhte Taste"),
         "email": MessageLookupByLibrary.simpleMessage("E-Mail"),
         "emailHintText": MessageLookupByLibrary.simpleMessage("E-Mail"),
         "emailLabel": MessageLookupByLibrary.simpleMessage("E-MAIL"),
         "errorSigningInWithGoogleSnackbarMessage":
             MessageLookupByLibrary.simpleMessage(
                 "Es gab einen Fehler bei der Anmeldung mit Google. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support."),
+        "exampleDescription": MessageLookupByLibrary.simpleMessage(
+            "Dies ist eine kreative Beispielbeschreibung für den Startbildschirm. Fühlen Sie sich frei, es zu ändern."),
+        "exampleSwitch":
+            MessageLookupByLibrary.simpleMessage("Beispielschalter"),
+        "exampleTitle": MessageLookupByLibrary.simpleMessage("Beispieltitel"),
+        "homeScreenTitle":
+            MessageLookupByLibrary.simpleMessage("Startbildschirm"),
+        "inputsSectionTitle": MessageLookupByLibrary.simpleMessage("Eingaben"),
         "invalidEmailMessage": MessageLookupByLibrary.simpleMessage(
             "Bitte geben Sie eine gültige E-Mail-Adresse ein."),
         "invalidEmailSnackbarMessage": MessageLookupByLibrary.simpleMessage(
@@ -50,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Erfolgreich angemeldet!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Abmelden"),
+        "outlinedButtonLabel":
+            MessageLookupByLibrary.simpleMessage("Umrissene Taste"),
         "password": MessageLookupByLibrary.simpleMessage("Passwort"),
         "passwordHintText": MessageLookupByLibrary.simpleMessage("Passwort"),
         "passwordLabel": MessageLookupByLibrary.simpleMessage("PASSWORT"),
@@ -62,9 +79,29 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Anmeldung..."),
         "signingInWithGoogleSnackbarMessage":
             MessageLookupByLibrary.simpleMessage("Anmeldung mit Google..."),
+        "sliderValueLabel":
+            MessageLookupByLibrary.simpleMessage("Schiebereglerwert"),
+        "slidersSectionTitle":
+            MessageLookupByLibrary.simpleMessage("Schieberegler"),
+        "stepOneContent": MessageLookupByLibrary.simpleMessage(
+            "Dies ist der Inhalt für Schritt eins."),
+        "stepOneTitle": MessageLookupByLibrary.simpleMessage("Schritt Eins"),
+        "stepThreeContent": MessageLookupByLibrary.simpleMessage(
+            "Dies ist der Inhalt für Schritt drei."),
+        "stepThreeTitle": MessageLookupByLibrary.simpleMessage("Schritt Drei"),
+        "stepTwoContent": MessageLookupByLibrary.simpleMessage(
+            "Dies ist der Inhalt für Schritt zwei."),
+        "stepTwoTitle": MessageLookupByLibrary.simpleMessage("Schritt Zwei"),
+        "steppersSectionTitle":
+            MessageLookupByLibrary.simpleMessage("Schrittweiser"),
         "switchToDarkMode":
             MessageLookupByLibrary.simpleMessage("Zu Dunkelmodus wechseln"),
         "switchToLightMode":
-            MessageLookupByLibrary.simpleMessage("Zu Hellmodus wechseln")
+            MessageLookupByLibrary.simpleMessage("Zu Hellmodus wechseln"),
+        "switchesSectionTitle":
+            MessageLookupByLibrary.simpleMessage("Schalter"),
+        "textButtonLabel": MessageLookupByLibrary.simpleMessage("Text Taste"),
+        "textFieldLabel":
+            MessageLookupByLibrary.simpleMessage("Beispiel Textfeld")
       };
 }

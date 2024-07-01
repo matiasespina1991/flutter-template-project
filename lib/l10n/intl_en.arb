@@ -26,7 +26,30 @@
   "pleaseFillTheFollowingFields": "Please fill the following fields:",
   "signInWithGoogleButtonLabel": "Sign in with Google",
    "signingInWithGoogleSnackbarMessage": "Signing in with Google...",
-     "errorSigningInWithGoogleSnackbarMessage": "There was an error signing in with Google. Please try again or contact support."
-
+     "errorSigningInWithGoogleSnackbarMessage": "There was an error signing in with Google. Please try again or contact support.",
+"homeScreenTitle": "Home Screen",
+  "exampleTitle": "Example Title",
+  "exampleDescription": "This is a creative lorem ipsum example description for the Home screen. Feel free to modify it.",
+  "buttonsSectionTitle": "Buttons",
+  "elevatedButtonLabel": "Elevated Button",
+  "textButtonLabel": "Text Button",
+  "outlinedButtonLabel": "Outlined Button",
+  "switchesSectionTitle": "Switches",
+  "exampleSwitch": "Example Switch",
+  "inputsSectionTitle": "Inputs",
+  "textFieldLabel": "Example TextField",
+  "steppersSectionTitle": "Steppers",
+  "stepOneTitle": "Step One",
+  "stepOneContent": "This is the content for step one.",
+  "stepTwoTitle": "Step Two",
+  "stepTwoContent": "This is the content for step two.",
+  "stepThreeTitle": "Step Three",
+  "stepThreeContent": "This is the content for step three.",
+  "chipsSectionTitle": "Chips",
+  "chipOneLabel": "Chip One",
+  "chipTwoLabel": "Chip Two",
+  "chipThreeLabel": "Chip Three",
+  "slidersSectionTitle": "Sliders",
+  "sliderValueLabel": "Slider Value"
 
 }

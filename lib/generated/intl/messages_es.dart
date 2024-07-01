@@ -23,13 +23,29 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("es"),
+        "buttonsSectionTitle": MessageLookupByLibrary.simpleMessage("Botones"),
+        "chipOneLabel": MessageLookupByLibrary.simpleMessage("Chip Uno"),
+        "chipThreeLabel": MessageLookupByLibrary.simpleMessage("Chip Tres"),
+        "chipTwoLabel": MessageLookupByLibrary.simpleMessage("Chip Dos"),
+        "chipsSectionTitle": MessageLookupByLibrary.simpleMessage("Chips"),
         "darkMode": MessageLookupByLibrary.simpleMessage("Modo oscuro"),
+        "elevatedButtonLabel":
+            MessageLookupByLibrary.simpleMessage("Botón Elevado"),
         "email": MessageLookupByLibrary.simpleMessage("email"),
         "emailHintText": MessageLookupByLibrary.simpleMessage("Email"),
         "emailLabel": MessageLookupByLibrary.simpleMessage("EMAIL"),
         "errorSigningInWithGoogleSnackbarMessage":
             MessageLookupByLibrary.simpleMessage(
                 "Hubo un error al iniciar sesión con Google. Por favor, inténtelo de nuevo o contacte con el soporte."),
+        "exampleDescription": MessageLookupByLibrary.simpleMessage(
+            "Esta es una descripción creativa de ejemplo para la pantalla principal. Siéntete libre de modificarla."),
+        "exampleSwitch":
+            MessageLookupByLibrary.simpleMessage("Interruptor de Ejemplo"),
+        "exampleTitle":
+            MessageLookupByLibrary.simpleMessage("Título de Ejemplo"),
+        "homeScreenTitle":
+            MessageLookupByLibrary.simpleMessage("Pantalla Principal"),
+        "inputsSectionTitle": MessageLookupByLibrary.simpleMessage("Entradas"),
         "invalidEmailMessage": MessageLookupByLibrary.simpleMessage(
             "Inserte un correo electrónico válido, por favor."),
         "invalidEmailSnackbarMessage": MessageLookupByLibrary.simpleMessage(
@@ -51,6 +67,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Haz iniciado sesión!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Cerrar sesión"),
+        "outlinedButtonLabel":
+            MessageLookupByLibrary.simpleMessage("Botón Contorneado"),
         "password": MessageLookupByLibrary.simpleMessage("contraseña"),
         "passwordHintText": MessageLookupByLibrary.simpleMessage("Contraseña"),
         "passwordLabel": MessageLookupByLibrary.simpleMessage("CONTRASEÑA"),
@@ -65,9 +83,29 @@ class MessageLookup extends MessageLookupByLibrary {
         "signingInWithGoogleSnackbarMessage":
             MessageLookupByLibrary.simpleMessage(
                 "Iniciando sesión con Google..."),
+        "sliderValueLabel":
+            MessageLookupByLibrary.simpleMessage("Valor del Deslizador"),
+        "slidersSectionTitle":
+            MessageLookupByLibrary.simpleMessage("Deslizadores"),
+        "stepOneContent": MessageLookupByLibrary.simpleMessage(
+            "Este es el contenido del paso uno."),
+        "stepOneTitle": MessageLookupByLibrary.simpleMessage("Paso Uno"),
+        "stepThreeContent": MessageLookupByLibrary.simpleMessage(
+            "Este es el contenido del paso tres."),
+        "stepThreeTitle": MessageLookupByLibrary.simpleMessage("Paso Tres"),
+        "stepTwoContent": MessageLookupByLibrary.simpleMessage(
+            "Este es el contenido del paso dos."),
+        "stepTwoTitle": MessageLookupByLibrary.simpleMessage("Paso Dos"),
+        "steppersSectionTitle": MessageLookupByLibrary.simpleMessage("Pasos"),
         "switchToDarkMode":
             MessageLookupByLibrary.simpleMessage("Cambiar a modo oscuro"),
         "switchToLightMode":
-            MessageLookupByLibrary.simpleMessage("Cambiar a modo claro")
+            MessageLookupByLibrary.simpleMessage("Cambiar a modo claro"),
+        "switchesSectionTitle":
+            MessageLookupByLibrary.simpleMessage("Interruptores"),
+        "textButtonLabel":
+            MessageLookupByLibrary.simpleMessage("Botón de Texto"),
+        "textFieldLabel":
+            MessageLookupByLibrary.simpleMessage("Campo de Texto de Ejemplo")
       };
 }

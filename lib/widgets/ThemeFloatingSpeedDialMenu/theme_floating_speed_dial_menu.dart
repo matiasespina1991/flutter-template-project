@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:template_app/theme/main_theme.dart';
 
 import '../../app_settings/app_general_settings.dart';
 import '../../_bin/config.dart';
@@ -31,6 +32,7 @@ class _ThemeFloatingSpeedDialMenuState
     bool isDarkMode = theme.themeMode == ThemeMode.dark;
 
     return SpeedDial(
+      backgroundColor: Theme.of(context).colorScheme.primary,
       closeManually:
           false, // If set to true, dont try to add dynamic items or state-dependent items, they wont update
       animationDuration: const Duration(milliseconds: 200),
@@ -42,7 +44,7 @@ class _ThemeFloatingSpeedDialMenuState
           : true,
       icon: Icons.add,
       activeIcon: Icons.close,
-      iconTheme: const IconThemeData(color: Colors.white),
+      iconTheme: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
       curve: Curves.easeInOut,
       children: [
         SpeedDialChild(

@@ -329,6 +329,246 @@ class S {
       args: [],
     );
   }
+
+  /// `Home Screen`
+  String get homeScreenTitle {
+    return Intl.message(
+      'Home Screen',
+      name: 'homeScreenTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example Title`
+  String get exampleTitle {
+    return Intl.message(
+      'Example Title',
+      name: 'exampleTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This is a creative lorem ipsum example description for the Home screen. Feel free to modify it.`
+  String get exampleDescription {
+    return Intl.message(
+      'This is a creative lorem ipsum example description for the Home screen. Feel free to modify it.',
+      name: 'exampleDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Buttons`
+  String get buttonsSectionTitle {
+    return Intl.message(
+      'Buttons',
+      name: 'buttonsSectionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Elevated Button`
+  String get elevatedButtonLabel {
+    return Intl.message(
+      'Elevated Button',
+      name: 'elevatedButtonLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Text Button`
+  String get textButtonLabel {
+    return Intl.message(
+      'Text Button',
+      name: 'textButtonLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Outlined Button`
+  String get outlinedButtonLabel {
+    return Intl.message(
+      'Outlined Button',
+      name: 'outlinedButtonLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Switches`
+  String get switchesSectionTitle {
+    return Intl.message(
+      'Switches',
+      name: 'switchesSectionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example Switch`
+  String get exampleSwitch {
+    return Intl.message(
+      'Example Switch',
+      name: 'exampleSwitch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Inputs`
+  String get inputsSectionTitle {
+    return Intl.message(
+      'Inputs',
+      name: 'inputsSectionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example TextField`
+  String get textFieldLabel {
+    return Intl.message(
+      'Example TextField',
+      name: 'textFieldLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Steppers`
+  String get steppersSectionTitle {
+    return Intl.message(
+      'Steppers',
+      name: 'steppersSectionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Step One`
+  String get stepOneTitle {
+    return Intl.message(
+      'Step One',
+      name: 'stepOneTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This is the content for step one.`
+  String get stepOneContent {
+    return Intl.message(
+      'This is the content for step one.',
+      name: 'stepOneContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Step Two`
+  String get stepTwoTitle {
+    return Intl.message(
+      'Step Two',
+      name: 'stepTwoTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This is the content for step two.`
+  String get stepTwoContent {
+    return Intl.message(
+      'This is the content for step two.',
+      name: 'stepTwoContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Step Three`
+  String get stepThreeTitle {
+    return Intl.message(
+      'Step Three',
+      name: 'stepThreeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This is the content for step three.`
+  String get stepThreeContent {
+    return Intl.message(
+      'This is the content for step three.',
+      name: 'stepThreeContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chips`
+  String get chipsSectionTitle {
+    return Intl.message(
+      'Chips',
+      name: 'chipsSectionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chip One`
+  String get chipOneLabel {
+    return Intl.message(
+      'Chip One',
+      name: 'chipOneLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chip Two`
+  String get chipTwoLabel {
+    return Intl.message(
+      'Chip Two',
+      name: 'chipTwoLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chip Three`
+  String get chipThreeLabel {
+    return Intl.message(
+      'Chip Three',
+      name: 'chipThreeLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sliders`
+  String get slidersSectionTitle {
+    return Intl.message(
+      'Sliders',
+      name: 'slidersSectionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Slider Value`
+  String get sliderValueLabel {
+    return Intl.message(
+      'Slider Value',
+      name: 'sliderValueLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

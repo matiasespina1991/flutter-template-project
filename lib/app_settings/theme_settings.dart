@@ -7,8 +7,8 @@ class ThemeSettings {
   static const String defaultThemeMode = 'light';
   static const bool forceDefaultThemeMode = false;
   static const bool useMaterial3 = true;
-  static const Color seedColor = Colors.lightBlueAccent;
-  static const bool forceSeedColor = true;
+  static const Color seedColor = Colors.red;
+  static const bool forceSeedColor = false;
   static const String defaultScrollPhysics =
       'always'; // 'never', 'always', 'clamp'
   static const bool useFlutterToast = false;
@@ -45,7 +45,7 @@ class ThemeSettings {
   );
 
   static const ThemeColors appBarBackgroundColor = ThemeColors(
-    lightModePrimary: Colors.black87,
+    lightModePrimary: Colors.blueGrey,
     darkModePrimary: Colors.blueGrey,
   );
 

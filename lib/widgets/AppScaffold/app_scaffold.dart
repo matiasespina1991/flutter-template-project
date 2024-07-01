@@ -18,6 +18,7 @@ class AppScaffold extends ConsumerStatefulWidget {
   final String appBarTitle;
   final bool isProtected;
   final ScrollPhysics? scrollPhysics;
+  final bool addSafeAreaMargin;
 
   const AppScaffold({
     super.key,
@@ -26,6 +27,7 @@ class AppScaffold extends ConsumerStatefulWidget {
     this.hideFloatingSpeedDialMenu = false,
     this.isProtected = true,
     this.scrollPhysics,
+    this.addSafeAreaMargin = false,
   });
 
   @override
@@ -73,7 +75,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     ValueNotifier<bool> isFloatingMenuOpen = ValueNotifier(false);
 
     return SafeArea(
-      top: AppGeneralSettings.useSafeArea,
+      top: AppGeneralSettings.useTopAppBar,
       child: Scaffold(
         appBar: AppGeneralSettings.useTopAppBar
             ? ThemeAppBar(
@@ -88,8 +90,13 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
                 constraints: BoxConstraints(
                   minHeight: MediaQuery.of(context).size.height,
                 ),
-                child: IntrinsicHeight(
-                  child: widget.body,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: widget.addSafeAreaMargin ? 70 : 0,
+                    ),
+                    widget.body,
+                  ],
                 ),
               ),
             ),
@@ -106,7 +113,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
                               color: Colors.black.withOpacity(0.1),
                             ),
                           )
-                        : SizedBox.shrink();
+                        : const SizedBox.shrink();
                   },
                 ),
               ),
