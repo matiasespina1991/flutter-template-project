@@ -185,11 +185,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   children: [
                     OutlinedButton(
                       onPressed: details.onStepContinue,
-                      child: Text('Continue'),
+                      child: const Text('Continue'),
                     ),
                     TextButton(
                       onPressed: details.onStepCancel,
-                      child: Text('Back'),
+                      child: const Text('Back'),
                     ),
                   ],
                 );

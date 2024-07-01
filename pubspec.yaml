@@ -161,7 +161,8 @@ flutter:
 
   # To add entire folders of assets to your application, add an assets section, like this:
   assets:
-    - lib/assets/
+    - lib/assets/lottie_animations/
+    - lib/assets/images/
 
 
   # fonts:

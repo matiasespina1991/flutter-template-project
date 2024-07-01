@@ -19,7 +19,7 @@ class ThemeSettings {
 
   static const LottieAnimationBackground primaryLottieBackgroundAnimation =
       LottieAnimationBackground(
-    animationPath: 'lib/assets/animation9.json',
+    animationPath: 'lib/assets/lottie_animations/animation9.json',
     width: 200,
     x: 0,
     y: 0,
@@ -30,7 +30,7 @@ class ThemeSettings {
 
   static const LottieAnimationBackground secondaryLottieBackgroundAnimation =
       LottieAnimationBackground(
-    animationPath: 'lib/assets/animation4.json',
+    animationPath: 'lib/assets/lottie_animations/animation4.json',
     width: 200,
     x: 0,
     y: 250,
@@ -40,7 +40,7 @@ class ThemeSettings {
   );
 
   static const ternaryLottieBackgroundAnimation = LottieAnimationBackground(
-    animationPath: 'lib/assets/animation10.json',
+    animationPath: 'lib/assets/lottie_animations/animation10.json',
     width: 200,
     x: 0,
     y: 0,
