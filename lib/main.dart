@@ -9,7 +9,7 @@ import 'package:template_app/app_settings/language_settings.dart';
 import 'package:template_app/generated/l10n.dart';
 import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/home_screen/home_screen.dart';
-import 'package:template_app/theme/main_theme.dart';
+import 'package:template_app/theme/main_theme/main_theme.dart';
 import 'package:template_app/utils/debug/log_configurations.dart';
 import 'globals.dart';
 

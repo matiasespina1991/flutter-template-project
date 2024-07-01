@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:template_app/app_settings/theme_settings.dart';
 
-import '../models/theme_models.dart';
+import '../../models/theme_models.dart';
 
 class MainTheme {
   /// --------------- LIGHT THEME ---------------
