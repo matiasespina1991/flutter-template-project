@@ -7,7 +7,7 @@ class ThemeSettings {
   static const String defaultThemeMode = 'light';
   static const bool forceDefaultThemeMode = false;
   static const bool useMaterial3 = true;
-  static const Color seedColor = Colors.red;
+  static const Color seedColor = Colors.green;
   static const bool forceSeedColor = false;
   static const String defaultScrollPhysics =
       'always'; // 'never', 'always', 'clamp'

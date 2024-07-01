@@ -179,6 +179,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Text(
                 '${S.of(context).sliderValueLabel}: ${_sliderValue.toStringAsFixed(1)}'),
             Stepper(
+              margin: const EdgeInsets.all(0),
+              controlsBuilder: (context, details) {
+                return Row(
+                  children: [
+                    OutlinedButton(
+                      onPressed: details.onStepContinue,
+                      child: Text('Continue'),
+                    ),
+                    TextButton(
+                      onPressed: details.onStepCancel,
+                      child: Text('Back'),
+                    ),
+                  ],
+                );
+              },
               currentStep: _stepperIndex,
               onStepTapped: (index) {
                 setState(() {
