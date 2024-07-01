@@ -17,8 +17,8 @@ class ThemeSettings {
   static const double buttonsElevation = 1.1;
   static const double buttonsOpacity = 0.8;
 
-  static const LottieAnimationBackground
-      loginScreenLottieBackgroundAnimationLightMode = LottieAnimationBackground(
+  static const LottieAnimationBackground primaryLottieBackgroundAnimation =
+      LottieAnimationBackground(
     animationPath: 'lib/assets/animation9.json',
     width: 200,
     x: 0,
@@ -28,8 +28,8 @@ class ThemeSettings {
     opacity: 0.8,
   );
 
-  static const LottieAnimationBackground
-      loginScreenLottieBackgroundAnimationDarkMode = LottieAnimationBackground(
+  static const LottieAnimationBackground secondaryLottieBackgroundAnimation =
+      LottieAnimationBackground(
     animationPath: 'lib/assets/animation4.json',
     width: 200,
     x: 0,
@@ -37,6 +37,16 @@ class ThemeSettings {
     blur: 80,
     active: true,
     opacity: 0.8,
+  );
+
+  static const ternaryLottieBackgroundAnimation = LottieAnimationBackground(
+    animationPath: 'lib/assets/animation10.json',
+    width: 200,
+    x: 0,
+    y: 0,
+    blur: 50,
+    active: true,
+    opacity: 0.5,
   );
 
   static const ThemeColors scaffoldBackgroundColor = ThemeColors(

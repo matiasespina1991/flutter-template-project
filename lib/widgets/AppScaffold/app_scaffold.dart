@@ -6,11 +6,13 @@ import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';
+import 'package:template_app/utils/ui/is_dark_mode.dart';
 import '../../app_settings/theme_settings.dart';
 
+import '../../models/general_models.dart';
 import '../../screens/login_screen/login_screen.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
-import '../../utils/ui/is_dark_mode.dart';
+
 import '../ThemeAppBar/template_app_bar.dart';
 import '../ThemeFloatingSpeedDialMenu/theme_floating_speed_dial_menu.dart';
 
@@ -21,6 +23,10 @@ class AppScaffold extends ConsumerStatefulWidget {
   final bool isProtected;
   final ScrollPhysics? scrollPhysics;
   final bool addSafeAreaMargin;
+  final LottieAnimationBackground?
+      backgroundAnimation; // Cambiado a LottieAnimationBackground
+  final LottieAnimationBackground?
+      backgroundAnimationDarkMode; // Nueva propiedad
 
   const AppScaffold({
     super.key,
@@ -30,6 +36,8 @@ class AppScaffold extends ConsumerStatefulWidget {
     this.isProtected = true,
     this.scrollPhysics,
     this.addSafeAreaMargin = false,
+    this.backgroundAnimation,
+    this.backgroundAnimationDarkMode, // Nueva propiedad
   });
 
   @override
@@ -50,6 +58,14 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
       default:
         return const AlwaysScrollableScrollPhysics();
     }
+  }
+
+  LottieAnimationBackground? getLottieAnimation() {
+    final themeIsDark = isDarkMode(context);
+    if (themeIsDark && widget.backgroundAnimationDarkMode != null) {
+      return widget.backgroundAnimationDarkMode;
+    }
+    return widget.backgroundAnimation;
   }
 
   @override
@@ -75,9 +91,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
 
     ValueNotifier<bool> isFloatingMenuOpen = ValueNotifier(false);
 
-    final animationConfig = isDarkMode(context)
-        ? ThemeSettings.loginScreenLottieBackgroundAnimationDarkMode
-        : ThemeSettings.loginScreenLottieBackgroundAnimationLightMode;
+    final animationConfig = getLottieAnimation();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -91,8 +105,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
             : null,
         body: Stack(
           children: [
-            // Lottie Animation as background
-            if (animationConfig.active)
+            if (animationConfig != null && animationConfig.active)
               Positioned(
                 left: (screenWidth / 2) +
                     animationConfig.x -
@@ -109,10 +122,11 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
                   ),
                 ),
               ),
-            if (animationConfig.blur > 0 && animationConfig.active)
+            if (animationConfig != null &&
+                animationConfig.blur > 0 &&
+                animationConfig.active)
               Positioned.fill(
                 child: BackdropFilter(
-                  // blendMode: BlendMode.difference,
                   filter: ImageFilter.blur(
                       sigmaX: animationConfig.blur,
                       sigmaY: animationConfig.blur,
@@ -127,7 +141,6 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
                   minHeight: MediaQuery.of(context).size.height,
                 ),
                 child: Column(
-                  mainAxisSize: MainAxisSize.max,
                   children: [
                     SizedBox(
                       height: widget.addSafeAreaMargin ? 70 : 0,

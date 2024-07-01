@@ -38,6 +38,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       appBarTitle: S.of(context).loginScreenTitle,
       isProtected: false,
       hideFloatingSpeedDialMenu: true,
+      backgroundAnimation: ThemeSettings.primaryLottieBackgroundAnimation,
+      backgroundAnimationDarkMode:
+          ThemeSettings.secondaryLottieBackgroundAnimation,
       body: Stack(
         clipBehavior: Clip.none,
         children: [
