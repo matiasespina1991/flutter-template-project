@@ -65,5 +65,19 @@
       "exampleBodySmallPrefix": "Beispiel für Body ",
       "exampleLabelLargePrefix": "Beispiel für Label ",
       "exampleLabelMediumPrefix": "Beispiel für Label ",
-      "exampleLabelSmallPrefix": "Beispiel für Label "
+      "exampleLabelSmallPrefix": "Beispiel für Label ",
+       "successfulLogin": "Erfolgreiche Anmeldung",
+        "successfulLoginRedirect": "Du wirst zu deinem Dashboard weitergeleitet",
+        "gotIt": "Verstanden",
+        "loginFailed": "Anmeldung fehlgeschlagen",
+        "loginFailedMessage": "Beim Anmelden ist ein Fehler aufgetreten. Bitte versuche es erneut.",
+        "ok": "OK",
+        "emptyFields": "Einige Felder sind leer",
+        "fillAllFields": "Bitte fülle alle Felder aus:",
+        "failedLogout": "Abmeldung fehlgeschlagen",
+        "failedLogoutMessage": "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuche es erneut.",
+        "unauthorizedAccess": "Unbefugter Zugriff",
+        "unauthorizedAccessMessage": "Du musst dich anmelden, um auf {screenName} zuzugreifen.",
+        "unableToLoginNoInternet": "Anmeldung nicht möglich",
+        "noInternetMessage": "Du hast versucht, dich anzumelden, aber du hast keine Internetverbindung. Bitte verbinde dich mit dem Internet und versuche es erneut."
 }

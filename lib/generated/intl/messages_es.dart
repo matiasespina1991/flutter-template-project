@@ -20,6 +20,9 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'es';
 
+  static String m0(screenName) =>
+      "Necesitas iniciar sesión para acceder a ${screenName}.";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("es"),
@@ -34,6 +37,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "email": MessageLookupByLibrary.simpleMessage("email"),
         "emailHintText": MessageLookupByLibrary.simpleMessage("Email"),
         "emailLabel": MessageLookupByLibrary.simpleMessage("EMAIL"),
+        "emptyFields":
+            MessageLookupByLibrary.simpleMessage("Algunos campos están vacíos"),
         "errorSigningInWithGoogleSnackbarMessage":
             MessageLookupByLibrary.simpleMessage(
                 "Hubo un error al iniciar sesión con Google. Por favor, inténtelo de nuevo o contacte con el soporte."),
@@ -73,6 +78,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ejemplo de Title "),
         "exampleTitleSmallPrefix":
             MessageLookupByLibrary.simpleMessage("Ejemplo de Title "),
+        "failedLogout":
+            MessageLookupByLibrary.simpleMessage("Cierre de sesión fallido"),
+        "failedLogoutMessage": MessageLookupByLibrary.simpleMessage(
+            "Hubo un error al intentar cerrar sesión. Inténtalo de nuevo."),
+        "fillAllFields": MessageLookupByLibrary.simpleMessage(
+            "Por favor completa todos los campos:"),
+        "gotIt": MessageLookupByLibrary.simpleMessage("Entendido"),
         "homeScreenTitle":
             MessageLookupByLibrary.simpleMessage("Pantalla Principal"),
         "inputsSectionTitle": MessageLookupByLibrary.simpleMessage("Entradas"),
@@ -92,11 +104,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginButton": MessageLookupByLibrary.simpleMessage("Iniciar sesión"),
         "loginErrorMessage": MessageLookupByLibrary.simpleMessage(
             "Error al iniciar sesión. Por favor, inténtelo de nuevo o contacte con el soporte."),
+        "loginFailed":
+            MessageLookupByLibrary.simpleMessage("Inicio de sesión fallido"),
+        "loginFailedMessage": MessageLookupByLibrary.simpleMessage(
+            "Hubo un error al iniciar sesión. Inténtalo de nuevo."),
         "loginScreenTitle":
             MessageLookupByLibrary.simpleMessage("Iniciar sesión"),
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Haz iniciado sesión!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Cerrar sesión"),
+        "noInternetMessage": MessageLookupByLibrary.simpleMessage(
+            "Intentaste iniciar sesión pero no tienes conexión a internet. Conéctate a internet e inténtalo de nuevo."),
+        "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "outlinedButtonLabel":
             MessageLookupByLibrary.simpleMessage("Botón Contorneado"),
         "password": MessageLookupByLibrary.simpleMessage("contraseña"),
@@ -127,6 +146,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Este es el contenido del paso dos."),
         "stepTwoTitle": MessageLookupByLibrary.simpleMessage("Paso Dos"),
         "steppersSectionTitle": MessageLookupByLibrary.simpleMessage("Pasos"),
+        "successfulLogin":
+            MessageLookupByLibrary.simpleMessage("Inicio de sesión exitoso"),
+        "successfulLoginRedirect":
+            MessageLookupByLibrary.simpleMessage("Serás redirigido a tu panel"),
         "switchToDarkMode":
             MessageLookupByLibrary.simpleMessage("Cambiar a modo oscuro"),
         "switchToLightMode":
@@ -136,6 +159,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "textButtonLabel":
             MessageLookupByLibrary.simpleMessage("Botón de Texto"),
         "textFieldLabel":
-            MessageLookupByLibrary.simpleMessage("Campo de Texto de Ejemplo")
+            MessageLookupByLibrary.simpleMessage("Campo de Texto de Ejemplo"),
+        "unableToLoginNoInternet":
+            MessageLookupByLibrary.simpleMessage("No se puede iniciar sesión"),
+        "unauthorizedAccess":
+            MessageLookupByLibrary.simpleMessage("Acceso no autorizado"),
+        "unauthorizedAccessMessage": m0
       };
 }

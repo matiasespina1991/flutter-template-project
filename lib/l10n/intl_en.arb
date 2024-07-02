@@ -65,6 +65,20 @@
     "exampleBodySmallPrefix": "Example of Body ",
     "exampleLabelLargePrefix": "Example of Label ",
     "exampleLabelMediumPrefix": "Example of Label ",
-    "exampleLabelSmallPrefix": "Example of Label "
+    "exampleLabelSmallPrefix": "Example of Label ",
+     "successfulLogin": "Successful Login",
+      "successfulLoginRedirect": "You will be redirected to your dashboard",
+      "gotIt": "Got it",
+      "loginFailed": "Login failed",
+      "loginFailedMessage": "There was an error logging in. Please try again.",
+      "ok": "OK",
+      "emptyFields": "Some fields are empty",
+      "fillAllFields": "Please fill in all fields:",
+      "failedLogout": "Failed Logout",
+      "failedLogoutMessage": "There was an error when trying to logout. Please try again.",
+      "unauthorizedAccess": "Unauthorized Access",
+      "unauthorizedAccessMessage": "You need to login to access {screenName}.",
+      "unableToLoginNoInternet": "Unable to Login",
+      "noInternetMessage": "You tried to login but you don't have internet connection. Please connect to the internet and try again."
 
 }

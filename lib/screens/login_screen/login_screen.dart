@@ -274,6 +274,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         duration: SnackbarDuration.short,
       );
       error = true;
+
+      NotificationModal.loginFieldsAreEmpty(
+          context: context, onTapConfirm: () {}, emptyFields: emptyFields);
     }
 
     if (_emailController.text.isNotEmpty &&
@@ -351,6 +354,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         variant: SnackbarVariant.error,
         duration: SnackbarDuration.long,
       );
+      NotificationModal.failedLogin(
+          context: context,
+          onTapConfirm: () {},
+          errorMessage: S.of(context).loginErrorMessage);
       debugPrint('Error logging in: ${error.toString()}');
     } finally {
       setState(() {

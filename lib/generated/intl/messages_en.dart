@@ -20,6 +20,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static String m0(screenName) => "You need to login to access ${screenName}.";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("en"),
@@ -34,6 +36,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "email": MessageLookupByLibrary.simpleMessage("email"),
         "emailHintText": MessageLookupByLibrary.simpleMessage("Email"),
         "emailLabel": MessageLookupByLibrary.simpleMessage("EMAIL"),
+        "emptyFields":
+            MessageLookupByLibrary.simpleMessage("Some fields are empty"),
         "errorSigningInWithGoogleSnackbarMessage":
             MessageLookupByLibrary.simpleMessage(
                 "There was an error signing in with Google. Please try again or contact support."),
@@ -71,6 +75,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Example of Title "),
         "exampleTitleSmallPrefix":
             MessageLookupByLibrary.simpleMessage("Example of Title "),
+        "failedLogout": MessageLookupByLibrary.simpleMessage("Failed Logout"),
+        "failedLogoutMessage": MessageLookupByLibrary.simpleMessage(
+            "There was an error when trying to logout. Please try again."),
+        "fillAllFields":
+            MessageLookupByLibrary.simpleMessage("Please fill in all fields:"),
+        "gotIt": MessageLookupByLibrary.simpleMessage("Got it"),
         "homeScreenTitle": MessageLookupByLibrary.simpleMessage("Home Screen"),
         "inputsSectionTitle": MessageLookupByLibrary.simpleMessage("Inputs"),
         "invalidEmailMessage": MessageLookupByLibrary.simpleMessage(
@@ -89,11 +99,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginButton": MessageLookupByLibrary.simpleMessage("Login"),
         "loginErrorMessage": MessageLookupByLibrary.simpleMessage(
             "Error logging in. Please try again or contact support."),
+        "loginFailed": MessageLookupByLibrary.simpleMessage("Login failed"),
+        "loginFailedMessage": MessageLookupByLibrary.simpleMessage(
+            "There was an error logging in. Please try again."),
         "loginScreenTitle":
             MessageLookupByLibrary.simpleMessage("Login screen"),
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Login successful!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Logout"),
+        "noInternetMessage": MessageLookupByLibrary.simpleMessage(
+            "You tried to login but you don\'t have internet connection. Please connect to the internet and try again."),
+        "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "outlinedButtonLabel":
             MessageLookupByLibrary.simpleMessage("Outlined Button"),
         "password": MessageLookupByLibrary.simpleMessage("password"),
@@ -122,6 +138,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "stepTwoTitle": MessageLookupByLibrary.simpleMessage("Step Two"),
         "steppersSectionTitle":
             MessageLookupByLibrary.simpleMessage("Steppers"),
+        "successfulLogin":
+            MessageLookupByLibrary.simpleMessage("Successful Login"),
+        "successfulLoginRedirect": MessageLookupByLibrary.simpleMessage(
+            "You will be redirected to your dashboard"),
         "switchToDarkMode":
             MessageLookupByLibrary.simpleMessage("Switch to dark mode"),
         "switchToLightMode":
@@ -130,6 +150,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Switches"),
         "textButtonLabel": MessageLookupByLibrary.simpleMessage("Text Button"),
         "textFieldLabel":
-            MessageLookupByLibrary.simpleMessage("Example TextField")
+            MessageLookupByLibrary.simpleMessage("Example TextField"),
+        "unableToLoginNoInternet":
+            MessageLookupByLibrary.simpleMessage("Unable to Login"),
+        "unauthorizedAccess":
+            MessageLookupByLibrary.simpleMessage("Unauthorized Access"),
+        "unauthorizedAccessMessage": m0
       };
 }

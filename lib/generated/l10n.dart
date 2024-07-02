@@ -719,6 +719,146 @@ class S {
       args: [],
     );
   }
+
+  /// `Successful Login`
+  String get successfulLogin {
+    return Intl.message(
+      'Successful Login',
+      name: 'successfulLogin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You will be redirected to your dashboard`
+  String get successfulLoginRedirect {
+    return Intl.message(
+      'You will be redirected to your dashboard',
+      name: 'successfulLoginRedirect',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Got it`
+  String get gotIt {
+    return Intl.message(
+      'Got it',
+      name: 'gotIt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login failed`
+  String get loginFailed {
+    return Intl.message(
+      'Login failed',
+      name: 'loginFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There was an error logging in. Please try again.`
+  String get loginFailedMessage {
+    return Intl.message(
+      'There was an error logging in. Please try again.',
+      name: 'loginFailedMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OK`
+  String get ok {
+    return Intl.message(
+      'OK',
+      name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Some fields are empty`
+  String get emptyFields {
+    return Intl.message(
+      'Some fields are empty',
+      name: 'emptyFields',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please fill in all fields:`
+  String get fillAllFields {
+    return Intl.message(
+      'Please fill in all fields:',
+      name: 'fillAllFields',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed Logout`
+  String get failedLogout {
+    return Intl.message(
+      'Failed Logout',
+      name: 'failedLogout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There was an error when trying to logout. Please try again.`
+  String get failedLogoutMessage {
+    return Intl.message(
+      'There was an error when trying to logout. Please try again.',
+      name: 'failedLogoutMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unauthorized Access`
+  String get unauthorizedAccess {
+    return Intl.message(
+      'Unauthorized Access',
+      name: 'unauthorizedAccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You need to login to access {screenName}.`
+  String unauthorizedAccessMessage(Object screenName) {
+    return Intl.message(
+      'You need to login to access $screenName.',
+      name: 'unauthorizedAccessMessage',
+      desc: '',
+      args: [screenName],
+    );
+  }
+
+  /// `Unable to Login`
+  String get unableToLoginNoInternet {
+    return Intl.message(
+      'Unable to Login',
+      name: 'unableToLoginNoInternet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You tried to login but you don't have internet connection. Please connect to the internet and try again.`
+  String get noInternetMessage {
+    return Intl.message(
+      'You tried to login but you don\'t have internet connection. Please connect to the internet and try again.',
+      name: 'noInternetMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

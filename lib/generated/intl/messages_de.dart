@@ -20,6 +20,9 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'de';
 
+  static String m0(screenName) =>
+      "Du musst dich anmelden, um auf ${screenName} zuzugreifen.";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("de"),
@@ -34,6 +37,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "email": MessageLookupByLibrary.simpleMessage("E-Mail"),
         "emailHintText": MessageLookupByLibrary.simpleMessage("E-Mail"),
         "emailLabel": MessageLookupByLibrary.simpleMessage("E-MAIL"),
+        "emptyFields":
+            MessageLookupByLibrary.simpleMessage("Einige Felder sind leer"),
         "errorSigningInWithGoogleSnackbarMessage":
             MessageLookupByLibrary.simpleMessage(
                 "Es gab einen Fehler bei der Anmeldung mit Google. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support."),
@@ -72,6 +77,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Beispiel für Title "),
         "exampleTitleSmallPrefix":
             MessageLookupByLibrary.simpleMessage("Beispiel für Title "),
+        "failedLogout":
+            MessageLookupByLibrary.simpleMessage("Abmeldung fehlgeschlagen"),
+        "failedLogoutMessage": MessageLookupByLibrary.simpleMessage(
+            "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuche es erneut."),
+        "fillAllFields": MessageLookupByLibrary.simpleMessage(
+            "Bitte fülle alle Felder aus:"),
+        "gotIt": MessageLookupByLibrary.simpleMessage("Verstanden"),
         "homeScreenTitle":
             MessageLookupByLibrary.simpleMessage("Startbildschirm"),
         "inputsSectionTitle": MessageLookupByLibrary.simpleMessage("Eingaben"),
@@ -91,10 +103,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginButton": MessageLookupByLibrary.simpleMessage("Anmelden"),
         "loginErrorMessage": MessageLookupByLibrary.simpleMessage(
             "Fehler bei der Anmeldung. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support."),
+        "loginFailed":
+            MessageLookupByLibrary.simpleMessage("Anmeldung fehlgeschlagen"),
+        "loginFailedMessage": MessageLookupByLibrary.simpleMessage(
+            "Beim Anmelden ist ein Fehler aufgetreten. Bitte versuche es erneut."),
         "loginScreenTitle": MessageLookupByLibrary.simpleMessage("Anmelden"),
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Erfolgreich angemeldet!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Abmelden"),
+        "noInternetMessage": MessageLookupByLibrary.simpleMessage(
+            "Du hast versucht, dich anzumelden, aber du hast keine Internetverbindung. Bitte verbinde dich mit dem Internet und versuche es erneut."),
+        "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "outlinedButtonLabel":
             MessageLookupByLibrary.simpleMessage("Umrissene Taste"),
         "password": MessageLookupByLibrary.simpleMessage("Passwort"),
@@ -124,6 +143,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "stepTwoTitle": MessageLookupByLibrary.simpleMessage("Schritt Zwei"),
         "steppersSectionTitle":
             MessageLookupByLibrary.simpleMessage("Schrittweiser"),
+        "successfulLogin":
+            MessageLookupByLibrary.simpleMessage("Erfolgreiche Anmeldung"),
+        "successfulLoginRedirect": MessageLookupByLibrary.simpleMessage(
+            "Du wirst zu deinem Dashboard weitergeleitet"),
         "switchToDarkMode":
             MessageLookupByLibrary.simpleMessage("Zu Dunkelmodus wechseln"),
         "switchToLightMode":
@@ -132,6 +155,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Schalter"),
         "textButtonLabel": MessageLookupByLibrary.simpleMessage("Text Taste"),
         "textFieldLabel":
-            MessageLookupByLibrary.simpleMessage("Beispiel Textfeld")
+            MessageLookupByLibrary.simpleMessage("Beispiel Textfeld"),
+        "unableToLoginNoInternet":
+            MessageLookupByLibrary.simpleMessage("Anmeldung nicht möglich"),
+        "unauthorizedAccess":
+            MessageLookupByLibrary.simpleMessage("Unbefugter Zugriff"),
+        "unauthorizedAccessMessage": m0
       };
 }

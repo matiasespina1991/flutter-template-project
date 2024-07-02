@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:template_app/app_settings/theme_settings.dart';
-
-import '../../theme/main_theme/main_theme.dart';
+import 'package:template_app/generated/l10n.dart';
+import 'package:intl/intl.dart';
 
 class NotificationModal {
   static void successfulLogin({
@@ -25,20 +25,23 @@ class NotificationModal {
                   child: Icon(Icons.check, size: 50, color: Colors.white),
                 ),
                 const SizedBox(height: 20),
-                const Text('Successful Login',
-                    style: TextStyle(
+                Text(S.of(context).successfulLogin,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     )),
                 const SizedBox(height: 8),
-                const Text('You will be redirected to your dashboard',
-                    style: TextStyle(fontSize: 18)),
+                Text(S.of(context).successfulLoginRedirect,
+                    style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: 200,
                   child: ElevatedButton(
-                    onPressed: onTapConfirm,
-                    child: Text('Got it'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).gotIt),
                   ),
                 ),
               ],
@@ -49,7 +52,7 @@ class NotificationModal {
     );
   }
 
-  void failedLogin({
+  static void failedLogin({
     required BuildContext context,
     required VoidCallback onTapConfirm,
     required String errorMessage,
@@ -71,10 +74,10 @@ class NotificationModal {
                   child: const Icon(Icons.close, size: 50, color: Colors.white),
                 ),
                 const SizedBox(height: 15),
-                const Padding(
-                  padding: EdgeInsets.all(2.0),
-                  child: Text('Login failed',
-                      style: TextStyle(
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Text(S.of(context).loginFailed,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       )),
@@ -87,9 +90,15 @@ class NotificationModal {
                       style: const TextStyle(fontSize: 18)),
                 ),
                 const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: onTapConfirm,
-                  child: Text('Ok'),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).ok),
+                  ),
                 ),
               ],
             ),
@@ -99,7 +108,7 @@ class NotificationModal {
     );
   }
 
-  void loginFieldsAreEmpty({
+  static void loginFieldsAreEmpty({
     required BuildContext context,
     required Function onTapConfirm,
     required List<String> emptyFields,
@@ -116,25 +125,30 @@ class NotificationModal {
               children: <Widget>[
                 const Icon(Icons.warning, size: 50, color: Colors.amber),
                 const SizedBox(height: 20),
-                const Text('Some fields are empty',
-                    style: TextStyle(
+                Text(S.of(context).emptyFields,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     )),
                 const SizedBox(height: 8),
-                const Text('Please fill in all fields:',
-                    style: TextStyle(fontSize: 18)),
+                Text(S.of(context).fillAllFields,
+                    style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 8),
-                ...emptyFields.map((element) => Text(element,
+                ...emptyFields.map((element) => Text(
+                    toBeginningOfSentenceCase(element),
                     textAlign: TextAlign.start,
                     style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold))),
                 const SizedBox(height: 15),
-                ElevatedButton(
-                  onPressed: () {
-                    onTapConfirm();
-                  },
-                  child: const Text('OK'),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).ok),
+                  ),
                 ),
               ],
             ),
@@ -144,7 +158,7 @@ class NotificationModal {
     );
   }
 
-  void failedLogout({
+  static void failedLogout({
     required BuildContext context,
     required onTapConfirm,
   }) {
@@ -164,23 +178,25 @@ class NotificationModal {
                   child: const Icon(Icons.close, size: 50, color: Colors.white),
                 ),
                 const SizedBox(height: 20),
-                const Text('Failed Logout',
-                    style: TextStyle(
+                Text(S.of(context).failedLogout,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     )),
                 const SizedBox(height: 8),
-                const Text(
-                  'There was an error when trying to logout. Please try again.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18),
-                ),
+                Text(S.of(context).failedLogoutMessage,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    onTapConfirm();
-                  },
-                  child: const Text('OK'),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).ok),
+                  ),
                 ),
               ],
             ),
@@ -190,7 +206,7 @@ class NotificationModal {
     );
   }
 
-  void unauthorizedAccess({
+  static void unauthorizedAccess({
     required BuildContext context,
     required onTapConfirm,
     required String screenName,
@@ -211,20 +227,24 @@ class NotificationModal {
                   child: const Icon(Icons.close, size: 50, color: Colors.white),
                 ),
                 const SizedBox(height: 20),
-                const Text('Unauthorized Access',
-                    style: TextStyle(
+                Text(S.of(context).unauthorizedAccess,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     )),
                 const SizedBox(height: 8),
-                Text('You need to login to access $screenName.',
+                Text(S.of(context).unauthorizedAccessMessage(screenName),
                     style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    onTapConfirm();
-                  },
-                  child: const Text('OK'),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).ok),
+                  ),
                 ),
               ],
             ),
@@ -234,7 +254,7 @@ class NotificationModal {
     );
   }
 
-  void unableToLoginDueToNoInternet({
+  static void unableToLoginDueToNoInternet({
     required BuildContext context,
     required onTapConfirm,
   }) {
@@ -251,24 +271,28 @@ class NotificationModal {
                 const Icon(Icons.signal_wifi_connected_no_internet_4_outlined,
                     size: 50, color: Colors.grey),
                 const SizedBox(height: 20),
-                const Text('Unable to Login',
-                    style: TextStyle(
+                Text(S.of(context).unableToLoginNoInternet,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     )),
                 const SizedBox(height: 8),
-                const SizedBox(
+                SizedBox(
                   width: 300,
-                  child: Text(
-                      'You tried to login to login but you dont have internet connection. Please connect to internet and try to login again.',
-                      style: TextStyle(fontSize: 18)),
+                  child: Text(S.of(context).noInternetMessage,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 18)),
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    onTapConfirm();
-                  },
-                  child: const Text('OK'),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).ok),
+                  ),
                 ),
               ],
             ),

@@ -65,6 +65,20 @@
        "exampleBodySmallPrefix": "Ejemplo de Body ",
        "exampleLabelLargePrefix": "Ejemplo de Label ",
        "exampleLabelMediumPrefix": "Ejemplo de Label ",
-       "exampleLabelSmallPrefix": "Ejemplo de Label "
+       "exampleLabelSmallPrefix": "Ejemplo de Label ",
+        "successfulLogin": "Inicio de sesión exitoso",
+         "successfulLoginRedirect": "Serás redirigido a tu panel",
+         "gotIt": "Entendido",
+         "loginFailed": "Inicio de sesión fallido",
+         "loginFailedMessage": "Hubo un error al iniciar sesión. Inténtalo de nuevo.",
+         "ok": "OK",
+         "emptyFields": "Algunos campos están vacíos",
+         "fillAllFields": "Por favor completa todos los campos:",
+         "failedLogout": "Cierre de sesión fallido",
+         "failedLogoutMessage": "Hubo un error al intentar cerrar sesión. Inténtalo de nuevo.",
+         "unauthorizedAccess": "Acceso no autorizado",
+         "unauthorizedAccessMessage": "Necesitas iniciar sesión para acceder a {screenName}.",
+         "unableToLoginNoInternet": "No se puede iniciar sesión",
+         "noInternetMessage": "Intentaste iniciar sesión pero no tienes conexión a internet. Conéctate a internet e inténtalo de nuevo."
 
 }
