@@ -11,6 +11,8 @@ files=(
     "lib/screens/home_screen/home_screen.dart"
     "lib/screens/login_screen/login_screen.dart"
     "lib/widgets/AppScaffold/app_scaffold.dart"
+    "lib/widgets/NotificationSnackbar/notification_snackbar.dart"
+    "lib/widgets/NotificationModal/notification_modal.dart"
     "lib/theme/main_theme/main_theme.dart"
     "lib/providers/auth_provider.dart"
     "lib/providers/locale_provider.dart"
