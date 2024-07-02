@@ -50,6 +50,21 @@
   "chipTwoLabel": "Chip Two",
   "chipThreeLabel": "Chip Three",
   "slidersSectionTitle": "Sliders",
-  "sliderValueLabel": "Slider Value"
+  "sliderValueLabel": "Slider Value",
+    "exampleDisplayLargePrefix": "Example of Display ",
+    "exampleDisplayMediumPrefix": "Example of Display ",
+    "exampleDisplaySmallPrefix": "Example of Display ",
+    "exampleHeadlineLargePrefix": "Example of Headline ",
+    "exampleHeadlineMediumPrefix": "Example of Headline ",
+    "exampleHeadlineSmallPrefix": "Example of Headline ",
+    "exampleTitleLargePrefix": "Example of Title ",
+    "exampleTitleMediumPrefix": "Example of Title ",
+    "exampleTitleSmallPrefix": "Example of Title ",
+    "exampleBodyLargePrefix": "Example of Body ",
+    "exampleBodyMediumPrefix": "Example of Body ",
+    "exampleBodySmallPrefix": "Example of Body ",
+    "exampleLabelLargePrefix": "Example of Label ",
+    "exampleLabelMediumPrefix": "Example of Label ",
+    "exampleLabelSmallPrefix": "Example of Label "
 
 }

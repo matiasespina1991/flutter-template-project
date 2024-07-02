@@ -50,5 +50,20 @@
     "chipTwoLabel": "Chip Zwei",
     "chipThreeLabel": "Chip Drei",
     "slidersSectionTitle": "Schieberegler",
-    "sliderValueLabel": "Schiebereglerwert"
+    "sliderValueLabel": "Schiebereglerwert",
+      "exampleDisplayLargePrefix": "Beispiel für Display ",
+      "exampleDisplayMediumPrefix": "Beispiel für Display ",
+      "exampleDisplaySmallPrefix": "Beispiel für Display ",
+      "exampleHeadlineLargePrefix": "Beispiel für Headline ",
+      "exampleHeadlineMediumPrefix": "Beispiel für Headline ",
+      "exampleHeadlineSmallPrefix": "Beispiel für Headline ",
+      "exampleTitleLargePrefix": "Beispiel für Title ",
+      "exampleTitleMediumPrefix": "Beispiel für Title ",
+      "exampleTitleSmallPrefix": "Beispiel für Title ",
+      "exampleBodyLargePrefix": "Beispiel für Body ",
+      "exampleBodyMediumPrefix": "Beispiel für Body ",
+      "exampleBodySmallPrefix": "Beispiel für Body ",
+      "exampleLabelLargePrefix": "Beispiel für Label ",
+      "exampleLabelMediumPrefix": "Beispiel für Label ",
+      "exampleLabelSmallPrefix": "Beispiel für Label "
 }

@@ -569,6 +569,156 @@ class S {
       args: [],
     );
   }
+
+  /// `Example of Display `
+  String get exampleDisplayLargePrefix {
+    return Intl.message(
+      'Example of Display ',
+      name: 'exampleDisplayLargePrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Display `
+  String get exampleDisplayMediumPrefix {
+    return Intl.message(
+      'Example of Display ',
+      name: 'exampleDisplayMediumPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Display `
+  String get exampleDisplaySmallPrefix {
+    return Intl.message(
+      'Example of Display ',
+      name: 'exampleDisplaySmallPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Headline `
+  String get exampleHeadlineLargePrefix {
+    return Intl.message(
+      'Example of Headline ',
+      name: 'exampleHeadlineLargePrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Headline `
+  String get exampleHeadlineMediumPrefix {
+    return Intl.message(
+      'Example of Headline ',
+      name: 'exampleHeadlineMediumPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Headline `
+  String get exampleHeadlineSmallPrefix {
+    return Intl.message(
+      'Example of Headline ',
+      name: 'exampleHeadlineSmallPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Title `
+  String get exampleTitleLargePrefix {
+    return Intl.message(
+      'Example of Title ',
+      name: 'exampleTitleLargePrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Title `
+  String get exampleTitleMediumPrefix {
+    return Intl.message(
+      'Example of Title ',
+      name: 'exampleTitleMediumPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Title `
+  String get exampleTitleSmallPrefix {
+    return Intl.message(
+      'Example of Title ',
+      name: 'exampleTitleSmallPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Body `
+  String get exampleBodyLargePrefix {
+    return Intl.message(
+      'Example of Body ',
+      name: 'exampleBodyLargePrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Body `
+  String get exampleBodyMediumPrefix {
+    return Intl.message(
+      'Example of Body ',
+      name: 'exampleBodyMediumPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Body `
+  String get exampleBodySmallPrefix {
+    return Intl.message(
+      'Example of Body ',
+      name: 'exampleBodySmallPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Label `
+  String get exampleLabelLargePrefix {
+    return Intl.message(
+      'Example of Label ',
+      name: 'exampleLabelLargePrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Label `
+  String get exampleLabelMediumPrefix {
+    return Intl.message(
+      'Example of Label ',
+      name: 'exampleLabelMediumPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Example of Label `
+  String get exampleLabelSmallPrefix {
+    return Intl.message(
+      'Example of Label ',
+      name: 'exampleLabelSmallPrefix',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

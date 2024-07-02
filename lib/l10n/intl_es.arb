@@ -50,6 +50,21 @@
      "chipTwoLabel": "Chip Dos",
      "chipThreeLabel": "Chip Tres",
      "slidersSectionTitle": "Deslizadores",
-     "sliderValueLabel": "Valor del Deslizador"
+     "sliderValueLabel": "Valor del Deslizador",
+       "exampleDisplayLargePrefix": "Ejemplo de Display ",
+       "exampleDisplayMediumPrefix": "Ejemplo de Display ",
+       "exampleDisplaySmallPrefix": "Ejemplo de Display ",
+       "exampleHeadlineLargePrefix": "Ejemplo de Headline ",
+       "exampleHeadlineMediumPrefix": "Ejemplo de Headline ",
+       "exampleHeadlineSmallPrefix": "Ejemplo de Headline ",
+       "exampleTitleLargePrefix": "Ejemplo de Title ",
+       "exampleTitleMediumPrefix": "Ejemplo de Title ",
+       "exampleTitleSmallPrefix": "Ejemplo de Title ",
+       "exampleBodyLargePrefix": "Ejemplo de Body ",
+       "exampleBodyMediumPrefix": "Ejemplo de Body ",
+       "exampleBodySmallPrefix": "Ejemplo de Body ",
+       "exampleLabelLargePrefix": "Ejemplo de Label ",
+       "exampleLabelMediumPrefix": "Ejemplo de Label ",
+       "exampleLabelSmallPrefix": "Ejemplo de Label "
 
 }

@@ -29,6 +29,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            const SizedBox(height: 20),
             Text(S.of(context).exampleTitle,
                 style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 10),
@@ -241,6 +242,246 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   isActive: _stepperIndex == 2,
                 ),
               ],
+            ),
+            Divider(),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleDisplayLargePrefix,
+                style: Theme.of(context).textTheme.displayLarge,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Large',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleDisplayMediumPrefix,
+                style: Theme.of(context).textTheme.displayMedium,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Medium',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleDisplaySmallPrefix,
+                style: Theme.of(context).textTheme.displaySmall,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Small',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleHeadlineLargePrefix,
+                style: Theme.of(context).textTheme.headlineLarge,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Large',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleHeadlineMediumPrefix,
+                style: Theme.of(context).textTheme.headlineMedium,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Medium',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleHeadlineSmallPrefix,
+                style: Theme.of(context).textTheme.headlineSmall,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Small',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleTitleLargePrefix,
+                style: Theme.of(context).textTheme.titleLarge,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Large',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleTitleMediumPrefix,
+                style: Theme.of(context).textTheme.titleMedium,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Medium',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleTitleSmallPrefix,
+                style: Theme.of(context).textTheme.titleSmall,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Small',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleBodyLargePrefix,
+                style: Theme.of(context).textTheme.bodyLarge,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Large',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleBodyMediumPrefix,
+                style: Theme.of(context).textTheme.bodyMedium,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Medium',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleBodySmallPrefix,
+                style: Theme.of(context).textTheme.bodySmall,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Small',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleLabelLargePrefix,
+                style: Theme.of(context).textTheme.labelLarge,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Large',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleLabelMediumPrefix,
+                style: Theme.of(context).textTheme.labelMedium,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Medium',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleLabelSmallPrefix,
+                style: Theme.of(context).textTheme.labelSmall,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Small',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 80),
           ],

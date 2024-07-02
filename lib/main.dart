@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/app_settings/app_info.dart';
 import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/app_settings/language_settings.dart';

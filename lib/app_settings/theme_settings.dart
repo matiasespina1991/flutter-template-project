@@ -25,7 +25,7 @@ class ThemeSettings {
     x: 0,
     y: 0,
     blur: 80,
-    active: true,
+    active: false,
     opacity: 0.8,
   );
 
@@ -34,7 +34,7 @@ class ThemeSettings {
     animationPath: 'lib/assets/lottie_animations/animation4.json',
     width: 200,
     x: 0,
-    y: 250,
+    y: 280,
     blur: 80,
     active: true,
     opacity: 0.8,

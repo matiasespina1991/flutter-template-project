@@ -37,11 +37,41 @@ class MessageLookup extends MessageLookupByLibrary {
         "errorSigningInWithGoogleSnackbarMessage":
             MessageLookupByLibrary.simpleMessage(
                 "Es gab einen Fehler bei der Anmeldung mit Google. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support."),
+        "exampleBodyLargePrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Body "),
+        "exampleBodyMediumPrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Body "),
+        "exampleBodySmallPrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Body "),
         "exampleDescription": MessageLookupByLibrary.simpleMessage(
             "Dies ist eine kreative Beispielbeschreibung für den Startbildschirm. Fühlen Sie sich frei, es zu ändern."),
+        "exampleDisplayLargePrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Display "),
+        "exampleDisplayMediumPrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Display "),
+        "exampleDisplaySmallPrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Display "),
+        "exampleHeadlineLargePrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Headline "),
+        "exampleHeadlineMediumPrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Headline "),
+        "exampleHeadlineSmallPrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Headline "),
+        "exampleLabelLargePrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Label "),
+        "exampleLabelMediumPrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Label "),
+        "exampleLabelSmallPrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Label "),
         "exampleSwitch":
             MessageLookupByLibrary.simpleMessage("Beispielschalter"),
         "exampleTitle": MessageLookupByLibrary.simpleMessage("Beispieltitel"),
+        "exampleTitleLargePrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Title "),
+        "exampleTitleMediumPrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Title "),
+        "exampleTitleSmallPrefix":
+            MessageLookupByLibrary.simpleMessage("Beispiel für Title "),
         "homeScreenTitle":
             MessageLookupByLibrary.simpleMessage("Startbildschirm"),
         "inputsSectionTitle": MessageLookupByLibrary.simpleMessage("Eingaben"),
