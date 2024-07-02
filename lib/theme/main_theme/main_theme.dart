@@ -5,8 +5,6 @@ import 'package:template_app/app_settings/theme_settings.dart';
 import '../../models/theme_models.dart';
 
 class MainTheme {
-  static String name = 'MainTheme';
-
   /// --------------- LIGHT THEME ---------------
   static ThemeData get lightTheme {
     final base = ThemeData.light(useMaterial3: ThemeSettings.useMaterial3);
@@ -52,6 +50,7 @@ class MainTheme {
               error: Colors.red[900]!,
               surface: ThemeSettings.scaffoldBackgroundColor.darkModePrimary,
               onSurface: ThemeSettings.primaryTextColor.darkModePrimary,
+              surfaceContainerHigh: Colors.red,
               onSecondary: Colors.black,
               onError: Colors.black,
               brightness: brightness,
@@ -62,6 +61,9 @@ class MainTheme {
       colorScheme: colorScheme,
       scaffoldBackgroundColor: colorScheme.surface,
       hintColor: colorScheme.onSurface,
+      sliderTheme: base.sliderTheme.copyWith(
+        inactiveTrackColor: colorScheme.onSurface.withOpacity(0.5),
+      ),
       textTheme:
           _buildTextTheme(base.textTheme, ThemeSettings.primaryTextStyle),
       appBarTheme: AppBarTheme(

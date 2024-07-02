@@ -13,17 +13,19 @@
 │   │   ├── language_settings.dart
 │   │   └── theme_settings.dart
 │   ├── assets
-│   │   ├── animation.json
-│   │   ├── animation10.json
-│   │   ├── animation11.json
-│   │   ├── animation2.json
-│   │   ├── animation3.json
-│   │   ├── animation4.json
-│   │   ├── animation5.json
-│   │   ├── animation6.json
-│   │   ├── animation7.json
-│   │   ├── animation8.json
-│   │   └── animation9.json
+│   │   ├── images
+│   │   └── lottie_animations
+│   │       ├── animation.json
+│   │       ├── animation10.json
+│   │       ├── animation11.json
+│   │       ├── animation2.json
+│   │       ├── animation3.json
+│   │       ├── animation4.json
+│   │       ├── animation5.json
+│   │       ├── animation6.json
+│   │       ├── animation7.json
+│   │       ├── animation8.json
+│   │       └── animation9.json
 │   ├── generated
 │   │   ├── intl
 │   │   │   ├── messages_all.dart
@@ -87,7 +89,7 @@
 ├── pubspec.yaml
 └── template_app.iml
 
-30 directories, 58 files
+32 directories, 58 files
 ///// lib/main.dart /////
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -183,7 +185,7 @@ class AppGeneralSettings {
 }
 
 class DebugConfig {
-  static const bool debugMode = false;
+  static const bool debugMode = true;
   static const String debugScreen = '/home'; //TODO
 }
 
@@ -214,6 +216,7 @@ class LanguageSettings {
 
 ///// lib/app_settings/theme_settings.dart /////
 import 'package:flutter/material.dart';
+import 'package:template_app/theme/main_theme/main_theme.dart';
 
 import '../models/general_models.dart';
 import '../models/theme_models.dart';
@@ -222,7 +225,7 @@ class ThemeSettings {
   static const String defaultThemeMode = 'light';
   static const bool forceDefaultThemeMode = false;
   static const bool useMaterial3 = true;
-  static const Color seedColor = Colors.red;
+  static const Color seedColor = Colors.green;
   static const bool forceSeedColor = false;
   static const String defaultScrollPhysics =
       'always'; // 'never', 'always', 'clamp'
@@ -232,9 +235,9 @@ class ThemeSettings {
   static const double buttonsElevation = 1.1;
   static const double buttonsOpacity = 0.8;
 
-  static const LottieAnimationBackground
-      loginScreenLottieBackgroundAnimationLightMode = LottieAnimationBackground(
-    animationPath: 'lib/assets/animation9.json',
+  static const LottieAnimationBackground primaryLottieBackgroundAnimation =
+      LottieAnimationBackground(
+    animationPath: 'lib/assets/lottie_animations/animation9.json',
     width: 200,
     x: 0,
     y: 0,
@@ -243,15 +246,25 @@ class ThemeSettings {
     opacity: 0.8,
   );
 
-  static const LottieAnimationBackground
-      loginScreenLottieBackgroundAnimationDarkMode = LottieAnimationBackground(
-    animationPath: 'lib/assets/animation4.json',
+  static const LottieAnimationBackground secondaryLottieBackgroundAnimation =
+      LottieAnimationBackground(
+    animationPath: 'lib/assets/lottie_animations/animation4.json',
     width: 200,
     x: 0,
     y: 250,
     blur: 80,
     active: true,
     opacity: 0.8,
+  );
+
+  static const ternaryLottieBackgroundAnimation = LottieAnimationBackground(
+    animationPath: 'lib/assets/lottie_animations/animation10.json',
+    width: 200,
+    x: 0,
+    y: 0,
+    blur: 50,
+    active: true,
+    opacity: 0.5,
   );
 
   static const ThemeColors scaffoldBackgroundColor = ThemeColors(
@@ -521,6 +534,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Text(
                 '${S.of(context).sliderValueLabel}: ${_sliderValue.toStringAsFixed(1)}'),
             Stepper(
+              margin: const EdgeInsets.all(0),
+              controlsBuilder: (context, details) {
+                return Row(
+                  children: [
+                    OutlinedButton(
+                      onPressed: details.onStepContinue,
+                      child: const Text('Continue'),
+                    ),
+                    TextButton(
+                      onPressed: details.onStepCancel,
+                      child: const Text('Back'),
+                    ),
+                  ],
+                );
+              },
               currentStep: _stepperIndex,
               onStepTapped: (index) {
                 setState(() {
@@ -544,17 +572,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               steps: [
                 Step(
                   title: Text(S.of(context).stepOneTitle),
-                  content: Text(S.of(context).stepOneContent),
+                  content: Container(
+                      height: 100,
+                      child: Center(child: Text(S.of(context).stepOneContent))),
                   isActive: _stepperIndex == 0,
                 ),
                 Step(
                   title: Text(S.of(context).stepTwoTitle),
-                  content: Text(S.of(context).stepTwoContent),
+                  content: Container(
+                      height: 100,
+                      child: Center(child: Text(S.of(context).stepTwoContent))),
                   isActive: _stepperIndex == 1,
                 ),
                 Step(
                   title: Text(S.of(context).stepThreeTitle),
-                  content: Text(S.of(context).stepThreeContent),
+                  content: Container(
+                      height: 100,
+                      child:
+                          Center(child: Text(S.of(context).stepThreeContent))),
                   isActive: _stepperIndex == 2,
                 ),
               ],
@@ -608,6 +643,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       appBarTitle: S.of(context).loginScreenTitle,
       isProtected: false,
       hideFloatingSpeedDialMenu: true,
+      backgroundAnimation: ThemeSettings.primaryLottieBackgroundAnimation,
+      backgroundAnimationDarkMode:
+          ThemeSettings.secondaryLottieBackgroundAnimation,
       body: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -944,11 +982,13 @@ import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';
+import 'package:template_app/utils/ui/is_dark_mode.dart';
 import '../../app_settings/theme_settings.dart';
 
+import '../../models/general_models.dart';
 import '../../screens/login_screen/login_screen.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
-import '../../utils/ui/is_dark_mode.dart';
+
 import '../ThemeAppBar/template_app_bar.dart';
 import '../ThemeFloatingSpeedDialMenu/theme_floating_speed_dial_menu.dart';
 
@@ -959,6 +999,10 @@ class AppScaffold extends ConsumerStatefulWidget {
   final bool isProtected;
   final ScrollPhysics? scrollPhysics;
   final bool addSafeAreaMargin;
+  final LottieAnimationBackground?
+      backgroundAnimation; // Cambiado a LottieAnimationBackground
+  final LottieAnimationBackground?
+      backgroundAnimationDarkMode; // Nueva propiedad
 
   const AppScaffold({
     super.key,
@@ -968,6 +1012,8 @@ class AppScaffold extends ConsumerStatefulWidget {
     this.isProtected = true,
     this.scrollPhysics,
     this.addSafeAreaMargin = false,
+    this.backgroundAnimation,
+    this.backgroundAnimationDarkMode, // Nueva propiedad
   });
 
   @override
@@ -988,6 +1034,14 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
       default:
         return const AlwaysScrollableScrollPhysics();
     }
+  }
+
+  LottieAnimationBackground? getLottieAnimation() {
+    final themeIsDark = isDarkMode(context);
+    if (themeIsDark && widget.backgroundAnimationDarkMode != null) {
+      return widget.backgroundAnimationDarkMode;
+    }
+    return widget.backgroundAnimation;
   }
 
   @override
@@ -1013,14 +1067,12 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
 
     ValueNotifier<bool> isFloatingMenuOpen = ValueNotifier(false);
 
-    final animationConfig = isDarkMode(context)
-        ? ThemeSettings.loginScreenLottieBackgroundAnimationDarkMode
-        : ThemeSettings.loginScreenLottieBackgroundAnimationLightMode;
+    final animationConfig = getLottieAnimation();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
-      top: AppGeneralSettings.useTopAppBar,
+      top: AppGeneralSettings.useSafeArea,
       child: Scaffold(
         appBar: AppGeneralSettings.useTopAppBar
             ? ThemeAppBar(
@@ -1029,8 +1081,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
             : null,
         body: Stack(
           children: [
-            // Lottie Animation as background
-            if (animationConfig.active)
+            if (animationConfig != null && animationConfig.active)
               Positioned(
                 left: (screenWidth / 2) +
                     animationConfig.x -
@@ -1047,10 +1098,11 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
                   ),
                 ),
               ),
-            if (animationConfig.blur > 0 && animationConfig.active)
+            if (animationConfig != null &&
+                animationConfig.blur > 0 &&
+                animationConfig.active)
               Positioned.fill(
                 child: BackdropFilter(
-                  // blendMode: BlendMode.difference,
                   filter: ImageFilter.blur(
                       sigmaX: animationConfig.blur,
                       sigmaY: animationConfig.blur,
@@ -1065,10 +1117,13 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
                   minHeight: MediaQuery.of(context).size.height,
                 ),
                 child: Column(
-                  mainAxisSize: MainAxisSize.max,
                   children: [
                     SizedBox(
-                      height: widget.addSafeAreaMargin ? 70 : 0,
+                      height: AppGeneralSettings.useSafeArea
+                          ? 0
+                          : widget.addSafeAreaMargin
+                              ? 60
+                              : 0,
                     ),
                     widget.body,
                   ],
@@ -1111,6 +1166,8 @@ import 'package:template_app/app_settings/theme_settings.dart';
 import '../../models/theme_models.dart';
 
 class MainTheme {
+  static String name = 'MainTheme';
+
   /// --------------- LIGHT THEME ---------------
   static ThemeData get lightTheme {
     final base = ThemeData.light(useMaterial3: ThemeSettings.useMaterial3);
@@ -1663,7 +1720,8 @@ flutter:
 
   # To add entire folders of assets to your application, add an assets section, like this:
   assets:
-    - lib/assets/
+    - lib/assets/lottie_animations/
+    - lib/assets/images/
 
 
   # fonts:

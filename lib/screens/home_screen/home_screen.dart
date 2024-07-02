@@ -175,6 +175,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               },
               min: 0,
               max: 100,
+              // inactiveColor: Colors.white.withOpacity(0.4),
+
+              divisions: 100,
             ),
             Text(
                 '${S.of(context).sliderValueLabel}: ${_sliderValue.toStringAsFixed(1)}'),
