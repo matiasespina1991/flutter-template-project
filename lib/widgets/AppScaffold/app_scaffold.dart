@@ -22,7 +22,6 @@ class AppScaffold extends ConsumerStatefulWidget {
   final String appBarTitle;
   final bool isProtected;
   final ScrollPhysics? scrollPhysics;
-  final bool addSafeAreaMargin;
   final LottieAnimationBackground?
       backgroundAnimation; // Cambiado a LottieAnimationBackground
   final LottieAnimationBackground?
@@ -35,7 +34,6 @@ class AppScaffold extends ConsumerStatefulWidget {
     this.hideFloatingSpeedDialMenu = false,
     this.isProtected = true,
     this.scrollPhysics,
-    this.addSafeAreaMargin = false,
     this.backgroundAnimation,
     this.backgroundAnimationDarkMode, // Nueva propiedad
   });
@@ -96,6 +94,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
+      bottom: AppGeneralSettings.useSafeArea,
       top: AppGeneralSettings.useSafeArea,
       child: Scaffold(
         appBar: AppGeneralSettings.useTopAppBar
@@ -104,6 +103,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
               )
             : null,
         body: Stack(
+          fit: StackFit.expand,
           children: [
             if (animationConfig != null && animationConfig.active)
               Positioned(
@@ -118,40 +118,33 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
                   opacity: animationConfig.opacity,
                   child: Lottie.asset(
                     animationConfig.animationPath,
-                    fit: BoxFit.cover,
                   ),
                 ),
               ),
             if (animationConfig != null &&
                 animationConfig.blur > 0 &&
                 animationConfig.active)
-              Positioned.fill(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                      sigmaX: animationConfig.blur,
-                      sigmaY: animationConfig.blur,
-                      tileMode: TileMode.clamp),
-                  child: Container(),
+              Positioned(
+                child: SizedBox(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                        sigmaX: animationConfig.blur,
+                        sigmaY: animationConfig.blur),
+                    child: Container(
+                      color: Colors.transparent,
+                    ),
+                  ),
                 ),
               ),
             SingleChildScrollView(
               physics: widget.scrollPhysics ?? getScrollPhysics(),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height,
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: AppGeneralSettings.useSafeArea
-                          ? 0
-                          : widget.addSafeAreaMargin
-                              ? 60
-                              : 0,
-                    ),
-                    widget.body,
-                  ],
-                ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: ThemeSettings.scaffoldPadding,
+                    child: widget.body,
+                  ),
+                ],
               ),
             ),
             if (!widget.hideFloatingSpeedDialMenu &&

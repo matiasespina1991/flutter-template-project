@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:template_app/theme/main_theme/main_theme.dart';
-
 import '../models/general_models.dart';
 import '../models/theme_models.dart';
 
@@ -8,6 +6,12 @@ class ThemeSettings {
   static const String defaultThemeMode = 'light';
   static const bool forceDefaultThemeMode = false;
   static const bool useMaterial3 = true;
+  static const EdgeInsetsGeometry scaffoldPadding = EdgeInsets.only(
+    top: 80,
+    bottom: 0,
+    left: 20,
+    right: 20,
+  );
   static const Color seedColor = Colors.red;
   static const bool forceSeedColor = false;
   static const String defaultScrollPhysics =
@@ -25,7 +29,7 @@ class ThemeSettings {
     x: 0,
     y: 0,
     blur: 80,
-    active: false,
+    active: true,
     opacity: 0.8,
   );
 
@@ -34,7 +38,7 @@ class ThemeSettings {
     animationPath: 'lib/assets/lottie_animations/animation4.json',
     width: 200,
     x: 0,
-    y: 280,
+    y: 390,
     blur: 80,
     active: true,
     opacity: 0.8,

@@ -57,7 +57,7 @@ class AuthorizationProvider extends ChangeNotifier {
   Future<bool> signInWithEmail(String email, String password) async {
     bool success = false;
     try {
-      debugPrint('Attempting to sign in with email and password.');
+      debugPrint('Signing in with email/password...');
 
       if (AuthConfig.useFirebase) {
         final UserCredential authResult = await _firebaseAuth!
@@ -71,6 +71,7 @@ class AuthorizationProvider extends ChangeNotifier {
 
       notifyListeners();
       success = true;
+      debugPrint('User logged in successfully.✅');
       return success;
     } catch (error) {
       debugPrint('Error during email/password Sign In: ${error.toString()}');
@@ -83,7 +84,7 @@ class AuthorizationProvider extends ChangeNotifier {
     bool success = false;
     if (AuthConfig.allowGoogleSignIn) {
       try {
-        debugPrint('Attempting to sign in with Google.');
+        debugPrint('Signing in with Google...');
 
         final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
         if (googleUser != null) {
@@ -107,10 +108,12 @@ class AuthorizationProvider extends ChangeNotifier {
 
           notifyListeners();
           success = true;
+          debugPrint('User logged in successfully.');
           return success;
         }
       } catch (error) {
-        debugPrint('Error during Google Sign In: ${error.toString()}');
+        debugPrint(
+            'Error trying to signing in user using Google: ${error.toString()}');
         success = false;
         return success;
       }

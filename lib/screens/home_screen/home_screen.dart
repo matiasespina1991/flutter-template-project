@@ -22,14 +22,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      addSafeAreaMargin: true,
       appBarTitle: S.of(context).homeScreenTitle,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const SizedBox(height: 20),
             Text(S.of(context).exampleTitle,
                 style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 10),

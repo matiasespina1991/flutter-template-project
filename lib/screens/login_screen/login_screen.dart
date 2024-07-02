@@ -42,7 +42,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       backgroundAnimationDarkMode:
           ThemeSettings.secondaryLottieBackgroundAnimation,
       body: Stack(
-        clipBehavior: Clip.none,
         children: [
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -50,29 +49,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: SizedBox(
                 width: 300,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    AppGeneralSettings.useTopAppBar
-                        ? const SizedBox()
-                        : AppGeneralSettings.useSafeArea
-                            ? const SizedBox(height: 40)
-                            : const SizedBox(
-                                height: 100,
-                              ),
-                    const SizedBox(height: 50),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Icon(Icons.email_outlined),
-                          const SizedBox(width: 5),
-                          Text(
-                            S.of(context).emailLabel,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
+                    const SizedBox(height: 80),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Icon(Icons.email_outlined),
+                        const SizedBox(width: 5),
+                        Text(
+                          S.of(context).emailLabel,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
                     ThemeInputTextField(
                       controller: _emailController,
