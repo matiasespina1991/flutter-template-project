@@ -9,6 +9,7 @@ import '../../providers/providers_all.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
 import '../../utils/validation/is_email_valid.dart';
 import '../../widgets/AppScaffold/app_scaffold.dart';
+import '../../widgets/NotificationModal/notification_modal.dart';
 import '../../widgets/NotificationSnackbar/notification_snackbar.dart';
 import '../../widgets/ThemeInputTextField/theme_input_text_field.dart';
 import '../home_screen/home_screen.dart';
@@ -323,15 +324,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .signInWithEmail(_emailController.text, _passwordController.text);
 
       if (userSignedIn) {
-        NotificationSnackbar.hideCurrentSnackBar();
-        NotificationSnackbar.showSnackBar(
-            message: S.of(context).loginSuccessfulMessage,
-            variant: SnackbarVariant.success,
-            duration: SnackbarDuration.short,
-            delay: 1);
-        Navigator.of(context).pushReplacement(pushRouteWithAnimation(
-            const HomeScreen(),
-            direction: SlideDirection.right));
+        void userTappedConfirm() {
+          NotificationSnackbar.hideCurrentSnackBar();
+          NotificationSnackbar.showSnackBar(
+              message: S.of(context).loginSuccessfulMessage,
+              variant: SnackbarVariant.success,
+              duration: SnackbarDuration.short,
+              delay: 1);
+          Navigator.of(context).pushReplacement(pushRouteWithAnimation(
+              const HomeScreen(),
+              direction: SlideDirection.right));
+        }
+
+        NotificationModal.successfulLogin(
+            context: context, onTapConfirm: () => userTappedConfirm());
       } else {
         NotificationSnackbar.showSnackBar(
           message: S.of(context).loginErrorMessage,

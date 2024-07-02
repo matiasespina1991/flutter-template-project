@@ -95,7 +95,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/app_settings/app_info.dart';
 import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/app_settings/language_settings.dart';
@@ -178,14 +177,13 @@ class MainScreen extends StatelessWidget {
 
 ///// lib/app_settings/app_general_settings.dart /////
 class AppGeneralSettings {
-  static const bool useSafeArea = false;
   static const bool useTopAppBar = false;
   static const bool useFloatingSpeedDialMenu = true;
-  static const bool useAppDrawer = false;
+  static const bool useAppDrawerMenu = false;
 }
 
 class DebugConfig {
-  static const bool debugMode = true;
+  static const bool debugMode = false; // If true, login screen will be skipped
   static const String debugScreen = '/home'; //TODO
 }
 
@@ -216,8 +214,6 @@ class LanguageSettings {
 
 ///// lib/app_settings/theme_settings.dart /////
 import 'package:flutter/material.dart';
-import 'package:template_app/theme/main_theme/main_theme.dart';
-
 import '../models/general_models.dart';
 import '../models/theme_models.dart';
 
@@ -225,7 +221,14 @@ class ThemeSettings {
   static const String defaultThemeMode = 'light';
   static const bool forceDefaultThemeMode = false;
   static const bool useMaterial3 = true;
-  static const Color seedColor = Colors.green;
+  static const bool useSafeArea = true;
+  static const EdgeInsetsGeometry scaffoldPadding = EdgeInsets.only(
+    top: 30,
+    bottom: 0,
+    left: 20,
+    right: 20,
+  );
+  static const Color seedColor = Colors.red;
   static const bool forceSeedColor = false;
   static const String defaultScrollPhysics =
       'always'; // 'never', 'always', 'clamp'
@@ -251,7 +254,7 @@ class ThemeSettings {
     animationPath: 'lib/assets/lottie_animations/animation4.json',
     width: 200,
     x: 0,
-    y: 250,
+    y: 390,
     blur: 80,
     active: true,
     opacity: 0.8,
@@ -377,10 +380,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      addSafeAreaMargin: true,
       appBarTitle: S.of(context).homeScreenTitle,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -530,6 +531,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               },
               min: 0,
               max: 100,
+              // inactiveColor: Colors.white.withOpacity(0.4),
+
+              divisions: 100,
             ),
             Text(
                 '${S.of(context).sliderValueLabel}: ${_sliderValue.toStringAsFixed(1)}'),
@@ -594,6 +598,246 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ],
             ),
+            Divider(),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleDisplayLargePrefix,
+                style: Theme.of(context).textTheme.displayLarge,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Large',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleDisplayMediumPrefix,
+                style: Theme.of(context).textTheme.displayMedium,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Medium',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleDisplaySmallPrefix,
+                style: Theme.of(context).textTheme.displaySmall,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Small',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleHeadlineLargePrefix,
+                style: Theme.of(context).textTheme.headlineLarge,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Large',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleHeadlineMediumPrefix,
+                style: Theme.of(context).textTheme.headlineMedium,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Medium',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleHeadlineSmallPrefix,
+                style: Theme.of(context).textTheme.headlineSmall,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Small',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleTitleLargePrefix,
+                style: Theme.of(context).textTheme.titleLarge,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Large',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleTitleMediumPrefix,
+                style: Theme.of(context).textTheme.titleMedium,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Medium',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleTitleSmallPrefix,
+                style: Theme.of(context).textTheme.titleSmall,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Small',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleBodyLargePrefix,
+                style: Theme.of(context).textTheme.bodyLarge,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Large',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleBodyMediumPrefix,
+                style: Theme.of(context).textTheme.bodyMedium,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Medium',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleBodySmallPrefix,
+                style: Theme.of(context).textTheme.bodySmall,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Small',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleLabelLargePrefix,
+                style: Theme.of(context).textTheme.labelLarge,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Large',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleLabelMediumPrefix,
+                style: Theme.of(context).textTheme.labelMedium,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Medium',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+              text: TextSpan(
+                text: S.of(context).exampleLabelSmallPrefix,
+                style: Theme.of(context).textTheme.labelSmall,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Small',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 80),
           ],
         ),
@@ -605,10 +849,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 ///// lib/screens/login_screen/login_screen.dart /////
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:flutter/services.dart';
-import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/generated/l10n.dart';
 import '../../app_settings/theme_settings.dart';
@@ -642,12 +884,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return AppScaffold(
       appBarTitle: S.of(context).loginScreenTitle,
       isProtected: false,
+      useSafeArea: false,
       hideFloatingSpeedDialMenu: true,
       backgroundAnimation: ThemeSettings.primaryLottieBackgroundAnimation,
       backgroundAnimationDarkMode:
           ThemeSettings.secondaryLottieBackgroundAnimation,
       body: Stack(
-        clipBehavior: Clip.none,
         children: [
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -655,29 +897,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               child: SizedBox(
                 width: 300,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    AppGeneralSettings.useTopAppBar
-                        ? const SizedBox()
-                        : AppGeneralSettings.useSafeArea
-                            ? const SizedBox(height: 40)
-                            : const SizedBox(
-                                height: 100,
-                              ),
-                    const SizedBox(height: 50),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Icon(Icons.email_outlined),
-                          const SizedBox(width: 5),
-                          Text(
-                            S.of(context).emailLabel,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
+                    const SizedBox(height: 120),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Icon(Icons.email_outlined),
+                        const SizedBox(width: 5),
+                        Text(
+                          S.of(context).emailLabel,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
                     ThemeInputTextField(
                       controller: _emailController,
@@ -997,8 +1228,8 @@ class AppScaffold extends ConsumerStatefulWidget {
   final bool hideFloatingSpeedDialMenu;
   final String appBarTitle;
   final bool isProtected;
+  final bool? useSafeArea;
   final ScrollPhysics? scrollPhysics;
-  final bool addSafeAreaMargin;
   final LottieAnimationBackground?
       backgroundAnimation; // Cambiado a LottieAnimationBackground
   final LottieAnimationBackground?
@@ -1008,10 +1239,10 @@ class AppScaffold extends ConsumerStatefulWidget {
     super.key,
     required this.body,
     required this.appBarTitle,
+    this.useSafeArea,
     this.hideFloatingSpeedDialMenu = false,
     this.isProtected = true,
     this.scrollPhysics,
-    this.addSafeAreaMargin = false,
     this.backgroundAnimation,
     this.backgroundAnimationDarkMode, // Nueva propiedad
   });
@@ -1072,7 +1303,12 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
-      top: AppGeneralSettings.useSafeArea,
+      bottom: widget.useSafeArea != null
+          ? widget.useSafeArea!
+          : ThemeSettings.useSafeArea,
+      top: widget.useSafeArea != null
+          ? widget.useSafeArea!
+          : ThemeSettings.useSafeArea,
       child: Scaffold(
         appBar: AppGeneralSettings.useTopAppBar
             ? ThemeAppBar(
@@ -1080,6 +1316,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
               )
             : null,
         body: Stack(
+          fit: StackFit.expand,
           children: [
             if (animationConfig != null && animationConfig.active)
               Positioned(
@@ -1094,40 +1331,33 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
                   opacity: animationConfig.opacity,
                   child: Lottie.asset(
                     animationConfig.animationPath,
-                    fit: BoxFit.cover,
                   ),
                 ),
               ),
             if (animationConfig != null &&
                 animationConfig.blur > 0 &&
                 animationConfig.active)
-              Positioned.fill(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                      sigmaX: animationConfig.blur,
-                      sigmaY: animationConfig.blur,
-                      tileMode: TileMode.clamp),
-                  child: Container(),
+              Positioned(
+                child: SizedBox(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                        sigmaX: animationConfig.blur,
+                        sigmaY: animationConfig.blur),
+                    child: Container(
+                      color: Colors.transparent,
+                    ),
+                  ),
                 ),
               ),
             SingleChildScrollView(
               physics: widget.scrollPhysics ?? getScrollPhysics(),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height,
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: AppGeneralSettings.useSafeArea
-                          ? 0
-                          : widget.addSafeAreaMargin
-                              ? 60
-                              : 0,
-                    ),
-                    widget.body,
-                  ],
-                ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: ThemeSettings.scaffoldPadding,
+                    child: widget.body,
+                  ),
+                ],
               ),
             ),
             if (!widget.hideFloatingSpeedDialMenu &&
@@ -1158,6 +1388,411 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
   }
 }
 
+///// lib/widgets/NotificationSnackbar/notification_snackbar.dart /////
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:template_app/app_settings/theme_settings.dart';
+
+import '../../_bin/config.dart';
+import '../../globals.dart';
+
+class SnackbarDuration {
+  static const String short = 'short';
+  static const String long = 'long';
+}
+
+class SnackbarVariant {
+  static const String error = 'error';
+  static const String success = 'success';
+  static const String info = 'info';
+}
+
+class NotificationSnackbar {
+  static void showSnackBar({
+    required String message,
+    required String variant,
+    required String duration,
+    int delay = 0,
+  }) async {
+    if (delay > 0) {
+      await Future.delayed(Duration(seconds: delay));
+    }
+
+    if (ThemeSettings.useFlutterToast) {
+      Fluttertoast.cancel();
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: duration == SnackbarDuration.long
+            ? Toast.LENGTH_LONG
+            : Toast.LENGTH_SHORT,
+        gravity: ToastGravity.SNACKBAR,
+        timeInSecForIosWeb: duration == SnackbarDuration.long ? 3 : 2,
+        backgroundColor: variant == SnackbarVariant.success
+            ? ThemeSettings.snackBarSuccessBackgroundColor
+            : variant == SnackbarVariant.info
+                ? ThemeSettings.snackBarInfoBackgroundColor
+                : ThemeSettings.snackBarErrorBackgroundColor,
+        textColor: ThemeSettings.snackBarErrorTextColor,
+        fontSize: ThemeSettings.snackbarFontSize,
+      );
+      return;
+    }
+
+    snackbarKey.currentState?.showSnackBar(SnackBar(
+      duration: duration == SnackbarDuration.short
+          ? const Duration(seconds: 2)
+          : const Duration(seconds: 5),
+      backgroundColor: variant == SnackbarVariant.success
+          ? ThemeSettings.snackBarSuccessBackgroundColor
+          : variant == SnackbarVariant.info
+              ? ThemeSettings.snackBarInfoBackgroundColor
+              : ThemeSettings.snackBarErrorBackgroundColor,
+      content: Text(message,
+          style: TextStyle(
+              color: variant == SnackbarVariant.success
+                  ? ThemeSettings.snackBarSuccessTextColor
+                  : variant == SnackbarVariant.info
+                      ? ThemeSettings.snackBarInfoTextColor
+                      : ThemeSettings.snackBarErrorTextColor,
+              fontSize: ThemeSettings.snackbarFontSize)),
+    ));
+  }
+
+  static void hideCurrentSnackBar() {
+    if (ThemeSettings.useFlutterToast) {
+      Fluttertoast.cancel();
+      return;
+    }
+    snackbarKey.currentState?.hideCurrentSnackBar();
+  }
+}
+
+///// lib/widgets/NotificationModal/notification_modal.dart /////
+// import 'package:expatrio_challenge/models/update_tax_data_callback_model.dart';
+// import 'package:expatrio_challenge/providers/current_user_data_provider.dart';
+// import 'package:expatrio_challenge/widgets/modals_content/tax_data_modal_content.dart';
+// import 'package:flutter/material.dart';
+//
+// import '../providers/current_user_tax_data_provider.dart';
+// import '../theme/expatrio_theme.dart';
+// import 'buttons.dart';
+// import 'modals_content/country_picker_modal_content.dart';
+//
+// class ShowModal {
+//   void successfulLogin({
+//     required BuildContext context,
+//     required onTapConfirm,
+//   }) {
+//     showModalBottomSheet(
+//       enableDrag: false,
+//       isDismissible: false,
+//       context: context,
+//       builder: (BuildContext context) {
+//         return SizedBox(
+//           height: 300,
+//           child: Center(
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: <Widget>[
+//                 const CircleAvatar(
+//                   backgroundColor: ExpatrioTheme.primaryColor,
+//                   radius: 30,
+//                   child: Icon(Icons.check, size: 50, color: Colors.white),
+//                 ),
+//                 const SizedBox(height: 20),
+//                 const Text('Successful Login',
+//                     style: TextStyle(
+//                       fontSize: 20,
+//                       fontWeight: FontWeight.bold,
+//                     )),
+//                 const SizedBox(height: 8),
+//                 const Text('You will be redirected to your dashboard',
+//                     style: TextStyle(fontSize: 18)),
+//                 const SizedBox(height: 20),
+//                 ExpatrioButton(
+//                   onPressed: () {
+//                     onTapConfirm();
+//                   },
+//                   text: 'Got it',
+//                 ),
+//               ],
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+//
+//   void failedLogin({
+//     required BuildContext context,
+//     required onTapConfirm,
+//     required String errorMessage,
+//   }) {
+//     showModalBottomSheet(
+//       isDismissible: false,
+//       enableDrag: false,
+//       context: context,
+//       builder: (BuildContext context) {
+//         return SizedBox(
+//           height: 300,
+//           child: Center(
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: <Widget>[
+//                 CircleAvatar(
+//                   backgroundColor: Theme.of(context).colorScheme.error,
+//                   radius: 30,
+//                   child: const Icon(Icons.close, size: 50, color: Colors.white),
+//                 ),
+//                 const SizedBox(height: 15),
+//                 const Padding(
+//                   padding: EdgeInsets.all(2.0),
+//                   child: Text('Login failed',
+//                       style: TextStyle(
+//                         fontSize: 20,
+//                         fontWeight: FontWeight.bold,
+//                       )),
+//                 ),
+//                 Padding(
+//                   padding: const EdgeInsets.symmetric(
+//                       horizontal: 32.0, vertical: 12.0),
+//                   child: Text(errorMessage,
+//                       textAlign: TextAlign.center,
+//                       style: const TextStyle(fontSize: 18)),
+//                 ),
+//                 const SizedBox(height: 12),
+//                 ExpatrioButton(
+//                     isPrimary: false,
+//                     onPressed: () {
+//                       onTapConfirm();
+//                     },
+//                     text: 'Ok'),
+//               ],
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+//
+//   void loginFieldsAreEmpty({
+//     required BuildContext context,
+//     required Function onTapConfirm,
+//     required List<String> emptyFields,
+//   }) {
+//     showModalBottomSheet(
+//       isDismissible: false,
+//       context: context,
+//       builder: (BuildContext context) {
+//         return SizedBox(
+//           height: 300,
+//           child: Center(
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: <Widget>[
+//                 const Icon(Icons.warning, size: 50, color: Colors.amber),
+//                 const SizedBox(height: 20),
+//                 const Text('Some fields are empty',
+//                     style: TextStyle(
+//                       fontSize: 20,
+//                       fontWeight: FontWeight.bold,
+//                     )),
+//                 const SizedBox(height: 8),
+//                 const Text('Please fill in all fields:',
+//                     style: TextStyle(fontSize: 18)),
+//                 const SizedBox(height: 8),
+//                 ...emptyFields.map((element) => Text(element,
+//                     textAlign: TextAlign.start,
+//                     style: const TextStyle(
+//                         fontSize: 18, fontWeight: FontWeight.bold))),
+//                 const SizedBox(height: 15),
+//                 ExpatrioButton(
+//                   isPrimary: false,
+//                   onPressed: () {
+//                     onTapConfirm();
+//                   },
+//                   text: 'Ok',
+//                 ),
+//               ],
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+//
+//   void failedLogout({
+//     required BuildContext context,
+//     required onTapConfirm,
+//   }) {
+//     showModalBottomSheet(
+//       isDismissible: false,
+//       context: context,
+//       builder: (BuildContext context) {
+//         return SizedBox(
+//           height: 300,
+//           child: Center(
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: <Widget>[
+//                 CircleAvatar(
+//                   backgroundColor: Theme.of(context).colorScheme.error,
+//                   radius: 30,
+//                   child: const Icon(Icons.close, size: 50, color: Colors.white),
+//                 ),
+//                 const SizedBox(height: 20),
+//                 const Text('Failed Logout',
+//                     style: TextStyle(
+//                       fontSize: 20,
+//                       fontWeight: FontWeight.bold,
+//                     )),
+//                 const SizedBox(height: 8),
+//                 const Text(
+//                   'There was an error when trying to logout. Please try again.',
+//                   textAlign: TextAlign.center,
+//                   style: TextStyle(fontSize: 18),
+//                 ),
+//                 const SizedBox(height: 20),
+//                 ExpatrioButton(
+//                   isPrimary: false,
+//                   onPressed: () {
+//                     onTapConfirm();
+//                   },
+//                   text: 'OK',
+//                 ),
+//               ],
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+//
+//   void unauthorizedAccess({
+//     required BuildContext context,
+//     required onTapConfirm,
+//     required String screenName,
+//   }) {
+//     showModalBottomSheet(
+//       isDismissible: false,
+//       context: context,
+//       builder: (BuildContext context) {
+//         return SizedBox(
+//           height: 300,
+//           child: Center(
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: <Widget>[
+//                 CircleAvatar(
+//                   backgroundColor: Theme.of(context).colorScheme.error,
+//                   radius: 30,
+//                   child: const Icon(Icons.close, size: 50, color: Colors.white),
+//                 ),
+//                 const SizedBox(height: 20),
+//                 const Text('Unauthorized Access',
+//                     style: TextStyle(
+//                       fontSize: 20,
+//                       fontWeight: FontWeight.bold,
+//                     )),
+//                 const SizedBox(height: 8),
+//                 Text('You need to login to access $screenName.',
+//                     style: const TextStyle(fontSize: 18)),
+//                 const SizedBox(height: 20),
+//                 ExpatrioButton(
+//                   isPrimary: false,
+//                   onPressed: () {
+//                     onTapConfirm();
+//                   },
+//                   text: 'OK',
+//                 ),
+//               ],
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+//
+//   void unableToLoginDueToNoInternet({
+//     required BuildContext context,
+//     required onTapConfirm,
+//   }) {
+//     showModalBottomSheet(
+//       isDismissible: false,
+//       context: context,
+//       builder: (BuildContext context) {
+//         return SizedBox(
+//           height: 300,
+//           child: Center(
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: <Widget>[
+//                 const Icon(Icons.signal_wifi_connected_no_internet_4_outlined,
+//                     size: 50, color: Colors.grey),
+//                 const SizedBox(height: 20),
+//                 const Text('Unable to Login',
+//                     style: TextStyle(
+//                       fontSize: 20,
+//                       fontWeight: FontWeight.bold,
+//                     )),
+//                 const SizedBox(height: 8),
+//                 const SizedBox(
+//                   width: 300,
+//                   child: Text(
+//                       'You tried to login to login but you dont have internet connection. Please connect to internet and try to login again.',
+//                       style: TextStyle(fontSize: 18)),
+//                 ),
+//                 const SizedBox(height: 20),
+//                 ExpatrioButton(
+//                   isPrimary: false,
+//                   onPressed: () {
+//                     onTapConfirm();
+//                   },
+//                   text: 'OK',
+//                 ),
+//               ],
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+//
+//   void updateTaxData({
+//     required BuildContext context,
+//     required UpdateTaxDataCallback onTapSaveTaxData,
+//     required CurrentUserDataProvider userDataProvider,
+//     required CurrentUserTaxDataProvider userTaxDataProvider,
+//   }) {
+//     showModalBottomSheet(
+//       enableDrag: true,
+//       isScrollControlled: true,
+//       isDismissible: true,
+//       context: context,
+//       builder: (BuildContext context) {
+//         return TaxDataModalContent(
+//           onTapSaveTaxData: onTapSaveTaxData,
+//           userDataProvider: userDataProvider,
+//           userTaxDataProvider: userTaxDataProvider,
+//         );
+//       },
+//     );
+//   }
+//
+//   Future<void> showCountryPicker({
+//     required BuildContext context,
+//     required void Function(String) onCountrySelected,
+//   }) {
+//     return showModalBottomSheet(
+//       context: context,
+//       isScrollControlled: true,
+//       builder: (BuildContext context) =>
+//           CountryPickerModal(onCountrySelected: onCountrySelected),
+//     );
+//   }
+// }
+
 ///// lib/theme/main_theme/main_theme.dart /////
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -1166,8 +1801,6 @@ import 'package:template_app/app_settings/theme_settings.dart';
 import '../../models/theme_models.dart';
 
 class MainTheme {
-  static String name = 'MainTheme';
-
   /// --------------- LIGHT THEME ---------------
   static ThemeData get lightTheme {
     final base = ThemeData.light(useMaterial3: ThemeSettings.useMaterial3);
@@ -1213,6 +1846,7 @@ class MainTheme {
               error: Colors.red[900]!,
               surface: ThemeSettings.scaffoldBackgroundColor.darkModePrimary,
               onSurface: ThemeSettings.primaryTextColor.darkModePrimary,
+              surfaceContainerHigh: Colors.red,
               onSecondary: Colors.black,
               onError: Colors.black,
               brightness: brightness,
@@ -1223,6 +1857,9 @@ class MainTheme {
       colorScheme: colorScheme,
       scaffoldBackgroundColor: colorScheme.surface,
       hintColor: colorScheme.onSurface,
+      sliderTheme: base.sliderTheme.copyWith(
+        inactiveTrackColor: colorScheme.onSurface.withOpacity(0.5),
+      ),
       textTheme:
           _buildTextTheme(base.textTheme, ThemeSettings.primaryTextStyle),
       appBarTheme: AppBarTheme(
@@ -1373,7 +2010,7 @@ class AuthorizationProvider extends ChangeNotifier {
   Future<bool> signInWithEmail(String email, String password) async {
     bool success = false;
     try {
-      debugPrint('Attempting to sign in with email and password.');
+      debugPrint('Signing in with email/password...');
 
       if (AuthConfig.useFirebase) {
         final UserCredential authResult = await _firebaseAuth!
@@ -1387,6 +2024,7 @@ class AuthorizationProvider extends ChangeNotifier {
 
       notifyListeners();
       success = true;
+      debugPrint('User logged in successfully.✅');
       return success;
     } catch (error) {
       debugPrint('Error during email/password Sign In: ${error.toString()}');
@@ -1399,7 +2037,7 @@ class AuthorizationProvider extends ChangeNotifier {
     bool success = false;
     if (AuthConfig.allowGoogleSignIn) {
       try {
-        debugPrint('Attempting to sign in with Google.');
+        debugPrint('Signing in with Google...');
 
         final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
         if (googleUser != null) {
@@ -1423,10 +2061,12 @@ class AuthorizationProvider extends ChangeNotifier {
 
           notifyListeners();
           success = true;
+          debugPrint('User logged in successfully.');
           return success;
         }
       } catch (error) {
-        debugPrint('Error during Google Sign In: ${error.toString()}');
+        debugPrint(
+            'Error trying to signing in user using Google: ${error.toString()}');
         success = false;
         return success;
       }
