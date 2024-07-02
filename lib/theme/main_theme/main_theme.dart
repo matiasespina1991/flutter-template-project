@@ -5,6 +5,8 @@ import 'package:template_app/app_settings/theme_settings.dart';
 import '../../models/theme_models.dart';
 
 class MainTheme {
+  static String name = 'MainTheme';
+
   /// --------------- LIGHT THEME ---------------
   static ThemeData get lightTheme {
     final base = ThemeData.light(useMaterial3: ThemeSettings.useMaterial3);

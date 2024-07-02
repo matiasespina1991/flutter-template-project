@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:template_app/theme/main_theme/main_theme.dart';
 
 import '../models/general_models.dart';
 import '../models/theme_models.dart';
