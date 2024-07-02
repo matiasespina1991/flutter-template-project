@@ -21,6 +21,7 @@ class AppScaffold extends ConsumerStatefulWidget {
   final bool hideFloatingSpeedDialMenu;
   final String appBarTitle;
   final bool isProtected;
+  final bool? useSafeArea;
   final ScrollPhysics? scrollPhysics;
   final LottieAnimationBackground?
       backgroundAnimation; // Cambiado a LottieAnimationBackground
@@ -31,6 +32,7 @@ class AppScaffold extends ConsumerStatefulWidget {
     super.key,
     required this.body,
     required this.appBarTitle,
+    this.useSafeArea,
     this.hideFloatingSpeedDialMenu = false,
     this.isProtected = true,
     this.scrollPhysics,
@@ -94,8 +96,12 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
-      bottom: AppGeneralSettings.useSafeArea,
-      top: AppGeneralSettings.useSafeArea,
+      bottom: widget.useSafeArea != null
+          ? widget.useSafeArea!
+          : ThemeSettings.useSafeArea,
+      top: widget.useSafeArea != null
+          ? widget.useSafeArea!
+          : ThemeSettings.useSafeArea,
       child: Scaffold(
         appBar: AppGeneralSettings.useTopAppBar
             ? ThemeAppBar(

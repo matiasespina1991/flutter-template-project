@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:flutter/services.dart';
-import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/generated/l10n.dart';
 import '../../app_settings/theme_settings.dart';
@@ -37,6 +35,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return AppScaffold(
       appBarTitle: S.of(context).loginScreenTitle,
       isProtected: false,
+      useSafeArea: false,
       hideFloatingSpeedDialMenu: true,
       backgroundAnimation: ThemeSettings.primaryLottieBackgroundAnimation,
       backgroundAnimationDarkMode:
@@ -50,7 +49,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 width: 300,
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(height: 80),
+                    const SizedBox(height: 120),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [

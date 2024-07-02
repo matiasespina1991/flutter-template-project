@@ -6,8 +6,9 @@ class ThemeSettings {
   static const String defaultThemeMode = 'light';
   static const bool forceDefaultThemeMode = false;
   static const bool useMaterial3 = true;
+  static const bool useSafeArea = true;
   static const EdgeInsetsGeometry scaffoldPadding = EdgeInsets.only(
-    top: 80,
+    top: 30,
     bottom: 0,
     left: 20,
     right: 20,

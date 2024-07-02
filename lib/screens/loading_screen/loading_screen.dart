@@ -12,7 +12,7 @@ class LoadingScreen extends StatelessWidget {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return SafeArea(
-      top: AppGeneralSettings.useSafeArea,
+      top: ThemeSettings.useSafeArea,
       child: Scaffold(
         backgroundColor: isDarkMode
             ? ThemeSettings.scaffoldBackgroundColor.darkModePrimary
