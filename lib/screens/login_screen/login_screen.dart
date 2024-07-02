@@ -339,8 +339,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               direction: SlideDirection.right));
         }
 
-        NotificationModal.successfulLogin(
-            context: context, onTapConfirm: () => userTappedConfirm());
+        NotificationModal.successfulModal(
+            title: S.of(context).successfulLogin,
+            message: S.of(context).successfulLoginRedirect,
+            context: context,
+            onTapConfirm: () => userTappedConfirm());
       } else {
         NotificationSnackbar.showSnackBar(
           message: S.of(context).loginErrorMessage,

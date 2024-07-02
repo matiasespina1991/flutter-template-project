@@ -4,8 +4,10 @@ import 'package:template_app/generated/l10n.dart';
 import 'package:intl/intl.dart';
 
 class NotificationModal {
-  static void successfulLogin({
+  static void successfulModal({
     required BuildContext context,
+    required String title,
+    required String message,
     required VoidCallback onTapConfirm,
   }) {
     showModalBottomSheet(
@@ -25,14 +27,13 @@ class NotificationModal {
                   child: Icon(Icons.check, size: 50, color: Colors.white),
                 ),
                 const SizedBox(height: 20),
-                Text(S.of(context).successfulLogin,
+                Text(title,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     )),
                 const SizedBox(height: 8),
-                Text(S.of(context).successfulLoginRedirect,
-                    style: const TextStyle(fontSize: 18)),
+                Text(message, style: const TextStyle(fontSize: 18)),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: 200,
