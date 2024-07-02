@@ -96,7 +96,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
-      top: AppGeneralSettings.useTopAppBar,
+      top: AppGeneralSettings.useSafeArea,
       child: Scaffold(
         appBar: AppGeneralSettings.useTopAppBar
             ? ThemeAppBar(
@@ -143,7 +143,11 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: widget.addSafeAreaMargin ? 70 : 0,
+                      height: AppGeneralSettings.useSafeArea
+                          ? 0
+                          : widget.addSafeAreaMargin
+                              ? 60
+                              : 0,
                     ),
                     widget.body,
                   ],

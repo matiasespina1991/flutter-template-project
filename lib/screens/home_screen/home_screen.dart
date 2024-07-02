@@ -217,17 +217,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               steps: [
                 Step(
                   title: Text(S.of(context).stepOneTitle),
-                  content: Text(S.of(context).stepOneContent),
+                  content: Container(
+                      height: 100,
+                      child: Center(child: Text(S.of(context).stepOneContent))),
                   isActive: _stepperIndex == 0,
                 ),
                 Step(
                   title: Text(S.of(context).stepTwoTitle),
-                  content: Text(S.of(context).stepTwoContent),
+                  content: Container(
+                      height: 100,
+                      child: Center(child: Text(S.of(context).stepTwoContent))),
                   isActive: _stepperIndex == 1,
                 ),
                 Step(
                   title: Text(S.of(context).stepThreeTitle),
-                  content: Text(S.of(context).stepThreeContent),
+                  content: Container(
+                      height: 100,
+                      child:
+                          Center(child: Text(S.of(context).stepThreeContent))),
                   isActive: _stepperIndex == 2,
                 ),
               ],
