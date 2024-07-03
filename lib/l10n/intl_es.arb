@@ -67,7 +67,7 @@
        "exampleLabelMediumPrefix": "Ejemplo de Label ",
        "exampleLabelSmallPrefix": "Ejemplo de Label ",
         "successfulLogin": "Inicio de sesión exitoso",
-         "successfulLoginRedirect": "Serás redirigido a tu panel",
+         "successfulLoginRedirect": "Serás redirigido a la pantalla principal.",
          "gotIt": "Entendido",
          "loginFailed": "Inicio de sesión fallido",
          "loginFailedMessage": "Hubo un error al iniciar sesión. Inténtalo de nuevo.",

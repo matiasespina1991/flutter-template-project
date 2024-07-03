@@ -67,7 +67,7 @@
     "exampleLabelMediumPrefix": "Example of Label ",
     "exampleLabelSmallPrefix": "Example of Label ",
      "successfulLogin": "Successful Login",
-      "successfulLoginRedirect": "You will be redirected to your dashboard",
+      "successfulLoginRedirectToHomeMessage": "You will be redirected to the main screen.",
       "gotIt": "Got it",
       "loginFailed": "Login failed",
       "loginFailedMessage": "There was an error logging in. Please try again.",

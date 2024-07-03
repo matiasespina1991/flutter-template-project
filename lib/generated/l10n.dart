@@ -730,11 +730,11 @@ class S {
     );
   }
 
-  /// `You will be redirected to your dashboard`
-  String get successfulLoginRedirect {
+  /// `You will be redirected to the main screen.`
+  String get successfulLoginRedirectToHomeMessage {
     return Intl.message(
-      'You will be redirected to your dashboard',
-      name: 'successfulLoginRedirect',
+      'You will be redirected to the main screen.',
+      name: 'successfulLoginRedirectToHomeMessage',
       desc: '',
       args: [],
     );

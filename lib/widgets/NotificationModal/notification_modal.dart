@@ -139,8 +139,8 @@ class NotificationModal {
                     toBeginningOfSentenceCase(element),
                     textAlign: TextAlign.start,
                     style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold))),
-                const SizedBox(height: 15),
+                        fontSize: 16, fontWeight: FontWeight.bold))),
+                const SizedBox(height: 17),
                 SizedBox(
                   width: 200,
                   child: ElevatedButton(

@@ -67,7 +67,8 @@
       "exampleLabelMediumPrefix": "Beispiel für Label ",
       "exampleLabelSmallPrefix": "Beispiel für Label ",
        "successfulLogin": "Erfolgreiche Anmeldung",
-        "successfulLoginRedirect": "Du wirst zu deinem Dashboard weitergeleitet",
+
+        "successfulLoginRedirectToHomeMessage": "Du wirst zum Hauptbildschirm weitergeleitet.",
         "gotIt": "Verstanden",
         "loginFailed": "Anmeldung fehlgeschlagen",
         "loginFailedMessage": "Beim Anmelden ist ein Fehler aufgetreten. Bitte versuche es erneut.",

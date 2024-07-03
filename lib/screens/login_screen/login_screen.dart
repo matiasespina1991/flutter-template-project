@@ -341,7 +341,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
         NotificationModal.successfulModal(
             title: S.of(context).successfulLogin,
-            message: S.of(context).successfulLoginRedirect,
+            message: S.of(context).successfulLoginRedirectToHomeMessage,
             context: context,
             onTapConfirm: () => userTappedConfirm());
       } else {

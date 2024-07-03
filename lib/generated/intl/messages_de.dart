@@ -145,8 +145,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Schrittweiser"),
         "successfulLogin":
             MessageLookupByLibrary.simpleMessage("Erfolgreiche Anmeldung"),
-        "successfulLoginRedirect": MessageLookupByLibrary.simpleMessage(
-            "Du wirst zu deinem Dashboard weitergeleitet"),
+        "successfulLoginRedirectToHomeMessage":
+            MessageLookupByLibrary.simpleMessage(
+                "Du wirst zum Hauptbildschirm weitergeleitet."),
         "switchToDarkMode":
             MessageLookupByLibrary.simpleMessage("Zu Dunkelmodus wechseln"),
         "switchToLightMode":
