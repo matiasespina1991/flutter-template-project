@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:template_app/app_settings/theme_settings.dart';
+import 'package:template_app/theme/main_theme/chip_theme.dart';
+import 'package:template_app/theme/main_theme/input_theme.dart';
 
 import '../../models/theme_models.dart';
+import 'buttons_theme.dart';
 
 class MainTheme {
   /// --------------- LIGHT THEME ---------------
@@ -83,27 +86,14 @@ class MainTheme {
                 ? ThemeSettings.appBarBackgroundColor.lightModePrimary
                 : ThemeSettings.appBarBackgroundColor.darkModePrimary),
       ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: ThemeSettings.forceSeedColor
-              ? colorScheme.onPrimary
-              : (brightness == Brightness.light
-                  ? ThemeSettings.elevatedButtonTextColor.lightModePrimary
-                  : ThemeSettings.elevatedButtonTextColor.darkModePrimary),
-          backgroundColor: ThemeSettings.forceSeedColor
-              ? colorScheme.primary.withOpacity(ThemeSettings.buttonsOpacity)
-              : (brightness == Brightness.light
-                      ? ThemeSettings
-                          .elevatedButtonBackgroundColor.lightModePrimary
-                      : ThemeSettings
-                          .elevatedButtonBackgroundColor.darkModePrimary)
-                  .withOpacity(ThemeSettings.buttonsOpacity),
-          elevation: ThemeSettings.buttonsElevation,
-          minimumSize: const Size(double.infinity, 47),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      ),
+      chipTheme: ChipDecorationTheme.chipTheme(brightness, colorScheme),
+      inputDecorationTheme:
+          InputTheme.inputDecorationTheme(brightness, colorScheme),
+      elevatedButtonTheme:
+          ButtonsTheme.elevatedButtonTheme(brightness, colorScheme),
+      outlinedButtonTheme:
+          ButtonsTheme.outlinedButtonTheme(brightness, colorScheme),
+      textButtonTheme: ButtonsTheme.textButtonTheme(brightness, colorScheme),
       dividerTheme: base.dividerTheme.copyWith(
         space: 70,
         color: colorScheme.onSurface.withOpacity(0.2),

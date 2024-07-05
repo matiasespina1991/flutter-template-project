@@ -37,17 +37,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 style: Theme.of(context).textTheme.titleSmall),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () {},
-              child: Text(S.of(context).elevatedButtonLabel),
-            ),
+                onPressed: () {},
+                child: Text(S.of(context).elevatedButtonLabel),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 47),
+                )),
             TextButton(
-              onPressed: () {},
-              child: Text(S.of(context).textButtonLabel),
-            ),
+                onPressed: () {},
+                child: Text(S.of(context).textButtonLabel),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 47),
+                )),
             OutlinedButton(
-              onPressed: () {},
-              child: Text(S.of(context).outlinedButtonLabel),
-            ),
+                onPressed: () {},
+                child: Text(S.of(context).outlinedButtonLabel),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 47),
+                )),
             const SizedBox(height: 20),
             Text(S.of(context).switchesSectionTitle,
                 style: Theme.of(context).textTheme.titleSmall),
@@ -180,6 +186,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Text(
                 '${S.of(context).sliderValueLabel}: ${_sliderValue.toStringAsFixed(1)}'),
             Stepper(
+              physics: const NeverScrollableScrollPhysics(),
               margin: const EdgeInsets.all(0),
               controlsBuilder: (context, details) {
                 return Row(

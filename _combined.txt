@@ -858,6 +858,7 @@ import '../../providers/providers_all.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
 import '../../utils/validation/is_email_valid.dart';
 import '../../widgets/AppScaffold/app_scaffold.dart';
+import '../../widgets/NotificationModal/notification_modal.dart';
 import '../../widgets/NotificationSnackbar/notification_snackbar.dart';
 import '../../widgets/ThemeInputTextField/theme_input_text_field.dart';
 import '../home_screen/home_screen.dart';
@@ -1122,6 +1123,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         duration: SnackbarDuration.short,
       );
       error = true;
+
+      NotificationModal.loginFieldsAreEmpty(
+          context: context, onTapConfirm: () {}, emptyFields: emptyFields);
     }
 
     if (_emailController.text.isNotEmpty &&
@@ -1172,15 +1176,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .signInWithEmail(_emailController.text, _passwordController.text);
 
       if (userSignedIn) {
-        NotificationSnackbar.hideCurrentSnackBar();
-        NotificationSnackbar.showSnackBar(
-            message: S.of(context).loginSuccessfulMessage,
-            variant: SnackbarVariant.success,
-            duration: SnackbarDuration.short,
-            delay: 1);
-        Navigator.of(context).pushReplacement(pushRouteWithAnimation(
-            const HomeScreen(),
-            direction: SlideDirection.right));
+        void userTappedConfirm() {
+          NotificationSnackbar.hideCurrentSnackBar();
+          NotificationSnackbar.showSnackBar(
+              message: S.of(context).loginSuccessfulMessage,
+              variant: SnackbarVariant.success,
+              duration: SnackbarDuration.short,
+              delay: 1);
+          Navigator.of(context).pushReplacement(pushRouteWithAnimation(
+              const HomeScreen(),
+              direction: SlideDirection.right));
+        }
+
+        NotificationModal.successfulModal(
+            title: S.of(context).successfulLogin,
+            message: S.of(context).successfulLoginRedirectToHomeMessage,
+            context: context,
+            onTapConfirm: () => userTappedConfirm());
       } else {
         NotificationSnackbar.showSnackBar(
           message: S.of(context).loginErrorMessage,
@@ -1194,6 +1206,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         variant: SnackbarVariant.error,
         duration: SnackbarDuration.long,
       );
+      NotificationModal.failedLogin(
+          context: context,
+          onTapConfirm: () {},
+          errorMessage: S.of(context).loginErrorMessage);
       debugPrint('Error logging in: ${error.toString()}');
     } finally {
       setState(() {
@@ -1469,329 +1485,311 @@ class NotificationSnackbar {
 }
 
 ///// lib/widgets/NotificationModal/notification_modal.dart /////
-// import 'package:expatrio_challenge/models/update_tax_data_callback_model.dart';
-// import 'package:expatrio_challenge/providers/current_user_data_provider.dart';
-// import 'package:expatrio_challenge/widgets/modals_content/tax_data_modal_content.dart';
-// import 'package:flutter/material.dart';
-//
-// import '../providers/current_user_tax_data_provider.dart';
-// import '../theme/expatrio_theme.dart';
-// import 'buttons.dart';
-// import 'modals_content/country_picker_modal_content.dart';
-//
-// class ShowModal {
-//   void successfulLogin({
-//     required BuildContext context,
-//     required onTapConfirm,
-//   }) {
-//     showModalBottomSheet(
-//       enableDrag: false,
-//       isDismissible: false,
-//       context: context,
-//       builder: (BuildContext context) {
-//         return SizedBox(
-//           height: 300,
-//           child: Center(
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: <Widget>[
-//                 const CircleAvatar(
-//                   backgroundColor: ExpatrioTheme.primaryColor,
-//                   radius: 30,
-//                   child: Icon(Icons.check, size: 50, color: Colors.white),
-//                 ),
-//                 const SizedBox(height: 20),
-//                 const Text('Successful Login',
-//                     style: TextStyle(
-//                       fontSize: 20,
-//                       fontWeight: FontWeight.bold,
-//                     )),
-//                 const SizedBox(height: 8),
-//                 const Text('You will be redirected to your dashboard',
-//                     style: TextStyle(fontSize: 18)),
-//                 const SizedBox(height: 20),
-//                 ExpatrioButton(
-//                   onPressed: () {
-//                     onTapConfirm();
-//                   },
-//                   text: 'Got it',
-//                 ),
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-//
-//   void failedLogin({
-//     required BuildContext context,
-//     required onTapConfirm,
-//     required String errorMessage,
-//   }) {
-//     showModalBottomSheet(
-//       isDismissible: false,
-//       enableDrag: false,
-//       context: context,
-//       builder: (BuildContext context) {
-//         return SizedBox(
-//           height: 300,
-//           child: Center(
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: <Widget>[
-//                 CircleAvatar(
-//                   backgroundColor: Theme.of(context).colorScheme.error,
-//                   radius: 30,
-//                   child: const Icon(Icons.close, size: 50, color: Colors.white),
-//                 ),
-//                 const SizedBox(height: 15),
-//                 const Padding(
-//                   padding: EdgeInsets.all(2.0),
-//                   child: Text('Login failed',
-//                       style: TextStyle(
-//                         fontSize: 20,
-//                         fontWeight: FontWeight.bold,
-//                       )),
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.symmetric(
-//                       horizontal: 32.0, vertical: 12.0),
-//                   child: Text(errorMessage,
-//                       textAlign: TextAlign.center,
-//                       style: const TextStyle(fontSize: 18)),
-//                 ),
-//                 const SizedBox(height: 12),
-//                 ExpatrioButton(
-//                     isPrimary: false,
-//                     onPressed: () {
-//                       onTapConfirm();
-//                     },
-//                     text: 'Ok'),
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-//
-//   void loginFieldsAreEmpty({
-//     required BuildContext context,
-//     required Function onTapConfirm,
-//     required List<String> emptyFields,
-//   }) {
-//     showModalBottomSheet(
-//       isDismissible: false,
-//       context: context,
-//       builder: (BuildContext context) {
-//         return SizedBox(
-//           height: 300,
-//           child: Center(
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: <Widget>[
-//                 const Icon(Icons.warning, size: 50, color: Colors.amber),
-//                 const SizedBox(height: 20),
-//                 const Text('Some fields are empty',
-//                     style: TextStyle(
-//                       fontSize: 20,
-//                       fontWeight: FontWeight.bold,
-//                     )),
-//                 const SizedBox(height: 8),
-//                 const Text('Please fill in all fields:',
-//                     style: TextStyle(fontSize: 18)),
-//                 const SizedBox(height: 8),
-//                 ...emptyFields.map((element) => Text(element,
-//                     textAlign: TextAlign.start,
-//                     style: const TextStyle(
-//                         fontSize: 18, fontWeight: FontWeight.bold))),
-//                 const SizedBox(height: 15),
-//                 ExpatrioButton(
-//                   isPrimary: false,
-//                   onPressed: () {
-//                     onTapConfirm();
-//                   },
-//                   text: 'Ok',
-//                 ),
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-//
-//   void failedLogout({
-//     required BuildContext context,
-//     required onTapConfirm,
-//   }) {
-//     showModalBottomSheet(
-//       isDismissible: false,
-//       context: context,
-//       builder: (BuildContext context) {
-//         return SizedBox(
-//           height: 300,
-//           child: Center(
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: <Widget>[
-//                 CircleAvatar(
-//                   backgroundColor: Theme.of(context).colorScheme.error,
-//                   radius: 30,
-//                   child: const Icon(Icons.close, size: 50, color: Colors.white),
-//                 ),
-//                 const SizedBox(height: 20),
-//                 const Text('Failed Logout',
-//                     style: TextStyle(
-//                       fontSize: 20,
-//                       fontWeight: FontWeight.bold,
-//                     )),
-//                 const SizedBox(height: 8),
-//                 const Text(
-//                   'There was an error when trying to logout. Please try again.',
-//                   textAlign: TextAlign.center,
-//                   style: TextStyle(fontSize: 18),
-//                 ),
-//                 const SizedBox(height: 20),
-//                 ExpatrioButton(
-//                   isPrimary: false,
-//                   onPressed: () {
-//                     onTapConfirm();
-//                   },
-//                   text: 'OK',
-//                 ),
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-//
-//   void unauthorizedAccess({
-//     required BuildContext context,
-//     required onTapConfirm,
-//     required String screenName,
-//   }) {
-//     showModalBottomSheet(
-//       isDismissible: false,
-//       context: context,
-//       builder: (BuildContext context) {
-//         return SizedBox(
-//           height: 300,
-//           child: Center(
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: <Widget>[
-//                 CircleAvatar(
-//                   backgroundColor: Theme.of(context).colorScheme.error,
-//                   radius: 30,
-//                   child: const Icon(Icons.close, size: 50, color: Colors.white),
-//                 ),
-//                 const SizedBox(height: 20),
-//                 const Text('Unauthorized Access',
-//                     style: TextStyle(
-//                       fontSize: 20,
-//                       fontWeight: FontWeight.bold,
-//                     )),
-//                 const SizedBox(height: 8),
-//                 Text('You need to login to access $screenName.',
-//                     style: const TextStyle(fontSize: 18)),
-//                 const SizedBox(height: 20),
-//                 ExpatrioButton(
-//                   isPrimary: false,
-//                   onPressed: () {
-//                     onTapConfirm();
-//                   },
-//                   text: 'OK',
-//                 ),
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-//
-//   void unableToLoginDueToNoInternet({
-//     required BuildContext context,
-//     required onTapConfirm,
-//   }) {
-//     showModalBottomSheet(
-//       isDismissible: false,
-//       context: context,
-//       builder: (BuildContext context) {
-//         return SizedBox(
-//           height: 300,
-//           child: Center(
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: <Widget>[
-//                 const Icon(Icons.signal_wifi_connected_no_internet_4_outlined,
-//                     size: 50, color: Colors.grey),
-//                 const SizedBox(height: 20),
-//                 const Text('Unable to Login',
-//                     style: TextStyle(
-//                       fontSize: 20,
-//                       fontWeight: FontWeight.bold,
-//                     )),
-//                 const SizedBox(height: 8),
-//                 const SizedBox(
-//                   width: 300,
-//                   child: Text(
-//                       'You tried to login to login but you dont have internet connection. Please connect to internet and try to login again.',
-//                       style: TextStyle(fontSize: 18)),
-//                 ),
-//                 const SizedBox(height: 20),
-//                 ExpatrioButton(
-//                   isPrimary: false,
-//                   onPressed: () {
-//                     onTapConfirm();
-//                   },
-//                   text: 'OK',
-//                 ),
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-//
-//   void updateTaxData({
-//     required BuildContext context,
-//     required UpdateTaxDataCallback onTapSaveTaxData,
-//     required CurrentUserDataProvider userDataProvider,
-//     required CurrentUserTaxDataProvider userTaxDataProvider,
-//   }) {
-//     showModalBottomSheet(
-//       enableDrag: true,
-//       isScrollControlled: true,
-//       isDismissible: true,
-//       context: context,
-//       builder: (BuildContext context) {
-//         return TaxDataModalContent(
-//           onTapSaveTaxData: onTapSaveTaxData,
-//           userDataProvider: userDataProvider,
-//           userTaxDataProvider: userTaxDataProvider,
-//         );
-//       },
-//     );
-//   }
-//
-//   Future<void> showCountryPicker({
-//     required BuildContext context,
-//     required void Function(String) onCountrySelected,
-//   }) {
-//     return showModalBottomSheet(
-//       context: context,
-//       isScrollControlled: true,
-//       builder: (BuildContext context) =>
-//           CountryPickerModal(onCountrySelected: onCountrySelected),
-//     );
-//   }
-// }
+import 'package:flutter/material.dart';
+import 'package:template_app/app_settings/theme_settings.dart';
+import 'package:template_app/generated/l10n.dart';
+import 'package:intl/intl.dart';
+
+class NotificationModal {
+  static void successfulModal({
+    required BuildContext context,
+    required String title,
+    required String message,
+    required VoidCallback onTapConfirm,
+  }) {
+    showModalBottomSheet(
+      enableDrag: false,
+      isDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 300,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundColor: ThemeSettings.snackBarSuccessBackgroundColor,
+                  radius: 30,
+                  child: Icon(Icons.check, size: 50, color: Colors.white),
+                ),
+                const SizedBox(height: 20),
+                Text(title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    )),
+                const SizedBox(height: 8),
+                Text(message, style: const TextStyle(fontSize: 18)),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).gotIt),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static void failedLogin({
+    required BuildContext context,
+    required VoidCallback onTapConfirm,
+    required String errorMessage,
+  }) {
+    showModalBottomSheet(
+      isDismissible: false,
+      enableDrag: false,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 300,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  radius: 30,
+                  child: const Icon(Icons.close, size: 50, color: Colors.white),
+                ),
+                const SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Text(S.of(context).loginFailed,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 32.0, vertical: 12.0),
+                  child: Text(errorMessage,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 18)),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).ok),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static void loginFieldsAreEmpty({
+    required BuildContext context,
+    required Function onTapConfirm,
+    required List<String> emptyFields,
+  }) {
+    showModalBottomSheet(
+      isDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 300,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Icon(Icons.warning, size: 50, color: Colors.amber),
+                const SizedBox(height: 20),
+                Text(S.of(context).emptyFields,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    )),
+                const SizedBox(height: 8),
+                Text(S.of(context).fillAllFields,
+                    style: const TextStyle(fontSize: 18)),
+                const SizedBox(height: 8),
+                ...emptyFields.map((element) => Text(
+                    toBeginningOfSentenceCase(element),
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold))),
+                const SizedBox(height: 17),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).ok),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static void failedLogout({
+    required BuildContext context,
+    required onTapConfirm,
+  }) {
+    showModalBottomSheet(
+      isDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 300,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  radius: 30,
+                  child: const Icon(Icons.close, size: 50, color: Colors.white),
+                ),
+                const SizedBox(height: 20),
+                Text(S.of(context).failedLogout,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    )),
+                const SizedBox(height: 8),
+                Text(S.of(context).failedLogoutMessage,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 18)),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).ok),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static void unauthorizedAccess({
+    required BuildContext context,
+    required onTapConfirm,
+    required String screenName,
+  }) {
+    showModalBottomSheet(
+      isDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 300,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  radius: 30,
+                  child: const Icon(Icons.close, size: 50, color: Colors.white),
+                ),
+                const SizedBox(height: 20),
+                Text(S.of(context).unauthorizedAccess,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    )),
+                const SizedBox(height: 8),
+                Text(S.of(context).unauthorizedAccessMessage(screenName),
+                    style: const TextStyle(fontSize: 18)),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).ok),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static void unableToLoginDueToNoInternet({
+    required BuildContext context,
+    required onTapConfirm,
+  }) {
+    showModalBottomSheet(
+      isDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 300,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Icon(Icons.signal_wifi_connected_no_internet_4_outlined,
+                    size: 50, color: Colors.grey),
+                const SizedBox(height: 20),
+                Text(S.of(context).unableToLoginNoInternet,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    )),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: 300,
+                  child: Text(S.of(context).noInternetMessage,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 18)),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).ok),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
 
 ///// lib/theme/main_theme/main_theme.dart /////
 import 'package:flutter/material.dart';

@@ -21,6 +21,7 @@ class ThemeSettings {
   static const String textInputBorderStyle = 'border'; // 'border' / 'no-border'
   static const bool glassTextInputs = true;
   static const double buttonsElevation = 1.1;
+  static const double buttonsHeight = 47;
   static const double buttonsOpacity = 0.8;
 
   static const LottieAnimationBackground primaryLottieBackgroundAnimation =
@@ -93,6 +94,37 @@ class ThemeSettings {
   static const ThemeColors elevatedButtonTextColor = ThemeColors(
     lightModePrimary: Colors.white,
     darkModePrimary: Colors.white,
+  );
+
+  static const ThemeColors outlinedButtonBackgroundColor = ThemeColors(
+    lightModePrimary: Colors.blueGrey,
+    darkModePrimary: Colors.blueGrey,
+  );
+
+  static const ThemeColors outlinedButtonTextColor = ThemeColors(
+    lightModePrimary: Colors.black,
+    darkModePrimary: Colors.white,
+  );
+
+  static const ThemeColors textButtonTextColor = ThemeColors(
+    lightModePrimary: Colors.black,
+    darkModePrimary: Colors.white,
+  );
+
+  static const BorderRadius buttonsBorderRadius = BorderRadius.all(
+    Radius.circular(1),
+  );
+
+  static const BorderRadius inputsBorderRadius = BorderRadius.all(
+    Radius.circular(1),
+  );
+
+  static const BorderRadius cardBorderRadius = BorderRadius.all(
+    Radius.circular(1),
+  );
+
+  static const BorderRadius chipBorderRadius = BorderRadius.all(
+    Radius.circular(1),
   );
 
   static const Color snackBarErrorBackgroundColor = Colors.red;
