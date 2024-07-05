@@ -15,7 +15,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool useAppBar = AppGeneralSettings.useTopAppBar;
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
-  double _sliderValue = 0.0;
+  int _sliderValue = 0;
   int _stepperIndex = 0;
   bool exampleSwitchValue = false;
 
@@ -78,8 +78,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            Text(S.of(context).steppersSectionTitle,
-                style: Theme.of(context).textTheme.titleSmall),
+            const Divider(),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -155,13 +154,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ],
             ),
             const SizedBox(height: 10),
+            const Divider(),
             Text(S.of(context).chipsSectionTitle,
                 style: Theme.of(context).textTheme.titleSmall),
             const SizedBox(height: 10),
             Wrap(
               spacing: 10,
               children: [
-                Chip(label: Text(S.of(context).chipOneLabel)),
+                Chip(
+                  label: Text(S.of(context).chipOneLabel),
+                ),
                 Chip(label: Text(S.of(context).chipTwoLabel)),
                 Chip(label: Text(S.of(context).chipThreeLabel)),
               ],
@@ -171,10 +173,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 style: Theme.of(context).textTheme.titleSmall),
             const SizedBox(height: 10),
             Slider(
-              value: _sliderValue,
+              value: _sliderValue.toDouble(),
               onChanged: (value) {
                 setState(() {
-                  _sliderValue = value;
+                  _sliderValue = value.toInt();
                 });
               },
               min: 0,
@@ -183,8 +185,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
               divisions: 100,
             ),
-            Text(
-                '${S.of(context).sliderValueLabel}: ${_sliderValue.toStringAsFixed(1)}'),
+            Text('${S.of(context).sliderValueLabel}: ${_sliderValue}%'),
+            const Divider(),
             Stepper(
               physics: const NeverScrollableScrollPhysics(),
               margin: const EdgeInsets.all(0),
@@ -196,6 +198,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: const Text('Continue'),
                     ),
                     TextButton(
+                      style: TextButton.styleFrom(
+                        minimumSize: const Size(92, 0),
+                      ),
                       onPressed: details.onStepCancel,
                       child: const Text('Back'),
                     ),

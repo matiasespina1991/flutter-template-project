@@ -13,7 +13,7 @@ class ThemeSettings {
     left: 20,
     right: 20,
   );
-  static const Color seedColor = Colors.red;
+  static const Color seedColor = Colors.white;
   static const bool forceSeedColor = false;
   static const String defaultScrollPhysics =
       'always'; // 'never', 'always', 'clamp'
@@ -88,12 +88,12 @@ class ThemeSettings {
 
   static const ThemeColors elevatedButtonBackgroundColor = ThemeColors(
     lightModePrimary: Colors.blueGrey,
-    darkModePrimary: Colors.blueGrey,
+    darkModePrimary: Colors.white,
   );
 
   static const ThemeColors elevatedButtonTextColor = ThemeColors(
     lightModePrimary: Colors.white,
-    darkModePrimary: Colors.white,
+    darkModePrimary: Colors.black,
   );
 
   static const ThemeColors outlinedButtonBackgroundColor = ThemeColors(

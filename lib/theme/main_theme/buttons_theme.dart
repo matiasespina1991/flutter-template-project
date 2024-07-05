@@ -32,7 +32,7 @@ class ButtonsTheme {
     return OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: ThemeSettings.forceSeedColor
-            ? colorScheme.onPrimary
+            ? colorScheme.primary
             : (brightness == Brightness.light
                 ? ThemeSettings.outlinedButtonTextColor.lightModePrimary
                 : ThemeSettings.outlinedButtonTextColor.darkModePrimary),
@@ -57,7 +57,7 @@ class ButtonsTheme {
     return TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: ThemeSettings.forceSeedColor
-            ? colorScheme.onPrimary
+            ? colorScheme.primary
             : (brightness == Brightness.light
                 ? ThemeSettings.textButtonTextColor.lightModePrimary
                 : ThemeSettings.textButtonTextColor.darkModePrimary),
