@@ -16,7 +16,7 @@ class ThemeProvider extends ChangeNotifier {
   void toggleTheme(bool isDarkMode) async {
     if (ThemeSettings.forceDefaultThemeMode) {
       debugPrint(
-          'Error: Theme mode change forbidden. Forced theme is on. Disable it from Config.forceDefaultThemeMode in order to proceed with theme change.');
+          'Error: Theme mode change forbidden. Forced theme is on. Disable it from ThemeSettings.forceDefaultThemeMode in order to proceed with theme change.');
       return;
     }
 

@@ -42,7 +42,7 @@ class AuthorizationProvider extends ChangeNotifier {
   Future<void> signOut(BuildContext context) async {
     if (DebugConfig.debugMode) {
       debugPrint(
-          'Error: Debug mode is on. Disable it from Config.debugMode in order to proceed with sign out.');
+          'Error: Debug mode is on. Disable it from AppGeneralSettings.debugMode in order to proceed with sign out.');
       return;
     }
     await clearAuthToken();

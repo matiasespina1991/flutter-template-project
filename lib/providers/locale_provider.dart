@@ -22,7 +22,7 @@ class LocaleProvider extends ChangeNotifier {
   Future<void> setLocale(Locale locale) async {
     if (LanguageSettings.forceDefaultLanguage) {
       debugPrint(
-          'Error: Language change forbidden. Forced locale is on. Set Config.forceLanguage to "false" in order to allow language change.');
+          'Error: Language change forbidden. Forced locale is on. Set LanguageSettings.forceLanguage to "false" in order to allow language change.');
       return;
     }
 

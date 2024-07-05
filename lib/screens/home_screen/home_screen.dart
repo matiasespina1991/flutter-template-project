@@ -38,22 +38,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(height: 10),
             ElevatedButton(
                 onPressed: () {},
-                child: Text(S.of(context).elevatedButtonLabel),
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 47),
-                )),
+                ),
+                child: Text(S.of(context).elevatedButtonLabel)),
             TextButton(
                 onPressed: () {},
-                child: Text(S.of(context).textButtonLabel),
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 47),
-                )),
+                ),
+                child: Text(S.of(context).textButtonLabel)),
             OutlinedButton(
                 onPressed: () {},
-                child: Text(S.of(context).outlinedButtonLabel),
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 47),
-                )),
+                ),
+                child: Text(S.of(context).outlinedButtonLabel)),
             const SizedBox(height: 20),
             Text(S.of(context).switchesSectionTitle,
                 style: Theme.of(context).textTheme.titleSmall),
@@ -225,21 +225,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               steps: [
                 Step(
                   title: Text(S.of(context).stepOneTitle),
-                  content: Container(
+                  content: SizedBox(
                       height: 100,
                       child: Center(child: Text(S.of(context).stepOneContent))),
                   isActive: _stepperIndex == 0,
                 ),
                 Step(
                   title: Text(S.of(context).stepTwoTitle),
-                  content: Container(
+                  content: SizedBox(
                       height: 100,
                       child: Center(child: Text(S.of(context).stepTwoContent))),
                   isActive: _stepperIndex == 1,
                 ),
                 Step(
                   title: Text(S.of(context).stepThreeTitle),
-                  content: Container(
+                  content: SizedBox(
                       height: 100,
                       child:
                           Center(child: Text(S.of(context).stepThreeContent))),
@@ -247,7 +247,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ],
             ),
-            Divider(),
+            const Divider(),
             RichText(
               text: TextSpan(
                 text: S.of(context).exampleDisplayLargePrefix,
