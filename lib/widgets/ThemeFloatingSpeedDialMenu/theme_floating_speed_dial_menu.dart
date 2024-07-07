@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:template_app/theme/main_theme/main_theme.dart';
 
 import '../../app_settings/app_general_settings.dart';
-import '../../_bin/config.dart';
 import '../../generated/l10n.dart';
 import '../../providers/providers_all.dart';
 

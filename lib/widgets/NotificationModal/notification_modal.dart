@@ -21,7 +21,7 @@ class NotificationModal {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                CircleAvatar(
+                const CircleAvatar(
                   backgroundColor: ThemeSettings.snackBarSuccessBackgroundColor,
                   radius: 30,
                   child: Icon(Icons.check, size: 50, color: Colors.white),

@@ -35,8 +35,9 @@ class MainTheme {
               // primary: Config.primaryTextColor.lightModePrimary,
               primary: ThemeSettings.primaryTextColor.lightModePrimary,
               // secondary: Config.secondaryTextColor.lightModePrimary,
+              surface: ThemeSettings.scaffoldBackgroundColor.lightModePrimary,
               secondary: ThemeSettings.secondaryTextColor.lightModePrimary,
-              surface: Colors.white,
+
               error: Colors.red,
               onPrimary: Colors.white,
               onSecondary: Colors.white,

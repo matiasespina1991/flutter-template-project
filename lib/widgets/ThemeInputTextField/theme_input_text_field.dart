@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../app_settings/theme_settings.dart';
-import '../../_bin/config.dart';
 
 class ThemeInputTextField extends StatefulWidget {
   final TextEditingController controller;

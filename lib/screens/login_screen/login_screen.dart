@@ -7,6 +7,7 @@ import 'package:template_app/generated/l10n.dart';
 import '../../app_settings/theme_settings.dart';
 import '../../providers/providers_all.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
+import '../../utils/ui/is_dark_mode.dart';
 import '../../utils/validation/is_email_valid.dart';
 import '../../widgets/AppScaffold/app_scaffold.dart';
 import '../../widgets/NotificationModal/notification_modal.dart';
@@ -51,16 +52,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   children: <Widget>[
                     const SizedBox(height: 120),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        const Icon(Icons.email_outlined),
-                        const SizedBox(width: 5),
-                        Text(
-                          S.of(context).emailLabel,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const Icon(Icons.email_outlined),
+                          const SizedBox(width: 5),
+                          Text(
+                            S.of(context).emailLabel,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     ThemeInputTextField(
                       controller: _emailController,
@@ -167,9 +171,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     const Divider(),
-                    Text(S.of(context).lightModeDarkMode),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          S.of(context).lightMode,
+                          style: TextStyle(
+                            fontWeight: isDarkMode(context)
+                                ? FontWeight.normal
+                                : FontWeight.bold,
+                          ),
+                        ),
+                        const Text(
+                          ' / ',
+                        ),
+                        Text(
+                          S.of(context).darkMode,
+                          style: TextStyle(
+                            fontWeight: isDarkMode(context)
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
                     Switch(
-                      value: Theme.of(context).brightness == Brightness.dark,
+                      thumbIcon: WidgetStateProperty.all(Icon(
+                        isDarkMode(context)
+                            ? Icons.dark_mode
+                            : Icons.light_mode,
+                        color: Colors.white,
+                      )),
+                      value: isDarkMode(context),
                       onChanged: (value) {
                         ref.read(themeProvider).toggleTheme(value);
                       },

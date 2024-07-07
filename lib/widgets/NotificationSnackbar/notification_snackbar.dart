@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:template_app/app_settings/theme_settings.dart';
 
-import '../../_bin/config.dart';
 import '../../globals.dart';
 
 class SnackbarDuration {

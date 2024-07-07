@@ -13,7 +13,7 @@ class ThemeSettings {
     left: 20,
     right: 20,
   );
-  static const Color seedColor = Colors.white;
+  static const Color seedColor = Colors.blueGrey;
   static const bool forceSeedColor = false;
   static const String defaultScrollPhysics =
       'always'; // 'never', 'always', 'clamp'
@@ -83,7 +83,7 @@ class ThemeSettings {
 
   static const ThemeColors primaryContainerBackgroundColor = ThemeColors(
     lightModePrimary: Colors.blueGrey,
-    darkModePrimary: Colors.blueGrey,
+    darkModePrimary: Colors.red,
   );
 
   static const ThemeColors elevatedButtonBackgroundColor = ThemeColors(
@@ -112,19 +112,19 @@ class ThemeSettings {
   );
 
   static const BorderRadius buttonsBorderRadius = BorderRadius.all(
-    Radius.circular(1),
+    Radius.circular(5),
   );
 
   static const BorderRadius inputsBorderRadius = BorderRadius.all(
-    Radius.circular(1),
+    Radius.circular(5),
   );
 
   static const BorderRadius cardBorderRadius = BorderRadius.all(
-    Radius.circular(1),
+    Radius.circular(5),
   );
 
   static const BorderRadius chipBorderRadius = BorderRadius.all(
-    Radius.circular(1),
+    Radius.circular(5),
   );
 
   static const Color snackBarErrorBackgroundColor = Colors.red;
