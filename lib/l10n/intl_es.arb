@@ -79,6 +79,8 @@
          "unauthorizedAccess": "Acceso no autorizado",
          "unauthorizedAccessMessage": "Necesitas iniciar sesión para acceder a {screenName}.",
          "unableToLoginNoInternet": "No se puede iniciar sesión",
-         "noInternetMessage": "Intentaste iniciar sesión pero no tienes conexión a internet. Conéctate a internet e inténtalo de nuevo."
+         "noInternetMessageOnLoginAttempt": "Intentaste iniciar sesión pero no tienes conexión a internet. Conéctate a internet e inténtalo de nuevo.",
+          "noInternetConnection": "Sin conexión a Internet",
+           "pleaseCheckYourInternetConnectionAndTryAgain": "Por favor, verifique su conexión a internet y vuelva a intentarlo."
 
 }

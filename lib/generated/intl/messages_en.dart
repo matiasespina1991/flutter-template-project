@@ -107,7 +107,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Login successful!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Logout"),
-        "noInternetMessage": MessageLookupByLibrary.simpleMessage(
+        "noInternetConnection":
+            MessageLookupByLibrary.simpleMessage("No Internet Connection"),
+        "noInternetMessageOnLoginAttempt": MessageLookupByLibrary.simpleMessage(
             "You tried to login but you don\'t have internet connection. Please connect to the internet and try again."),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "outlinedButtonLabel":
@@ -115,6 +117,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("password"),
         "passwordHintText": MessageLookupByLibrary.simpleMessage("Password"),
         "passwordLabel": MessageLookupByLibrary.simpleMessage("PASSWORD"),
+        "pleaseCheckYourInternetConnectionAndTryAgain":
+            MessageLookupByLibrary.simpleMessage(
+                "Please check your internet connection and try again."),
         "pleaseFillTheFollowingFields": MessageLookupByLibrary.simpleMessage(
             "Please fill the following fields:"),
         "settingsButton": MessageLookupByLibrary.simpleMessage("Settings"),

@@ -17,6 +17,7 @@ class SnackbarVariant {
 
 class NotificationSnackbar {
   static void showSnackBar({
+    IconData? icon,
     required String message,
     required String variant,
     required String duration,
@@ -47,22 +48,38 @@ class NotificationSnackbar {
     }
 
     snackbarKey.currentState?.showSnackBar(SnackBar(
-      duration: duration == SnackbarDuration.short
-          ? const Duration(seconds: 2)
-          : const Duration(seconds: 5),
+      duration: duration == "infinite"
+          ? const Duration(days: 1)
+          : duration == SnackbarDuration.short
+              ? const Duration(seconds: 2)
+              : const Duration(seconds: 5),
       backgroundColor: variant == SnackbarVariant.success
           ? ThemeSettings.snackBarSuccessBackgroundColor
           : variant == SnackbarVariant.info
               ? ThemeSettings.snackBarInfoBackgroundColor
               : ThemeSettings.snackBarErrorBackgroundColor,
-      content: Text(message,
-          style: TextStyle(
+      content: Row(
+        children: [
+          if (icon != null)
+            Icon(
+              icon,
               color: variant == SnackbarVariant.success
                   ? ThemeSettings.snackBarSuccessTextColor
                   : variant == SnackbarVariant.info
                       ? ThemeSettings.snackBarInfoTextColor
                       : ThemeSettings.snackBarErrorTextColor,
-              fontSize: ThemeSettings.snackbarFontSize)),
+            ),
+          SizedBox(width: icon != null ? 8 : 0),
+          Text(message,
+              style: TextStyle(
+                  color: variant == SnackbarVariant.success
+                      ? ThemeSettings.snackBarSuccessTextColor
+                      : variant == SnackbarVariant.info
+                          ? ThemeSettings.snackBarInfoTextColor
+                          : ThemeSettings.snackBarErrorTextColor,
+                  fontSize: ThemeSettings.snackbarFontSize)),
+        ],
+      ),
     ));
   }
 

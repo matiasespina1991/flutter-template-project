@@ -64,8 +64,8 @@ dependencies:
 #  map_launcher: ^2.0.1
 #  # Google Maps Flutter is a Flutter plugin for embedding Google Maps in a Flutter app.
 #  google_maps_flutter: ^2.7.0
-#  # Connectivity Plus is a Flutter plugin for getting information about the network connectivity in a Flutter app.
-#  connectivity_plus: ^6.0.3
+  # Connectivity Plus is a Flutter plugin for getting information about the network connectivity in a Flutter app.
+  connectivity_plus: ^6.0.3
 #  # Expandable is a Flutter plugin for creating expandable widgets in a Flutter app.
 #  expandable: ^5.0.1
 #  # Photo View is a Flutter plugin for showing photos in a full-screen view with zooming and panning gestures.

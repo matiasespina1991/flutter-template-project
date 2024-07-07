@@ -111,7 +111,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Erfolgreich angemeldet!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Abmelden"),
-        "noInternetMessage": MessageLookupByLibrary.simpleMessage(
+        "noInternetConnection":
+            MessageLookupByLibrary.simpleMessage("Keine Internetverbindung"),
+        "noInternetMessageOnLoginAttempt": MessageLookupByLibrary.simpleMessage(
             "Du hast versucht, dich anzumelden, aber du hast keine Internetverbindung. Bitte verbinde dich mit dem Internet und versuche es erneut."),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "outlinedButtonLabel":
@@ -119,6 +121,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("Passwort"),
         "passwordHintText": MessageLookupByLibrary.simpleMessage("Passwort"),
         "passwordLabel": MessageLookupByLibrary.simpleMessage("PASSWORT"),
+        "pleaseCheckYourInternetConnectionAndTryAgain":
+            MessageLookupByLibrary.simpleMessage(
+                "Bitte überprüfe deine Internetverbindung und versuche es erneut."),
         "pleaseFillTheFollowingFields": MessageLookupByLibrary.simpleMessage(
             "Bitte füllen Sie die folgenden Felder aus:"),
         "settingsButton": MessageLookupByLibrary.simpleMessage("Einstellungen"),

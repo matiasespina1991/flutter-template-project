@@ -1,18 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:template_app/app_settings/app_info.dart';
-import 'package:template_app/app_settings/auth_config.dart';
-import 'package:template_app/app_settings/language_settings.dart';
-import 'package:template_app/app_settings/theme_settings.dart';
-import 'package:template_app/generated/l10n.dart';
 import 'package:template_app/providers/providers_all.dart';
-import 'package:template_app/screens/home_screen/home_screen.dart';
-import 'package:template_app/theme/main_theme/main_theme.dart';
-import 'package:template_app/utils/debug/log_configurations.dart';
+import 'app_settings/auth_config.dart';
 import 'globals.dart';
+import 'app_settings/app_info.dart';
+import 'app_settings/language_settings.dart';
+import 'app_settings/theme_settings.dart';
+import 'screens/home_screen/home_screen.dart';
+import 'theme/main_theme/main_theme.dart';
+import 'utils/debug/log_configurations.dart';
+import 'generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +38,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final connectivity = ref.watch(connectivityProvider);
     final themeNotifier = ref.watch(themeProvider);
     final localeNotifier = ref.watch(localeProvider);
 

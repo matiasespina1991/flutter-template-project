@@ -851,10 +851,30 @@ class S {
   }
 
   /// `You tried to login but you don't have internet connection. Please connect to the internet and try again.`
-  String get noInternetMessage {
+  String get noInternetMessageOnLoginAttempt {
     return Intl.message(
       'You tried to login but you don\'t have internet connection. Please connect to the internet and try again.',
-      name: 'noInternetMessage',
+      name: 'noInternetMessageOnLoginAttempt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Internet Connection`
+  String get noInternetConnection {
+    return Intl.message(
+      'No Internet Connection',
+      name: 'noInternetConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please check your internet connection and try again.`
+  String get pleaseCheckYourInternetConnectionAndTryAgain {
+    return Intl.message(
+      'Please check your internet connection and try again.',
+      name: 'pleaseCheckYourInternetConnectionAndTryAgain',
       desc: '',
       args: [],
     );

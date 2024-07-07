@@ -240,6 +240,53 @@ class NotificationModal {
     );
   }
 
+  static void noInternetConnection({
+    required BuildContext context,
+    required onTapConfirm,
+  }) {
+    showModalBottomSheet(
+      isDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 300,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Icon(Icons.wifi_off, size: 50, color: Colors.grey),
+                const SizedBox(height: 20),
+                Text(S.of(context).noInternetConnection,
+                    style: Theme.of(context).textTheme.headlineSmall),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: 300,
+                  child: Text(
+                      S
+                          .of(context)
+                          .pleaseCheckYourInternetConnectionAndTryAgain,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).ok),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   static void unableToLoginDueToNoInternet({
     required BuildContext context,
     required onTapConfirm,
@@ -262,7 +309,7 @@ class NotificationModal {
                 const SizedBox(height: 8),
                 SizedBox(
                   width: 300,
-                  child: Text(S.of(context).noInternetMessage,
+                  child: Text(S.of(context).noInternetMessageOnLoginAttempt,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyLarge),
                 ),

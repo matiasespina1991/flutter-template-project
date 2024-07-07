@@ -23,6 +23,9 @@ class ThemeSettings {
   static const double buttonsElevation = 1.1;
   static const double buttonsHeight = 47;
   static const double buttonsOpacity = 0.8;
+  static const String noInternetNotificationType =
+      'modal'; // 'snackbar' / 'modal' / 'dialog'
+  static const int secondsUntilNoInternetNotification = 5;
 
   static const LottieAnimationBackground primaryLottieBackgroundAnimation =
       LottieAnimationBackground(

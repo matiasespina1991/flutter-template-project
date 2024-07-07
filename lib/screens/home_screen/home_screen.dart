@@ -119,6 +119,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 5),
                   Center(
                     child: Switch(
                       thumbIcon: WidgetStateProperty.all(Icon(

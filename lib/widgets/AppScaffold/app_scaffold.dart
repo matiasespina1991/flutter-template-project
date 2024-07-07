@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,12 +8,13 @@ import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/loading_screen/loading_screen.dart';
 import 'package:template_app/utils/ui/is_dark_mode.dart';
+import 'package:template_app/widgets/NotificationModal/notification_modal.dart';
+import 'package:template_app/widgets/NotificationSnackbar/notification_snackbar.dart';
 import '../../app_settings/theme_settings.dart';
-
+import '../../generated/l10n.dart';
 import '../../models/general_models.dart';
 import '../../screens/login_screen/login_screen.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
-
 import '../ThemeAppBar/template_app_bar.dart';
 import '../ThemeFloatingSpeedDialMenu/theme_floating_speed_dial_menu.dart';
 
@@ -23,10 +25,8 @@ class AppScaffold extends ConsumerStatefulWidget {
   final bool isProtected;
   final bool? useSafeArea;
   final ScrollPhysics? scrollPhysics;
-  final LottieAnimationBackground?
-      backgroundAnimation; // Cambiado a LottieAnimationBackground
-  final LottieAnimationBackground?
-      backgroundAnimationDarkMode; // Nueva propiedad
+  final LottieAnimationBackground? backgroundAnimation;
+  final LottieAnimationBackground? backgroundAnimationDarkMode;
 
   const AppScaffold({
     super.key,
@@ -37,7 +37,7 @@ class AppScaffold extends ConsumerStatefulWidget {
     this.isProtected = true,
     this.scrollPhysics,
     this.backgroundAnimation,
-    this.backgroundAnimationDarkMode, // Nueva propiedad
+    this.backgroundAnimationDarkMode,
   });
 
   @override
@@ -46,6 +46,8 @@ class AppScaffold extends ConsumerStatefulWidget {
 
 class AppScaffoldState extends ConsumerState<AppScaffold> {
   bool _navigated = false;
+  bool _connectivityChecked = false;
+  Timer? _connectivityTimer;
 
   ScrollPhysics getScrollPhysics() {
     switch (ThemeSettings.defaultScrollPhysics) {
@@ -69,8 +71,15 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
   }
 
   @override
+  void dispose() {
+    _connectivityTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider);
+    final connectivity = ref.watch(connectivityProvider);
 
     if (!DebugConfig.debugMode &&
         AuthConfig.useProtectedRoutes &&
@@ -89,19 +98,29 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
       return const LoadingScreen();
     }
 
-    ValueNotifier<bool> isFloatingMenuOpen = ValueNotifier(false);
-
-    final animationConfig = getLottieAnimation();
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    if (!connectivity.isConnected && !_connectivityChecked) {
+      _connectivityTimer?.cancel();
+      _connectivityTimer = Timer(
+          const Duration(
+              seconds: ThemeSettings.secondsUntilNoInternetNotification), () {
+        if (!connectivity.isConnected) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (ModalRoute.of(context)?.isCurrent == true) {
+              _showNoInternetDialog(context);
+              _connectivityChecked = true;
+            }
+          });
+        }
+      });
+    } else if (connectivity.isConnected) {
+      _connectivityTimer
+          ?.cancel(); // Cancel the timer if connectivity is restored
+      _connectivityChecked = false;
+    }
 
     return SafeArea(
-      bottom: widget.useSafeArea != null
-          ? widget.useSafeArea!
-          : ThemeSettings.useSafeArea,
-      top: widget.useSafeArea != null
-          ? widget.useSafeArea!
-          : ThemeSettings.useSafeArea,
+      bottom: widget.useSafeArea ?? ThemeSettings.useSafeArea,
+      top: widget.useSafeArea ?? ThemeSettings.useSafeArea,
       child: Scaffold(
         appBar: AppGeneralSettings.useTopAppBar
             ? ThemeAppBar(
@@ -111,72 +130,126 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
         body: Stack(
           fit: StackFit.expand,
           children: [
-            if (animationConfig != null && animationConfig.active)
-              Positioned(
-                left: (screenWidth / 2) +
-                    animationConfig.x -
-                    (screenWidth * (animationConfig.width / 100) / 2),
-                top: (screenHeight / 2) +
-                    animationConfig.y -
-                    (screenWidth * (animationConfig.width / 100) / 2),
-                width: screenWidth * (animationConfig.width / 100),
-                child: Opacity(
-                  opacity: animationConfig.opacity,
-                  child: Lottie.asset(
-                    animationConfig.animationPath,
-                  ),
-                ),
-              ),
-            if (animationConfig != null &&
-                animationConfig.blur > 0 &&
-                animationConfig.active)
-              Positioned(
-                child: SizedBox(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(
-                        sigmaX: animationConfig.blur,
-                        sigmaY: animationConfig.blur),
-                    child: Container(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                ),
-              ),
-            SingleChildScrollView(
-              physics: widget.scrollPhysics ?? getScrollPhysics(),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: ThemeSettings.scaffoldPadding,
-                    child: widget.body,
-                  ),
-                ],
-              ),
-            ),
-            if (!widget.hideFloatingSpeedDialMenu &&
-                AppGeneralSettings.useFloatingSpeedDialMenu)
-              Positioned.fill(
-                child: ValueListenableBuilder(
-                  valueListenable: isFloatingMenuOpen,
-                  builder: (context, value, child) {
-                    return value
-                        ? BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                            child: Container(
-                              color: Colors.black.withOpacity(0.1),
-                            ),
-                          )
-                        : const SizedBox.shrink();
-                  },
-                ),
-              ),
+            _buildBackgroundAnimation(),
+            _buildMainContent(),
+            _buildFloatingMenuBackdrop(),
           ],
         ),
         floatingActionButton: ThemeFloatingSpeedDialMenu(
           hideFloatingSpeedDialMenu: widget.hideFloatingSpeedDialMenu,
-          isDialOpenNotifier: isFloatingMenuOpen,
+          isDialOpenNotifier: ValueNotifier(false),
         ),
       ),
     );
+  }
+
+  Widget _buildBackgroundAnimation() {
+    final animationConfig = getLottieAnimation();
+    if (animationConfig != null && animationConfig.active) {
+      final screenWidth = MediaQuery.of(context).size.width;
+      final screenHeight = MediaQuery.of(context).size.height;
+      return Stack(
+        children: [
+          Positioned(
+            left: (screenWidth / 2) +
+                animationConfig.x -
+                (screenWidth * (animationConfig.width / 100) / 2),
+            top: (screenHeight / 2) +
+                animationConfig.y -
+                (screenWidth * (animationConfig.width / 100) / 2),
+            width: screenWidth * (animationConfig.width / 100),
+            child: Opacity(
+              opacity: animationConfig.opacity,
+              child: Lottie.asset(
+                animationConfig.animationPath,
+              ),
+            ),
+          ),
+          if (animationConfig.blur > 0)
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                    sigmaX: animationConfig.blur, sigmaY: animationConfig.blur),
+                child: Container(
+                  color: Colors.transparent,
+                ),
+              ),
+            ),
+        ],
+      );
+    }
+    return const SizedBox.shrink();
+  }
+
+  Widget _buildMainContent() {
+    return SingleChildScrollView(
+      physics: widget.scrollPhysics ?? getScrollPhysics(),
+      child: Column(
+        children: [
+          Padding(
+            padding: ThemeSettings.scaffoldPadding,
+            child: widget.body,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFloatingMenuBackdrop() {
+    if (!widget.hideFloatingSpeedDialMenu &&
+        AppGeneralSettings.useFloatingSpeedDialMenu) {
+      return Positioned.fill(
+        child: ValueListenableBuilder(
+          valueListenable: ValueNotifier(false),
+          builder: (context, value, child) {
+            return value
+                ? BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                    child: Container(
+                      color: Colors.black.withOpacity(0.1),
+                    ),
+                  )
+                : const SizedBox.shrink();
+          },
+        ),
+      );
+    }
+    return const SizedBox.shrink();
+  }
+
+  void _showNoInternetDialog(BuildContext context) {
+    if (ThemeSettings.noInternetNotificationType == 'snackbar') {
+      NotificationSnackbar.showSnackBar(
+          message: S.of(context).noInternetConnection,
+          icon: Icons.wifi_off,
+          variant: 'info',
+          duration: 'infinite');
+    } else if (ThemeSettings.noInternetNotificationType == 'modal') {
+      NotificationModal.noInternetConnection(
+        context: context,
+        onTapConfirm: () {
+          setState(() {
+            _connectivityChecked = true;
+          });
+        },
+      );
+    } else if (ThemeSettings.noInternetNotificationType == 'dialog') {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(S.of(context).noInternetConnection),
+          content:
+              Text(S.of(context).pleaseCheckYourInternetConnectionAndTryAgain),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

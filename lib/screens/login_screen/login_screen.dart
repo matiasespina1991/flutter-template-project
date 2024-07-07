@@ -195,6 +195,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 5),
                     Switch(
                       thumbIcon: WidgetStateProperty.all(Icon(
                         isDarkMode(context)
