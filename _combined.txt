@@ -59,6 +59,9 @@
 │   │   └── error_reporting_service.dart
 │   ├── theme
 │   │   └── main_theme
+│   │       ├── buttons_theme.dart
+│   │       ├── chip_theme.dart
+│   │       ├── input_theme.dart
 │   │       └── main_theme.dart
 │   ├── utils
 │   │   ├── debug
@@ -89,15 +92,17 @@
 ├── pubspec.yaml
 └── template_app.iml
 
-32 directories, 58 files
+32 directories, 61 files
 ///// lib/main.dart /////
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:template_app/app_settings/app_info.dart';
 import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/app_settings/language_settings.dart';
+import 'package:template_app/app_settings/theme_settings.dart';
 import 'package:template_app/generated/l10n.dart';
 import 'package:template_app/providers/providers_all.dart';
 import 'package:template_app/screens/home_screen/home_screen.dart';
@@ -132,36 +137,44 @@ class MyApp extends ConsumerWidget {
     final themeNotifier = ref.watch(themeProvider);
     final localeNotifier = ref.watch(localeProvider);
 
-    return MaterialApp(
-      scaffoldMessengerKey: snackbarKey,
-      title: AppInfo.appName,
-      theme: MainTheme.lightTheme,
-      darkTheme: MainTheme.darkTheme,
-      themeMode: themeNotifier.themeMode,
-      locale: localeNotifier.locale,
-      supportedLocales: LanguageSettings.supportedLocales
-          .map((e) => Locale.fromSubtags(languageCode: e))
-          .toList(),
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      localeResolutionCallback: (locale, supportedLocales) {
-        if (LanguageSettings.forceDefaultLanguage) {
-          return const Locale(LanguageSettings.appDefaultLanguage);
-        }
-        if (locale != null) {
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale.languageCode) {
-              return supportedLocale;
+    return SkeletonizerConfig(
+      data: const SkeletonizerConfigData(
+          effect: ShimmerEffect(),
+          enableSwitchAnimation: true,
+          containersColor: ThemeSettings.forceSeedColor
+              ? ThemeSettings.seedColor
+              : Colors.grey),
+      child: MaterialApp(
+        scaffoldMessengerKey: snackbarKey,
+        title: AppInfo.appName,
+        theme: MainTheme.lightTheme,
+        darkTheme: MainTheme.darkTheme,
+        themeMode: themeNotifier.themeMode,
+        locale: localeNotifier.locale,
+        supportedLocales: LanguageSettings.supportedLocales
+            .map((e) => Locale.fromSubtags(languageCode: e))
+            .toList(),
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          if (LanguageSettings.forceDefaultLanguage) {
+            return const Locale(LanguageSettings.appDefaultLanguage);
+          }
+          if (locale != null) {
+            for (var supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale.languageCode) {
+                return supportedLocale;
+              }
             }
           }
-        }
-        return supportedLocales.first;
-      },
-      home: const MainScreen(),
+          return supportedLocales.first;
+        },
+        home: const MainScreen(),
+      ),
     );
   }
 }
@@ -180,6 +193,10 @@ class AppGeneralSettings {
   static const bool useTopAppBar = false;
   static const bool useFloatingSpeedDialMenu = true;
   static const bool useAppDrawerMenu = false;
+  static const String minimumiOSVersion =
+      '13.0'; // Set this manually in Xcode & Podfile
+  static const String minimumAndroidVersion =
+      '23'; // Set this manually in android/app/build.gradle
 }
 
 class DebugConfig {
@@ -228,7 +245,7 @@ class ThemeSettings {
     left: 20,
     right: 20,
   );
-  static const Color seedColor = Colors.red;
+  static const Color seedColor = Colors.blueGrey;
   static const bool forceSeedColor = false;
   static const String defaultScrollPhysics =
       'always'; // 'never', 'always', 'clamp'
@@ -236,6 +253,7 @@ class ThemeSettings {
   static const String textInputBorderStyle = 'border'; // 'border' / 'no-border'
   static const bool glassTextInputs = true;
   static const double buttonsElevation = 1.1;
+  static const double buttonsHeight = 47;
   static const double buttonsOpacity = 0.8;
 
   static const LottieAnimationBackground primaryLottieBackgroundAnimation =
@@ -297,17 +315,48 @@ class ThemeSettings {
 
   static const ThemeColors primaryContainerBackgroundColor = ThemeColors(
     lightModePrimary: Colors.blueGrey,
-    darkModePrimary: Colors.blueGrey,
+    darkModePrimary: Colors.red,
   );
 
   static const ThemeColors elevatedButtonBackgroundColor = ThemeColors(
     lightModePrimary: Colors.blueGrey,
-    darkModePrimary: Colors.blueGrey,
+    darkModePrimary: Colors.white,
   );
 
   static const ThemeColors elevatedButtonTextColor = ThemeColors(
     lightModePrimary: Colors.white,
+    darkModePrimary: Colors.black,
+  );
+
+  static const ThemeColors outlinedButtonBackgroundColor = ThemeColors(
+    lightModePrimary: Colors.blueGrey,
+    darkModePrimary: Colors.blueGrey,
+  );
+
+  static const ThemeColors outlinedButtonTextColor = ThemeColors(
+    lightModePrimary: Colors.black,
     darkModePrimary: Colors.white,
+  );
+
+  static const ThemeColors textButtonTextColor = ThemeColors(
+    lightModePrimary: Colors.black,
+    darkModePrimary: Colors.white,
+  );
+
+  static const BorderRadius buttonsBorderRadius = BorderRadius.all(
+    Radius.circular(5),
+  );
+
+  static const BorderRadius inputsBorderRadius = BorderRadius.all(
+    Radius.circular(5),
+  );
+
+  static const BorderRadius cardBorderRadius = BorderRadius.all(
+    Radius.circular(5),
+  );
+
+  static const BorderRadius chipBorderRadius = BorderRadius.all(
+    Radius.circular(5),
   );
 
   static const Color snackBarErrorBackgroundColor = Colors.red;
@@ -358,10 +407,12 @@ class ThemeSettings {
 ///// lib/screens/home_screen/home_screen.dart /////
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/widgets/AppScaffold/app_scaffold.dart';
 import '../../generated/l10n.dart';
 import '../../providers/providers_all.dart';
+import '../../utils/ui/is_dark_mode.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -373,9 +424,10 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool useAppBar = AppGeneralSettings.useTopAppBar;
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
-  double _sliderValue = 0.0;
+  int _sliderValue = 0;
   int _stepperIndex = 0;
   bool exampleSwitchValue = false;
+  static const bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -385,458 +437,513 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(S.of(context).exampleTitle,
-                style: Theme.of(context).textTheme.headlineSmall),
-            const SizedBox(height: 10),
-            Text(S.of(context).exampleDescription,
-                style: Theme.of(context).textTheme.bodyMedium),
-            const SizedBox(height: 20),
-            Text(S.of(context).buttonsSectionTitle,
-                style: Theme.of(context).textTheme.titleSmall),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text(S.of(context).elevatedButtonLabel),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text(S.of(context).textButtonLabel),
-            ),
-            OutlinedButton(
-              onPressed: () {},
-              child: Text(S.of(context).outlinedButtonLabel),
-            ),
-            const SizedBox(height: 20),
-            Text(S.of(context).switchesSectionTitle,
-                style: Theme.of(context).textTheme.titleSmall),
-            const SizedBox(height: 10),
-            SwitchListTile(
-              title: Text(S.of(context).exampleSwitch),
-              value: exampleSwitchValue,
-              onChanged: (value) {
-                setState(() {
-                  exampleSwitchValue = value;
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-            Text(S.of(context).inputsSectionTitle,
-                style: Theme.of(context).textTheme.titleSmall),
-            const SizedBox(height: 10),
-            TextField(
-              decoration: InputDecoration(
-                labelText: S.of(context).textFieldLabel,
-                border: const OutlineInputBorder(),
+            Skeletonizer(
+              enabled: isLoading,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(S.of(context).exampleTitle,
+                      style: Theme.of(context).textTheme.headlineSmall),
+                  const SizedBox(height: 10),
+                  Text(S.of(context).exampleDescription,
+                      style: Theme.of(context).textTheme.bodyMedium),
+                  const SizedBox(height: 20),
+                  Text(S.of(context).buttonsSectionTitle,
+                      style: Theme.of(context).textTheme.titleSmall),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 47),
+                      ),
+                      child: Text(S.of(context).elevatedButtonLabel)),
+                  TextButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 47),
+                      ),
+                      child: Text(S.of(context).textButtonLabel)),
+                  OutlinedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 47),
+                      ),
+                      child: Text(S.of(context).outlinedButtonLabel)),
+                  const SizedBox(height: 20),
+                  Text(S.of(context).switchesSectionTitle,
+                      style: Theme.of(context).textTheme.titleSmall),
+                  const SizedBox(height: 10),
+                  SwitchListTile(
+                    title: Text(S.of(context).exampleSwitch),
+                    value: exampleSwitchValue,
+                    onChanged: (value) {
+                      setState(() {
+                        exampleSwitchValue = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  Text(S.of(context).inputsSectionTitle,
+                      style: Theme.of(context).textTheme.titleSmall),
+                  const SizedBox(height: 10),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: S.of(context).textFieldLabel,
+                      border: const OutlineInputBorder(),
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 20),
-            Text(S.of(context).steppersSectionTitle,
-                style: Theme.of(context).textTheme.titleSmall),
+            const Divider(),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  S.of(context).lightMode,
-                  style: TextStyle(
-                    fontWeight: Theme.of(context).brightness == Brightness.light
-                        ? FontWeight.bold
-                        : FontWeight.normal,
+            Skeletonizer(
+              enabled: isLoading,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        S.of(context).lightMode,
+                        style: TextStyle(
+                          fontWeight: isDarkMode(context)
+                              ? FontWeight.normal
+                              : FontWeight.bold,
+                        ),
+                      ),
+                      const Text(
+                        ' / ',
+                      ),
+                      Text(
+                        S.of(context).darkMode,
+                        style: TextStyle(
+                          fontWeight: isDarkMode(context)
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const Text(
-                  ' / ',
-                ),
-                Text(
-                  S.of(context).darkMode,
-                  style: TextStyle(
-                    fontWeight: Theme.of(context).brightness == Brightness.dark
-                        ? FontWeight.bold
-                        : FontWeight.normal,
+                  Center(
+                    child: Switch(
+                      thumbIcon: WidgetStateProperty.all(Icon(
+                        isDarkMode(context)
+                            ? Icons.dark_mode
+                            : Icons.light_mode,
+                        color: Colors.white,
+                      )),
+                      value: isDarkMode(context),
+                      onChanged: (value) {
+                        ref.read(themeProvider).toggleTheme(value);
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 7),
-            Center(
-              child: Switch(
-                value: Theme.of(context).brightness == Brightness.dark,
-                activeTrackColor: Theme.of(context).colorScheme.secondary,
-                onChanged: (value) {
-                  ref.read(themeProvider).toggleTheme(value);
-                },
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          ref
+                              .read(localeProvider)
+                              .setLocale(const Locale('en'));
+                        },
+                        child: const Text(
+                          '🇺🇸',
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      const Text('/'),
+                      const SizedBox(width: 10),
+                      GestureDetector(
+                        onTap: () {
+                          ref
+                              .read(localeProvider)
+                              .setLocale(const Locale('es'));
+                        },
+                        child: const Text(
+                          '🇪🇸',
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      const Text('/'),
+                      const SizedBox(width: 10),
+                      GestureDetector(
+                        onTap: () {
+                          ref
+                              .read(localeProvider)
+                              .setLocale(const Locale('de'));
+                        },
+                        child: const Text(
+                          '🇩🇪',
+                          style: TextStyle(fontSize: 30),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    ref.read(localeProvider).setLocale(const Locale('en'));
-                  },
-                  child: const Text(
-                    '🇺🇸',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                const Text('/'),
-                const SizedBox(width: 10),
-                GestureDetector(
-                  onTap: () {
-                    ref.read(localeProvider).setLocale(const Locale('es'));
-                  },
-                  child: const Text(
-                    '🇪🇸',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                const Text('/'),
-                const SizedBox(width: 10),
-                GestureDetector(
-                  onTap: () {
-                    ref.read(localeProvider).setLocale(const Locale('de'));
-                  },
-                  child: const Text(
-                    '🇩🇪',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Text(S.of(context).chipsSectionTitle,
-                style: Theme.of(context).textTheme.titleSmall),
-            const SizedBox(height: 10),
-            Wrap(
-              spacing: 10,
-              children: [
-                Chip(label: Text(S.of(context).chipOneLabel)),
-                Chip(label: Text(S.of(context).chipTwoLabel)),
-                Chip(label: Text(S.of(context).chipThreeLabel)),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Text(S.of(context).slidersSectionTitle,
-                style: Theme.of(context).textTheme.titleSmall),
-            const SizedBox(height: 10),
-            Slider(
-              value: _sliderValue,
-              onChanged: (value) {
-                setState(() {
-                  _sliderValue = value;
-                });
-              },
-              min: 0,
-              max: 100,
-              // inactiveColor: Colors.white.withOpacity(0.4),
+            const Divider(),
+            Skeletonizer(
+                enabled: isLoading,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(S.of(context).chipsSectionTitle,
+                          style: Theme.of(context).textTheme.titleSmall),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 10,
+                        children: [
+                          Chip(
+                            label: Text(S.of(context).chipOneLabel),
+                          ),
+                          Chip(label: Text(S.of(context).chipTwoLabel)),
+                          Chip(label: Text(S.of(context).chipThreeLabel)),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Text(S.of(context).slidersSectionTitle,
+                          style: Theme.of(context).textTheme.titleSmall),
+                      const SizedBox(height: 10),
+                      Slider(
+                        value: _sliderValue.toDouble(),
+                        onChanged: (value) {
+                          setState(() {
+                            _sliderValue = value.toInt();
+                          });
+                        },
+                        min: 0,
+                        max: 100,
+                        // inactiveColor: Colors.white.withOpacity(0.4),
 
-              divisions: 100,
+                        divisions: 100,
+                      ),
+                      Text('${S.of(context).sliderValueLabel}: $_sliderValue%'),
+                    ])),
+            const Divider(),
+            Skeletonizer(
+              enabled: isLoading,
+              child: Stepper(
+                physics: const NeverScrollableScrollPhysics(),
+                margin: const EdgeInsets.all(0),
+                controlsBuilder: (context, details) {
+                  return Row(
+                    children: [
+                      OutlinedButton(
+                        onPressed: details.onStepContinue,
+                        child: const Text('Continue'),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          minimumSize: const Size(92, 0),
+                        ),
+                        onPressed: details.onStepCancel,
+                        child: const Text('Back'),
+                      ),
+                    ],
+                  );
+                },
+                currentStep: _stepperIndex,
+                onStepTapped: (index) {
+                  setState(() {
+                    _stepperIndex = index;
+                  });
+                },
+                onStepContinue: () {
+                  if (_stepperIndex < 2) {
+                    setState(() {
+                      _stepperIndex++;
+                    });
+                  }
+                },
+                onStepCancel: () {
+                  if (_stepperIndex > 0) {
+                    setState(() {
+                      _stepperIndex--;
+                    });
+                  }
+                },
+                steps: [
+                  Step(
+                    title: Text(S.of(context).stepOneTitle),
+                    content: SizedBox(
+                        height: 100,
+                        child:
+                            Center(child: Text(S.of(context).stepOneContent))),
+                    isActive: _stepperIndex == 0,
+                  ),
+                  Step(
+                    title: Text(S.of(context).stepTwoTitle),
+                    content: SizedBox(
+                        height: 100,
+                        child:
+                            Center(child: Text(S.of(context).stepTwoContent))),
+                    isActive: _stepperIndex == 1,
+                  ),
+                  Step(
+                    title: Text(S.of(context).stepThreeTitle),
+                    content: SizedBox(
+                        height: 100,
+                        child: Center(
+                            child: Text(S.of(context).stepThreeContent))),
+                    isActive: _stepperIndex == 2,
+                  ),
+                ],
+              ),
             ),
-            Text(
-                '${S.of(context).sliderValueLabel}: ${_sliderValue.toStringAsFixed(1)}'),
-            Stepper(
-              margin: const EdgeInsets.all(0),
-              controlsBuilder: (context, details) {
-                return Row(
+            const Divider(),
+            Skeletonizer(
+              enabled: isLoading,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    OutlinedButton(
-                      onPressed: details.onStepContinue,
-                      child: const Text('Continue'),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleDisplayLargePrefix,
+                        style: Theme.of(context).textTheme.displayLarge,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Large',
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
-                    TextButton(
-                      onPressed: details.onStepCancel,
-                      child: const Text('Back'),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleDisplayMediumPrefix,
+                        style: Theme.of(context).textTheme.displayMedium,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Medium',
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                );
-              },
-              currentStep: _stepperIndex,
-              onStepTapped: (index) {
-                setState(() {
-                  _stepperIndex = index;
-                });
-              },
-              onStepContinue: () {
-                if (_stepperIndex < 2) {
-                  setState(() {
-                    _stepperIndex++;
-                  });
-                }
-              },
-              onStepCancel: () {
-                if (_stepperIndex > 0) {
-                  setState(() {
-                    _stepperIndex--;
-                  });
-                }
-              },
-              steps: [
-                Step(
-                  title: Text(S.of(context).stepOneTitle),
-                  content: Container(
-                      height: 100,
-                      child: Center(child: Text(S.of(context).stepOneContent))),
-                  isActive: _stepperIndex == 0,
-                ),
-                Step(
-                  title: Text(S.of(context).stepTwoTitle),
-                  content: Container(
-                      height: 100,
-                      child: Center(child: Text(S.of(context).stepTwoContent))),
-                  isActive: _stepperIndex == 1,
-                ),
-                Step(
-                  title: Text(S.of(context).stepThreeTitle),
-                  content: Container(
-                      height: 100,
-                      child:
-                          Center(child: Text(S.of(context).stepThreeContent))),
-                  isActive: _stepperIndex == 2,
-                ),
-              ],
-            ),
-            Divider(),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleDisplayLargePrefix,
-                style: Theme.of(context).textTheme.displayLarge,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Large',
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayLarge
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleDisplayMediumPrefix,
-                style: Theme.of(context).textTheme.displayMedium,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Medium',
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleDisplaySmallPrefix,
-                style: Theme.of(context).textTheme.displaySmall,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Small',
-                    style: Theme.of(context)
-                        .textTheme
-                        .displaySmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleHeadlineLargePrefix,
-                style: Theme.of(context).textTheme.headlineLarge,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Large',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineLarge
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleHeadlineMediumPrefix,
-                style: Theme.of(context).textTheme.headlineMedium,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Medium',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleHeadlineSmallPrefix,
-                style: Theme.of(context).textTheme.headlineSmall,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Small',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleTitleLargePrefix,
-                style: Theme.of(context).textTheme.titleLarge,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Large',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleTitleMediumPrefix,
-                style: Theme.of(context).textTheme.titleMedium,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Medium',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleTitleSmallPrefix,
-                style: Theme.of(context).textTheme.titleSmall,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Small',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleBodyLargePrefix,
-                style: Theme.of(context).textTheme.bodyLarge,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Large',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleBodyMediumPrefix,
-                style: Theme.of(context).textTheme.bodyMedium,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Medium',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleBodySmallPrefix,
-                style: Theme.of(context).textTheme.bodySmall,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Small',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleLabelLargePrefix,
-                style: Theme.of(context).textTheme.labelLarge,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Large',
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleLabelMediumPrefix,
-                style: Theme.of(context).textTheme.labelMedium,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Medium',
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-              text: TextSpan(
-                text: S.of(context).exampleLabelSmallPrefix,
-                style: Theme.of(context).textTheme.labelSmall,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Small',
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelSmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleDisplaySmallPrefix,
+                        style: Theme.of(context).textTheme.displaySmall,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Small',
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleHeadlineLargePrefix,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Large',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleHeadlineMediumPrefix,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Medium',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleHeadlineSmallPrefix,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Small',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleTitleLargePrefix,
+                        style: Theme.of(context).textTheme.titleLarge,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Large',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleTitleMediumPrefix,
+                        style: Theme.of(context).textTheme.titleMedium,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Medium',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleTitleSmallPrefix,
+                        style: Theme.of(context).textTheme.titleSmall,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Small',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleBodyLargePrefix,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Large',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleBodyMediumPrefix,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Medium',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleBodySmallPrefix,
+                        style: Theme.of(context).textTheme.bodySmall,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Small',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleLabelLargePrefix,
+                        style: Theme.of(context).textTheme.labelLarge,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Large',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleLabelMediumPrefix,
+                        style: Theme.of(context).textTheme.labelMedium,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Medium',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    RichText(
+                      text: TextSpan(
+                        text: S.of(context).exampleLabelSmallPrefix,
+                        style: Theme.of(context).textTheme.labelSmall,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Small',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]),
             ),
             const SizedBox(height: 80),
           ],
@@ -856,6 +963,7 @@ import 'package:template_app/generated/l10n.dart';
 import '../../app_settings/theme_settings.dart';
 import '../../providers/providers_all.dart';
 import '../../utils/navigation/push_route_with_animation.dart';
+import '../../utils/ui/is_dark_mode.dart';
 import '../../utils/validation/is_email_valid.dart';
 import '../../widgets/AppScaffold/app_scaffold.dart';
 import '../../widgets/NotificationModal/notification_modal.dart';
@@ -900,16 +1008,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   children: <Widget>[
                     const SizedBox(height: 120),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        const Icon(Icons.email_outlined),
-                        const SizedBox(width: 5),
-                        Text(
-                          S.of(context).emailLabel,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const Icon(Icons.email_outlined),
+                          const SizedBox(width: 5),
+                          Text(
+                            S.of(context).emailLabel,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     ThemeInputTextField(
                       controller: _emailController,
@@ -1016,9 +1127,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                     const Divider(),
-                    Text(S.of(context).lightModeDarkMode),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          S.of(context).lightMode,
+                          style: TextStyle(
+                            fontWeight: isDarkMode(context)
+                                ? FontWeight.normal
+                                : FontWeight.bold,
+                          ),
+                        ),
+                        const Text(
+                          ' / ',
+                        ),
+                        Text(
+                          S.of(context).darkMode,
+                          style: TextStyle(
+                            fontWeight: isDarkMode(context)
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
                     Switch(
-                      value: Theme.of(context).brightness == Brightness.dark,
+                      thumbIcon: WidgetStateProperty.all(Icon(
+                        isDarkMode(context)
+                            ? Icons.dark_mode
+                            : Icons.light_mode,
+                        color: Colors.white,
+                      )),
+                      value: isDarkMode(context),
                       onChanged: (value) {
                         ref.read(themeProvider).toggleTheme(value);
                       },
@@ -1405,12 +1545,10 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
 }
 
 ///// lib/widgets/NotificationSnackbar/notification_snackbar.dart /////
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:template_app/app_settings/theme_settings.dart';
 
-import '../../_bin/config.dart';
 import '../../globals.dart';
 
 class SnackbarDuration {
@@ -1508,19 +1646,15 @@ class NotificationModal {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                CircleAvatar(
+                const CircleAvatar(
                   backgroundColor: ThemeSettings.snackBarSuccessBackgroundColor,
                   radius: 30,
                   child: Icon(Icons.check, size: 50, color: Colors.white),
                 ),
                 const SizedBox(height: 20),
-                Text(title,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
+                Text(title, style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 8),
-                Text(message, style: const TextStyle(fontSize: 18)),
+                Text(message, style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: 200,
@@ -1565,17 +1699,14 @@ class NotificationModal {
                 Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: Text(S.of(context).loginFailed,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
+                      style: Theme.of(context).textTheme.headlineSmall),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 32.0, vertical: 12.0),
                   child: Text(errorMessage,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 18)),
+                      style: Theme.of(context).textTheme.bodyLarge),
                 ),
                 const SizedBox(height: 12),
                 SizedBox(
@@ -1612,21 +1743,19 @@ class NotificationModal {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 const Icon(Icons.warning, size: 50, color: Colors.amber),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 Text(S.of(context).emptyFields,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
+                    style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 Text(S.of(context).fillAllFields,
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(height: 8),
-                ...emptyFields.map((element) => Text(
-                    toBeginningOfSentenceCase(element),
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold))),
+                    style: Theme.of(context).textTheme.bodyLarge),
+                const SizedBox(height: 5),
+                ...emptyFields
+                    .map((element) => Text(toBeginningOfSentenceCase(element),
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ))),
                 const SizedBox(height: 17),
                 SizedBox(
                   width: 200,
@@ -1667,14 +1796,11 @@ class NotificationModal {
                 ),
                 const SizedBox(height: 20),
                 Text(S.of(context).failedLogout,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
+                    style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 Text(S.of(context).failedLogoutMessage,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 18)),
+                    style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: 200,
@@ -1716,13 +1842,10 @@ class NotificationModal {
                 ),
                 const SizedBox(height: 20),
                 Text(S.of(context).unauthorizedAccess,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
+                    style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 Text(S.of(context).unauthorizedAccessMessage(screenName),
-                    style: const TextStyle(fontSize: 18)),
+                    style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: 200,
@@ -1760,16 +1883,13 @@ class NotificationModal {
                     size: 50, color: Colors.grey),
                 const SizedBox(height: 20),
                 Text(S.of(context).unableToLoginNoInternet,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
+                    style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 SizedBox(
                   width: 300,
                   child: Text(S.of(context).noInternetMessage,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 18)),
+                      style: Theme.of(context).textTheme.bodyLarge),
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
@@ -1795,8 +1915,11 @@ class NotificationModal {
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:template_app/app_settings/theme_settings.dart';
+import 'package:template_app/theme/main_theme/chip_theme.dart';
+import 'package:template_app/theme/main_theme/input_theme.dart';
 
 import '../../models/theme_models.dart';
+import 'buttons_theme.dart';
 
 class MainTheme {
   /// --------------- LIGHT THEME ---------------
@@ -1826,8 +1949,9 @@ class MainTheme {
               // primary: Config.primaryTextColor.lightModePrimary,
               primary: ThemeSettings.primaryTextColor.lightModePrimary,
               // secondary: Config.secondaryTextColor.lightModePrimary,
+              surface: ThemeSettings.scaffoldBackgroundColor.lightModePrimary,
               secondary: ThemeSettings.secondaryTextColor.lightModePrimary,
-              surface: Colors.white,
+
               error: Colors.red,
               onPrimary: Colors.white,
               onSecondary: Colors.white,
@@ -1877,27 +2001,14 @@ class MainTheme {
                 ? ThemeSettings.appBarBackgroundColor.lightModePrimary
                 : ThemeSettings.appBarBackgroundColor.darkModePrimary),
       ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: ThemeSettings.forceSeedColor
-              ? colorScheme.onPrimary
-              : (brightness == Brightness.light
-                  ? ThemeSettings.elevatedButtonTextColor.lightModePrimary
-                  : ThemeSettings.elevatedButtonTextColor.darkModePrimary),
-          backgroundColor: ThemeSettings.forceSeedColor
-              ? colorScheme.primary.withOpacity(ThemeSettings.buttonsOpacity)
-              : (brightness == Brightness.light
-                      ? ThemeSettings
-                          .elevatedButtonBackgroundColor.lightModePrimary
-                      : ThemeSettings
-                          .elevatedButtonBackgroundColor.darkModePrimary)
-                  .withOpacity(ThemeSettings.buttonsOpacity),
-          elevation: ThemeSettings.buttonsElevation,
-          minimumSize: const Size(double.infinity, 47),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      ),
+      chipTheme: ChipDecorationTheme.chipTheme(brightness, colorScheme),
+      inputDecorationTheme:
+          InputTheme.inputDecorationTheme(brightness, colorScheme),
+      elevatedButtonTheme:
+          ButtonsTheme.elevatedButtonTheme(brightness, colorScheme),
+      outlinedButtonTheme:
+          ButtonsTheme.outlinedButtonTheme(brightness, colorScheme),
+      textButtonTheme: ButtonsTheme.textButtonTheme(brightness, colorScheme),
       dividerTheme: base.dividerTheme.copyWith(
         space: 70,
         color: colorScheme.onSurface.withOpacity(0.2),
@@ -1955,7 +2066,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/app_settings/auth_config.dart';
-import 'package:template_app/_bin/config.dart';
 
 class AuthorizationProvider extends ChangeNotifier {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -1993,7 +2103,7 @@ class AuthorizationProvider extends ChangeNotifier {
   Future<void> signOut(BuildContext context) async {
     if (DebugConfig.debugMode) {
       debugPrint(
-          'Error: Debug mode is on. Disable it from Config.debugMode in order to proceed with sign out.');
+          'Error: Debug mode is on. Disable it from AppGeneralSettings.debugMode in order to proceed with sign out.');
       return;
     }
     await clearAuthToken();
@@ -2077,7 +2187,6 @@ class AuthorizationProvider extends ChangeNotifier {
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:template_app/app_settings/language_settings.dart';
-import '../_bin/config.dart';
 
 class LocaleProvider extends ChangeNotifier {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
@@ -2098,7 +2207,7 @@ class LocaleProvider extends ChangeNotifier {
   Future<void> setLocale(Locale locale) async {
     if (LanguageSettings.forceDefaultLanguage) {
       debugPrint(
-          'Error: Language change forbidden. Forced locale is on. Set Config.forceLanguage to "false" in order to allow language change.');
+          'Error: Language change forbidden. Forced locale is on. Set LanguageSettings.forceLanguage to "false" in order to allow language change.');
       return;
     }
 
@@ -2137,7 +2246,6 @@ final localeProvider = ChangeNotifierProvider((ref) => LocaleProvider());
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:template_app/app_settings/theme_settings.dart';
-import '../_bin/config.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
@@ -2152,7 +2260,7 @@ class ThemeProvider extends ChangeNotifier {
   void toggleTheme(bool isDarkMode) async {
     if (ThemeSettings.forceDefaultThemeMode) {
       debugPrint(
-          'Error: Theme mode change forbidden. Forced theme is on. Disable it from Config.forceDefaultThemeMode in order to proceed with theme change.');
+          'Error: Theme mode change forbidden. Forced theme is on. Disable it from ThemeSettings.forceDefaultThemeMode in order to proceed with theme change.');
       return;
     }
 
@@ -2226,6 +2334,7 @@ dependencies:
   # Sign In Button is a Flutter plugin for creating sign-in buttons in a Flutter app.
   sign_in_button: ^3.2.0
 
+
 #  # -----------------  GENERAL PACKAGES  -----------------
 #  # Url Launcher is a Flutter plugin for launching a URL in the mobile platform. Supports iOS and Android.
 #  url_launcher: ^6.3.0
@@ -2239,8 +2348,8 @@ dependencies:
 #  permission_handler: ^11.3.1
 #  # Image Picker is a plugin for selecting images from the Android and iOS image library, and taking new pictures with the camera:
 #  image_picker: ^1.1.2
-#  # Skeletonizer is a Flutter plugin for creating skeleton loading animations in a Flutter app.
-#  skeletonizer: ^1.3.0
+  # Skeletonizer is a Flutter plugin for creating skeleton loading animations in a Flutter app.
+  skeletonizer: ^1.3.0
 
   # Device Info Plus is a Flutter plugin for getting information about the device the app is running on.
   device_info_plus: ^10.1.0
@@ -2319,9 +2428,9 @@ dependencies:
 
 # ----------------- FIREBASE PACKAGES -----------------
 #  # Firebase Core is a Flutter plugin to use the Firebase platform services.
-  firebase_core: ^3.1.0
+  firebase_core: ^3.1.1
 #  # Flutter Auth is a Flutter plugin that enables Android and iOS authentication using passwords, phone numbers, and identity providers like Google, Facebook, and Twitter.
-  firebase_auth: ^5.1.0
+  firebase_auth: ^5.1.1
 #  # Cloud Firestore is a flexible, scalable database for mobile, web, and server development from Firebase and Google Cloud Platform.
 #  cloud_firestore: ^5.0.1
 #  # Firebase Database is a Flutter plugin to use the Firebase Realtime Database API and allow storing and syncing data with a NoSQL cloud database.
@@ -2341,6 +2450,7 @@ dependencies:
 #  # Firebase Remote Config is a Flutter plugin to use the Firebase Remote Config API and allow fetching remote configuration values from Firebase.
 #  firebase_remote_config: ^5.0.1
 
+  intl: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

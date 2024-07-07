@@ -27,13 +27,9 @@ class NotificationModal {
                   child: Icon(Icons.check, size: 50, color: Colors.white),
                 ),
                 const SizedBox(height: 20),
-                Text(title,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
+                Text(title, style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 8),
-                Text(message, style: const TextStyle(fontSize: 18)),
+                Text(message, style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: 200,
@@ -78,17 +74,14 @@ class NotificationModal {
                 Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: Text(S.of(context).loginFailed,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
+                      style: Theme.of(context).textTheme.headlineSmall),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 32.0, vertical: 12.0),
                   child: Text(errorMessage,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 18)),
+                      style: Theme.of(context).textTheme.bodyLarge),
                 ),
                 const SizedBox(height: 12),
                 SizedBox(
@@ -125,21 +118,19 @@ class NotificationModal {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 const Icon(Icons.warning, size: 50, color: Colors.amber),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 Text(S.of(context).emptyFields,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
+                    style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 Text(S.of(context).fillAllFields,
-                    style: const TextStyle(fontSize: 18)),
-                const SizedBox(height: 8),
-                ...emptyFields.map((element) => Text(
-                    toBeginningOfSentenceCase(element),
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold))),
+                    style: Theme.of(context).textTheme.bodyLarge),
+                const SizedBox(height: 5),
+                ...emptyFields
+                    .map((element) => Text(toBeginningOfSentenceCase(element),
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ))),
                 const SizedBox(height: 17),
                 SizedBox(
                   width: 200,
@@ -180,14 +171,11 @@ class NotificationModal {
                 ),
                 const SizedBox(height: 20),
                 Text(S.of(context).failedLogout,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
+                    style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 Text(S.of(context).failedLogoutMessage,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 18)),
+                    style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: 200,
@@ -229,13 +217,10 @@ class NotificationModal {
                 ),
                 const SizedBox(height: 20),
                 Text(S.of(context).unauthorizedAccess,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
+                    style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 Text(S.of(context).unauthorizedAccessMessage(screenName),
-                    style: const TextStyle(fontSize: 18)),
+                    style: Theme.of(context).textTheme.bodyLarge),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: 200,
@@ -273,16 +258,13 @@ class NotificationModal {
                     size: 50, color: Colors.grey),
                 const SizedBox(height: 20),
                 Text(S.of(context).unableToLoginNoInternet,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    )),
+                    style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 SizedBox(
                   width: 300,
                   child: Text(S.of(context).noInternetMessage,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 18)),
+                      style: Theme.of(context).textTheme.bodyLarge),
                 ),
                 const SizedBox(height: 20),
                 SizedBox(

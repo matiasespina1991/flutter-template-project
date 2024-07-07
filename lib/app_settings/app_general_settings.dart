@@ -9,6 +9,6 @@ class AppGeneralSettings {
 }
 
 class DebugConfig {
-  static const bool debugMode = true; // If true, login screen will be skipped
+  static const bool debugMode = false; // If true, login screen will be skipped
   static const String debugScreen = '/home'; //TODO
 }
