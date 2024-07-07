@@ -5,7 +5,7 @@ class AppGeneralSettings {
   static const String minimumiOSVersion =
       '13.0'; // Set this manually in Xcode & Podfile
   static const String minimumAndroidVersion =
-      '23'; // Set this manually in AndroidManifest.xml
+      '23'; // Set this manually in android/app/build.gradle
 }
 
 class DebugConfig {
