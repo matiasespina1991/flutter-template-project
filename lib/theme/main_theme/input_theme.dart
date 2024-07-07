@@ -15,11 +15,6 @@ class InputTheme {
             ? ThemeSettings.primaryTextColor.lightModePrimary
             : ThemeSettings.primaryTextColor.darkModePrimary,
       ),
-      errorStyle: TextStyle(
-        color: brightness == Brightness.light
-            ? ThemeSettings.primaryTextColor.lightModePrimary
-            : ThemeSettings.primaryTextColor.darkModePrimary,
-      ),
       focusedBorder: OutlineInputBorder(
         borderRadius: ThemeSettings.inputsBorderRadius,
         borderSide: BorderSide(
@@ -36,13 +31,9 @@ class InputTheme {
               : ThemeSettings.primaryTextColor.darkModePrimary,
         ),
       ),
-      errorBorder: OutlineInputBorder(
+      errorBorder: const OutlineInputBorder(
         borderRadius: ThemeSettings.inputsBorderRadius,
-        borderSide: BorderSide(
-          color: brightness == Brightness.light
-              ? ThemeSettings.primaryTextColor.lightModePrimary
-              : ThemeSettings.primaryTextColor.darkModePrimary,
-        ),
+        borderSide: BorderSide(color: Colors.red),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: ThemeSettings.inputsBorderRadius,
