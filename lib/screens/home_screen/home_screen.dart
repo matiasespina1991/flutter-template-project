@@ -185,39 +185,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const Divider(),
             Skeletonizer(
                 enabled: isLoading,
-                child: Column(children: [
-                  Text(S.of(context).chipsSectionTitle,
-                      style: Theme.of(context).textTheme.titleSmall),
-                  const SizedBox(height: 10),
-                  Wrap(
-                    spacing: 10,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Chip(
-                        label: Text(S.of(context).chipOneLabel),
+                      Text(S.of(context).chipsSectionTitle,
+                          style: Theme.of(context).textTheme.titleSmall),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 10,
+                        children: [
+                          Chip(
+                            label: Text(S.of(context).chipOneLabel),
+                          ),
+                          Chip(label: Text(S.of(context).chipTwoLabel)),
+                          Chip(label: Text(S.of(context).chipThreeLabel)),
+                        ],
                       ),
-                      Chip(label: Text(S.of(context).chipTwoLabel)),
-                      Chip(label: Text(S.of(context).chipThreeLabel)),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Text(S.of(context).slidersSectionTitle,
-                      style: Theme.of(context).textTheme.titleSmall),
-                  const SizedBox(height: 10),
-                  Slider(
-                    value: _sliderValue.toDouble(),
-                    onChanged: (value) {
-                      setState(() {
-                        _sliderValue = value.toInt();
-                      });
-                    },
-                    min: 0,
-                    max: 100,
-                    // inactiveColor: Colors.white.withOpacity(0.4),
+                      const SizedBox(height: 20),
+                      Text(S.of(context).slidersSectionTitle,
+                          style: Theme.of(context).textTheme.titleSmall),
+                      const SizedBox(height: 10),
+                      Slider(
+                        value: _sliderValue.toDouble(),
+                        onChanged: (value) {
+                          setState(() {
+                            _sliderValue = value.toInt();
+                          });
+                        },
+                        min: 0,
+                        max: 100,
+                        // inactiveColor: Colors.white.withOpacity(0.4),
 
-                    divisions: 100,
-                  ),
-                  Text('${S.of(context).sliderValueLabel}: $_sliderValue%'),
-                ])),
+                        divisions: 100,
+                      ),
+                      Text('${S.of(context).sliderValueLabel}: $_sliderValue%'),
+                    ])),
             const Divider(),
             Skeletonizer(
               enabled: isLoading,
