@@ -80,6 +80,8 @@ dependencies:
 #  badges: ^3.1.2
 #  # Flutter Native Splash is a Flutter plugin for creating a splash screen in a Flutter app.
 #  flutter_native_splash: ^2.4.0
+#  # Another Flushbar is a Flutter plugin for creating custom snackbars in a Flutter app.
+#  another_flushbar: ^1.12.30
 #  # Awesome Dialog is a Flutter plugin for creating awesome dialogs in a Flutter app.
 #  awesome_dialog: ^3.2.1
 #  # Flutter Staggered Grid View is a Flutter plugin for creating staggered grid views in a Flutter app.

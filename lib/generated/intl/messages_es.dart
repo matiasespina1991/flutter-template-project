@@ -26,13 +26,16 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("es"),
+        "back": MessageLookupByLibrary.simpleMessage("Atrás"),
         "backToInternetConnection":
             MessageLookupByLibrary.simpleMessage("Estás de vuelta en línea"),
         "buttonsSectionTitle": MessageLookupByLibrary.simpleMessage("Botones"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "chipOneLabel": MessageLookupByLibrary.simpleMessage("Chip Uno"),
         "chipThreeLabel": MessageLookupByLibrary.simpleMessage("Chip Tres"),
         "chipTwoLabel": MessageLookupByLibrary.simpleMessage("Chip Dos"),
         "chipsSectionTitle": MessageLookupByLibrary.simpleMessage("Chips"),
+        "continueButton": MessageLookupByLibrary.simpleMessage("Continuar"),
         "darkMode": MessageLookupByLibrary.simpleMessage("Modo oscuro"),
         "elevatedButtonLabel":
             MessageLookupByLibrary.simpleMessage("Botón Elevado"),
@@ -115,6 +118,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Haz iniciado sesión!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Cerrar sesión"),
+        "no": MessageLookupByLibrary.simpleMessage("No"),
         "noInternetConnection":
             MessageLookupByLibrary.simpleMessage("Sin conexión a Internet"),
         "noInternetMessageOnLoginAttempt": MessageLookupByLibrary.simpleMessage(
@@ -152,6 +156,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "steppersSectionTitle": MessageLookupByLibrary.simpleMessage("Pasos"),
         "successfulLogin":
             MessageLookupByLibrary.simpleMessage("Inicio de sesión exitoso"),
+        "successfulLoginRedirectToHomeMessage":
+            MessageLookupByLibrary.simpleMessage(
+                "Serás redirigido a la pantalla principal."),
         "switchToDarkMode":
             MessageLookupByLibrary.simpleMessage("Cambiar a modo oscuro"),
         "switchToLightMode":
@@ -167,6 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unauthorizedAccess":
             MessageLookupByLibrary.simpleMessage("Acceso no autorizado"),
         "unauthorizedAccessMessage": m0,
+        "yes": MessageLookupByLibrary.simpleMessage("Sí"),
         "youAreCurrentlyOfflineMessage": MessageLookupByLibrary.simpleMessage(
             "Actualmente estás sin conexión a Internet.")
       };

@@ -164,6 +164,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 variant: SnackbarVariant.error,
                                 duration: SnackbarDuration.long,
                               );
+
                               debugPrint('Error: ${error.toString()}');
                             }
                           }),
@@ -373,29 +374,37 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               direction: SlideDirection.right));
         }
 
-        NotificationModal.successfulModal(
-            title: S.of(context).successfulLogin,
-            message: S.of(context).successfulLoginRedirectToHomeMessage,
-            context: context,
-            onTapConfirm: () => userTappedConfirm());
+        if (mounted) {
+          NotificationModal.successfulModal(
+              title: S.of(context).successfulLogin,
+              message: S.of(context).successfulLoginRedirectToHomeMessage,
+              context: context,
+              onTapConfirm: () => userTappedConfirm());
+        }
       } else {
+        if (mounted) {
+          NotificationSnackbar.showSnackBar(
+            message: S.of(context).loginErrorMessage,
+            variant: SnackbarVariant.error,
+            duration: SnackbarDuration.long,
+          );
+        }
+      }
+    } catch (error) {
+      if (mounted) {
         NotificationSnackbar.showSnackBar(
           message: S.of(context).loginErrorMessage,
           variant: SnackbarVariant.error,
           duration: SnackbarDuration.long,
         );
       }
-    } catch (error) {
-      NotificationSnackbar.showSnackBar(
-        message: S.of(context).loginErrorMessage,
-        variant: SnackbarVariant.error,
-        duration: SnackbarDuration.long,
-      );
-      NotificationModal.failedLogin(
-          context: context,
-          onTapConfirm: () {},
-          errorMessage: S.of(context).loginErrorMessage);
-      debugPrint('Error logging in: ${error.toString()}');
+      if (mounted) {
+        NotificationModal.failedLogin(
+            context: context,
+            onTapConfirm: () {},
+            errorMessage: S.of(context).loginErrorMessage);
+        debugPrint('Error logging in: ${error.toString()}');
+      }
     } finally {
       setState(() {
         _attemptingLogin = false;

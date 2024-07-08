@@ -23,6 +23,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   static const bool isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBarTitle: S.of(context).homeScreenTitle,
@@ -232,14 +237,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     children: [
                       OutlinedButton(
                         onPressed: details.onStepContinue,
-                        child: const Text('Continue'),
+                        child: Text(S.of(context).continueButton),
                       ),
                       TextButton(
                         style: TextButton.styleFrom(
                           minimumSize: const Size(92, 0),
                         ),
                         onPressed: details.onStepCancel,
-                        child: const Text('Back'),
+                        child: Text(S.of(context).back),
                       ),
                     ],
                   );

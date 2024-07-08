@@ -26,13 +26,16 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("de"),
+        "back": MessageLookupByLibrary.simpleMessage("Zurück"),
         "backToInternetConnection":
             MessageLookupByLibrary.simpleMessage("Sie sind wieder online"),
         "buttonsSectionTitle": MessageLookupByLibrary.simpleMessage("Tasten"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Abbrechen"),
         "chipOneLabel": MessageLookupByLibrary.simpleMessage("Chip Eins"),
         "chipThreeLabel": MessageLookupByLibrary.simpleMessage("Chip Drei"),
         "chipTwoLabel": MessageLookupByLibrary.simpleMessage("Chip Zwei"),
         "chipsSectionTitle": MessageLookupByLibrary.simpleMessage("Chips"),
+        "continueButton": MessageLookupByLibrary.simpleMessage("Weiter"),
         "darkMode": MessageLookupByLibrary.simpleMessage("Dunkelmodus"),
         "elevatedButtonLabel":
             MessageLookupByLibrary.simpleMessage("Erhöhte Taste"),
@@ -113,6 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginSuccessfulMessage":
             MessageLookupByLibrary.simpleMessage("Erfolgreich angemeldet!"),
         "logoutButton": MessageLookupByLibrary.simpleMessage("Abmelden"),
+        "no": MessageLookupByLibrary.simpleMessage("Nein"),
         "noInternetConnection":
             MessageLookupByLibrary.simpleMessage("Keine Internetverbindung"),
         "noInternetMessageOnLoginAttempt": MessageLookupByLibrary.simpleMessage(
@@ -166,6 +170,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "unauthorizedAccess":
             MessageLookupByLibrary.simpleMessage("Unbefugter Zugriff"),
         "unauthorizedAccessMessage": m0,
+        "yes": MessageLookupByLibrary.simpleMessage("Ja"),
         "youAreCurrentlyOfflineMessage": MessageLookupByLibrary.simpleMessage(
             "Sie sind derzeit offline. Bitte überprüfen Sie Ihre Internetverbindung.")
       };
