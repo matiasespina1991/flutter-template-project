@@ -59,6 +59,8 @@ class ThemeSettings {
     opacity: 0.5,
   );
 
+  static const errorColor = Colors.red;
+
   static const ThemeColors scaffoldBackgroundColor = ThemeColors(
     lightModePrimary: Color(0xFFFFF8FE),
     darkModePrimary: Color(0xFF121212),
@@ -86,7 +88,7 @@ class ThemeSettings {
 
   static const ThemeColors primaryContainerBackgroundColor = ThemeColors(
     lightModePrimary: Colors.blueGrey,
-    darkModePrimary: Colors.red,
+    darkModePrimary: Colors.blueGrey,
   );
 
   static const ThemeColors elevatedButtonBackgroundColor = ThemeColors(
@@ -130,7 +132,7 @@ class ThemeSettings {
     Radius.circular(5),
   );
 
-  static const Color snackBarErrorBackgroundColor = Colors.red;
+  static const Color snackBarErrorBackgroundColor = errorColor;
   static const Color snackBarErrorTextColor = Colors.white;
   static const Color snackBarSuccessBackgroundColor = Colors.green;
   static const Color snackBarSuccessTextColor = Colors.white;

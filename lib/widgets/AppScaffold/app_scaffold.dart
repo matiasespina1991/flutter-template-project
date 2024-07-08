@@ -47,28 +47,8 @@ class AppScaffold extends ConsumerStatefulWidget {
 class AppScaffoldState extends ConsumerState<AppScaffold> {
   bool _navigated = false;
   bool _connectivityChecked = false;
+  bool _userWentOffline = false;
   Timer? _connectivityTimer;
-
-  ScrollPhysics getScrollPhysics() {
-    switch (ThemeSettings.defaultScrollPhysics) {
-      case 'never':
-        return const NeverScrollableScrollPhysics();
-      case 'always':
-        return const AlwaysScrollableScrollPhysics();
-      case 'clamp':
-        return const ClampingScrollPhysics();
-      default:
-        return const AlwaysScrollableScrollPhysics();
-    }
-  }
-
-  LottieAnimationBackground? getLottieAnimation() {
-    final themeIsDark = isDarkMode(context);
-    if (themeIsDark && widget.backgroundAnimationDarkMode != null) {
-      return widget.backgroundAnimationDarkMode;
-    }
-    return widget.backgroundAnimation;
-  }
 
   @override
   void dispose() {
@@ -81,42 +61,8 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     final auth = ref.watch(authProvider);
     final connectivity = ref.watch(connectivityProvider);
 
-    if (!DebugConfig.debugMode &&
-        AuthConfig.useProtectedRoutes &&
-        widget.isProtected &&
-        !auth.isAuthenticated &&
-        !_navigated) {
-      _navigated = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pushReplacement(pushRouteWithAnimation(
-            const LoginScreen(),
-            direction: SlideDirection.left));
-      });
-    }
-
-    if (!auth.isAuthenticated && widget.isProtected) {
-      return const LoadingScreen();
-    }
-
-    if (!connectivity.isConnected && !_connectivityChecked) {
-      _connectivityTimer?.cancel();
-      _connectivityTimer = Timer(
-          const Duration(
-              seconds: ThemeSettings.secondsUntilNoInternetNotification), () {
-        if (!connectivity.isConnected) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (ModalRoute.of(context)?.isCurrent == true) {
-              _showNoInternetDialog(context);
-              _connectivityChecked = true;
-            }
-          });
-        }
-      });
-    } else if (connectivity.isConnected) {
-      _connectivityTimer
-          ?.cancel(); // Cancel the timer if connectivity is restored
-      _connectivityChecked = false;
-    }
+    _handleProtectedRoutes(auth);
+    _checkConnectivity(connectivity);
 
     return SafeArea(
       bottom: widget.useSafeArea ?? ThemeSettings.useSafeArea,
@@ -141,6 +87,75 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
         ),
       ),
     );
+  }
+
+  _handleProtectedRoutes(auth) {
+    if (!DebugConfig.debugMode &&
+        AuthConfig.useProtectedRoutes &&
+        widget.isProtected &&
+        !auth.isAuthenticated &&
+        !_navigated) {
+      _navigated = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushReplacement(pushRouteWithAnimation(
+            const LoginScreen(),
+            direction: SlideDirection.left));
+      });
+    }
+
+    if (!auth.isAuthenticated && widget.isProtected) {
+      return const LoadingScreen();
+    }
+  }
+
+  void _checkConnectivity(connectivity) {
+    if (!connectivity.isConnected && !_connectivityChecked) {
+      _connectivityChecked = true;
+      _connectivityTimer?.cancel();
+      _connectivityTimer = Timer(
+          const Duration(
+              seconds: ThemeSettings.secondsUntilNoInternetNotification), () {
+        if (!connectivity.isConnected) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (ModalRoute.of(context)?.isCurrent == true) {
+              _showNoInternetNotification(context);
+              _userWentOffline = true;
+            }
+          });
+        }
+      });
+    } else if (connectivity.isConnected && _userWentOffline) {
+      _connectivityTimer?.cancel();
+      _connectivityChecked = false;
+      _userWentOffline = false;
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (ModalRoute.of(context)?.isCurrent == true) {
+          _showBackToInternetConnectionNotification(context);
+        }
+      });
+    }
+  }
+
+  ScrollPhysics getScrollPhysics() {
+    switch (ThemeSettings.defaultScrollPhysics) {
+      case 'never':
+        return const NeverScrollableScrollPhysics();
+      case 'always':
+        return const AlwaysScrollableScrollPhysics();
+      case 'clamp':
+        return const ClampingScrollPhysics();
+      default:
+        return const AlwaysScrollableScrollPhysics();
+    }
+  }
+
+  LottieAnimationBackground? getLottieAnimation() {
+    final themeIsDark = isDarkMode(context);
+    if (themeIsDark && widget.backgroundAnimationDarkMode != null) {
+      return widget.backgroundAnimationDarkMode;
+    }
+    return widget.backgroundAnimation;
   }
 
   Widget _buildBackgroundAnimation() {
@@ -217,7 +232,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     return const SizedBox.shrink();
   }
 
-  void _showNoInternetDialog(BuildContext context) {
+  void _showNoInternetNotification(BuildContext context) {
     if (ThemeSettings.noInternetNotificationType == 'snackbar') {
       NotificationSnackbar.showSnackBar(
           message: S.of(context).noInternetConnection,
@@ -238,8 +253,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text(S.of(context).noInternetConnection),
-          content:
-              Text(S.of(context).pleaseCheckYourInternetConnectionAndTryAgain),
+          content: Text(S.of(context).youAreCurrentlyOfflineMessage),
           actions: <Widget>[
             TextButton(
               child: const Text('OK'),
@@ -250,6 +264,31 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
           ],
         ),
       );
+    }
+  }
+
+  void _showBackToInternetConnectionNotification(BuildContext context) {
+    if (ThemeSettings.noInternetNotificationType == 'snackbar') {
+      NotificationSnackbar.showSnackBar(
+          message: S.of(context).backToInternetConnection,
+          icon: Icons.wifi,
+          variant: 'success',
+          duration: 'long');
+    } else if (ThemeSettings.noInternetNotificationType == 'modal') {
+      NotificationModal.backToInternetConnection(
+        context: context,
+        onTapConfirm: () {
+          setState(() {
+            _connectivityChecked = false; // Allow for future offline checks
+          });
+        },
+      );
+    } else if (ThemeSettings.noInternetNotificationType == 'dialog') {
+      NotificationSnackbar.showSnackBar(
+          message: S.of(context).backToInternetConnection,
+          icon: Icons.wifi,
+          variant: 'success',
+          duration: 'long');
     }
   }
 }

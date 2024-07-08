@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("de"),
+        "backToInternetConnection":
+            MessageLookupByLibrary.simpleMessage("Sie sind wieder online"),
         "buttonsSectionTitle": MessageLookupByLibrary.simpleMessage("Tasten"),
         "chipOneLabel": MessageLookupByLibrary.simpleMessage("Chip Eins"),
         "chipThreeLabel": MessageLookupByLibrary.simpleMessage("Chip Drei"),
@@ -82,7 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "failedLogoutMessage": MessageLookupByLibrary.simpleMessage(
             "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuche es erneut."),
         "fillAllFields": MessageLookupByLibrary.simpleMessage(
-            "Bitte fülle alle Felder aus:"),
+            "Bitte füllen Sie die folgenden Felder aus:"),
         "gotIt": MessageLookupByLibrary.simpleMessage("Verstanden"),
         "homeScreenTitle":
             MessageLookupByLibrary.simpleMessage("Startbildschirm"),
@@ -121,9 +123,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("Passwort"),
         "passwordHintText": MessageLookupByLibrary.simpleMessage("Passwort"),
         "passwordLabel": MessageLookupByLibrary.simpleMessage("PASSWORT"),
-        "pleaseCheckYourInternetConnectionAndTryAgain":
-            MessageLookupByLibrary.simpleMessage(
-                "Bitte überprüfe deine Internetverbindung und versuche es erneut."),
         "pleaseFillTheFollowingFields": MessageLookupByLibrary.simpleMessage(
             "Bitte füllen Sie die folgenden Felder aus:"),
         "settingsButton": MessageLookupByLibrary.simpleMessage("Einstellungen"),
@@ -166,6 +165,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Anmeldung nicht möglich"),
         "unauthorizedAccess":
             MessageLookupByLibrary.simpleMessage("Unbefugter Zugriff"),
-        "unauthorizedAccessMessage": m0
+        "unauthorizedAccessMessage": m0,
+        "youAreCurrentlyOfflineMessage": MessageLookupByLibrary.simpleMessage(
+            "Sie sind derzeit offline. Bitte überprüfen Sie Ihre Internetverbindung.")
       };
 }

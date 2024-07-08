@@ -25,6 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "_locale": MessageLookupByLibrary.simpleMessage("en"),
+        "backToInternetConnection":
+            MessageLookupByLibrary.simpleMessage("You are back online"),
         "buttonsSectionTitle": MessageLookupByLibrary.simpleMessage("Buttons"),
         "chipOneLabel": MessageLookupByLibrary.simpleMessage("Chip One"),
         "chipThreeLabel": MessageLookupByLibrary.simpleMessage("Chip Three"),
@@ -78,8 +80,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "failedLogout": MessageLookupByLibrary.simpleMessage("Failed Logout"),
         "failedLogoutMessage": MessageLookupByLibrary.simpleMessage(
             "There was an error when trying to logout. Please try again."),
-        "fillAllFields":
-            MessageLookupByLibrary.simpleMessage("Please fill in all fields:"),
+        "fillAllFields": MessageLookupByLibrary.simpleMessage(
+            "Please fill the following field/s:"),
         "gotIt": MessageLookupByLibrary.simpleMessage("Got it"),
         "homeScreenTitle": MessageLookupByLibrary.simpleMessage("Home Screen"),
         "inputsSectionTitle": MessageLookupByLibrary.simpleMessage("Inputs"),
@@ -117,9 +119,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("password"),
         "passwordHintText": MessageLookupByLibrary.simpleMessage("Password"),
         "passwordLabel": MessageLookupByLibrary.simpleMessage("PASSWORD"),
-        "pleaseCheckYourInternetConnectionAndTryAgain":
-            MessageLookupByLibrary.simpleMessage(
-                "Please check your internet connection and try again."),
         "pleaseFillTheFollowingFields": MessageLookupByLibrary.simpleMessage(
             "Please fill the following fields:"),
         "settingsButton": MessageLookupByLibrary.simpleMessage("Settings"),
@@ -161,6 +160,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Unable to Login"),
         "unauthorizedAccess":
             MessageLookupByLibrary.simpleMessage("Unauthorized Access"),
-        "unauthorizedAccessMessage": m0
+        "unauthorizedAccessMessage": m0,
+        "youAreCurrentlyOfflineMessage": MessageLookupByLibrary.simpleMessage(
+            "You are currently offline. Please check your internet connection.")
       };
 }

@@ -790,10 +790,10 @@ class S {
     );
   }
 
-  /// `Please fill in all fields:`
+  /// `Please fill the following field/s:`
   String get fillAllFields {
     return Intl.message(
-      'Please fill in all fields:',
+      'Please fill the following field/s:',
       name: 'fillAllFields',
       desc: '',
       args: [],
@@ -870,11 +870,21 @@ class S {
     );
   }
 
-  /// `Please check your internet connection and try again.`
-  String get pleaseCheckYourInternetConnectionAndTryAgain {
+  /// `You are currently offline. Please check your internet connection.`
+  String get youAreCurrentlyOfflineMessage {
     return Intl.message(
-      'Please check your internet connection and try again.',
-      name: 'pleaseCheckYourInternetConnectionAndTryAgain',
+      'You are currently offline. Please check your internet connection.',
+      name: 'youAreCurrentlyOfflineMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are back online`
+  String get backToInternetConnection {
+    return Intl.message(
+      'You are back online',
+      name: 'backToInternetConnection',
       desc: '',
       args: [],
     );

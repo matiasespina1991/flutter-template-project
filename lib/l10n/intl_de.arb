@@ -74,13 +74,14 @@
         "loginFailedMessage": "Beim Anmelden ist ein Fehler aufgetreten. Bitte versuche es erneut.",
         "ok": "OK",
         "emptyFields": "Einige Felder sind leer",
-        "fillAllFields": "Bitte fülle alle Felder aus:",
+         "fillAllFields": "Bitte füllen Sie die folgenden Felder aus:",
         "failedLogout": "Abmeldung fehlgeschlagen",
         "failedLogoutMessage": "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuche es erneut.",
         "unauthorizedAccess": "Unbefugter Zugriff",
         "unauthorizedAccessMessage": "Du musst dich anmelden, um auf {screenName} zuzugreifen.",
         "unableToLoginNoInternet": "Anmeldung nicht möglich",
         "noInternetMessageOnLoginAttempt": "Du hast versucht, dich anzumelden, aber du hast keine Internetverbindung. Bitte verbinde dich mit dem Internet und versuche es erneut.",
-         "noInternetConnection": "Keine Internetverbindung",
-          "pleaseCheckYourInternetConnectionAndTryAgain": "Bitte überprüfe deine Internetverbindung und versuche es erneut."
+        "noInternetConnection": "Keine Internetverbindung",
+        "youAreCurrentlyOfflineMessage": "Sie sind derzeit offline. Bitte überprüfen Sie Ihre Internetverbindung.",
+         "backToInternetConnection": "Sie sind wieder online"
 }

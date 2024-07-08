@@ -33,7 +33,7 @@ class InputTheme {
       ),
       errorBorder: const OutlineInputBorder(
         borderRadius: ThemeSettings.inputsBorderRadius,
-        borderSide: BorderSide(color: Colors.red),
+        borderSide: BorderSide(color: ThemeSettings.errorColor),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: ThemeSettings.inputsBorderRadius,

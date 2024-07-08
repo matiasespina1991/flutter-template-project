@@ -261,10 +261,51 @@ class NotificationModal {
                 const SizedBox(height: 8),
                 SizedBox(
                   width: 300,
-                  child: Text(
-                      S
-                          .of(context)
-                          .pleaseCheckYourInternetConnectionAndTryAgain,
+                  child: Text(S.of(context).youAreCurrentlyOfflineMessage,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onTapConfirm();
+                    },
+                    child: Text(S.of(context).ok),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static void backToInternetConnection({
+    required BuildContext context,
+    required onTapConfirm,
+  }) {
+    showModalBottomSheet(
+      isDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 300,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Icon(Icons.wifi, size: 50, color: Colors.green),
+                const SizedBox(height: 20),
+                Text(S.of(context).backToInternetConnection,
+                    style: Theme.of(context).textTheme.headlineSmall),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: 300,
+                  child: Text(S.of(context).backToInternetConnection,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyLarge),
                 ),

@@ -38,7 +38,7 @@ class MainTheme {
               surface: ThemeSettings.scaffoldBackgroundColor.lightModePrimary,
               secondary: ThemeSettings.secondaryTextColor.lightModePrimary,
 
-              error: Colors.red,
+              error: ThemeSettings.errorColor,
               onPrimary: Colors.white,
               onSecondary: Colors.white,
               onSurface: ThemeSettings.primaryTextColor.lightModePrimary,
@@ -51,10 +51,9 @@ class MainTheme {
               primaryContainer:
                   ThemeSettings.primaryContainerBackgroundColor.darkModePrimary,
               secondary: ThemeSettings.secondaryTextColor.darkModePrimary,
-              error: Colors.red[900]!,
+              error: ThemeSettings.errorColor,
               surface: ThemeSettings.scaffoldBackgroundColor.darkModePrimary,
               onSurface: ThemeSettings.primaryTextColor.darkModePrimary,
-              surfaceContainerHigh: Colors.red,
               onSecondary: Colors.black,
               onError: Colors.black,
               brightness: brightness,

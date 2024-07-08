@@ -73,7 +73,7 @@
          "loginFailedMessage": "Hubo un error al iniciar sesión. Inténtalo de nuevo.",
          "ok": "OK",
          "emptyFields": "Algunos campos están vacíos",
-         "fillAllFields": "Por favor completa todos los campos:",
+         "fillAllFields": "Por favor completa lo/s siguiente/s campo/s:",
          "failedLogout": "Cierre de sesión fallido",
          "failedLogoutMessage": "Hubo un error al intentar cerrar sesión. Inténtalo de nuevo.",
          "unauthorizedAccess": "Acceso no autorizado",
@@ -81,6 +81,7 @@
          "unableToLoginNoInternet": "No se puede iniciar sesión",
          "noInternetMessageOnLoginAttempt": "Intentaste iniciar sesión pero no tienes conexión a internet. Conéctate a internet e inténtalo de nuevo.",
           "noInternetConnection": "Sin conexión a Internet",
-           "pleaseCheckYourInternetConnectionAndTryAgain": "Por favor, verifique su conexión a internet y vuelva a intentarlo."
+          "youAreCurrentlyOfflineMessage": "Actualmente estás sin conexión a Internet.",
+          "backToInternetConnection": "Estás de vuelta en línea"
 
 }
