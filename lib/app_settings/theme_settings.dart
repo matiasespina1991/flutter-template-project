@@ -22,7 +22,7 @@ class ThemeSettings {
   static const bool glassTextInputs = true;
   static const double buttonsElevation = 1.1;
   static const double buttonsHeight = 47;
-  static const double buttonsOpacity = 0.8;
+  static const double buttonsOpacity = 0.9;
   static const String noInternetNotificationType =
       'modal'; // 'snackbar' / 'modal' / 'dialog'
   static const int secondsUntilNoInternetNotification = 5;
