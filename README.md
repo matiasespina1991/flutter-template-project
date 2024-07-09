@@ -8,9 +8,9 @@ Template Flutter project.
 
 1. **Change Package/Bundle ID:**
    - **Android:** Edit `android/app/src/main/AndroidManifest.xml` and change the `package` attribute.
-   - **iOS:** Change `CFBundleDisplayName` and `CFBundleName` in `ios/Runner/Info.plist`. Open the 
-   project in Xcode and change the `Bundle Identifier` in the `General` tab of the Runner target and 
-   also in the `Signing & Capabilities` tab.
+   - **iOS:** Change `CFBundleDisplayName` and `CFBundleName` in `ios/Runner/Info.plist`. Open the
+     project in Xcode and change the `Bundle Identifier` in the `General` tab of the Runner target and
+     also in the `Signing & Capabilities` tab.
 
 2. **Update Configuration Files:**
    - Modify `applicationId` in `android/app/build.gradle`.
@@ -28,7 +28,7 @@ Template Flutter project.
 6. **Rename imports:**
    - Rename the imports in the files using the rename_imports.sh script in the root folder of the project.
       - Run `chmod +x rename-imports.sh` to make the script executable.
-      - Run `./rename-imports.sh name_of_your_proyect` to rename the imports. 
+      - Run `./rename-imports.sh name_of_your_project` to rename the imports.
 
 7. **Clean and Rebuild the Project:**
    - Run `flutter clean`.
@@ -43,9 +43,33 @@ Template Flutter project.
    - **iOS:** Adjust settings in Xcode, including project name, targets, and `Info.plist`.
 
 10. **Update External Service References:**
-   - Update the app name in external services (Firebase, APIs, etc.) as needed.
+- Update the app name in external services (Firebase, APIs, etc.) as needed.
 
+### Important Naming Conventions and Restrictions:
 
+1. **Directories**:
+   - **Allowed**: Underscores (`_`), hyphens (`-`), letters, and numbers.
+   - **Not Allowed**: Spaces, special characters like `@`, `#`, `&`, etc.
+
+2. **Package Name (in `pubspec.yaml`)**:
+   - **Allowed**: Only underscores (`_`), lowercase letters, and numbers.
+   - **Not Allowed**: Hyphens (`-`), spaces, uppercase letters, special characters.
+   - Example: `my_package_name`
+
+3. **Bundle ID (iOS)**:
+   - **Allowed**: Dots (`.`), letters, and numbers.
+   - **Not Allowed**: Underscores (`_`), hyphens (`-`), spaces, special characters.
+   - Example: `com.example.myapp`
+
+4. **Firebase iOS ID**:
+   - **Allowed**: Dots (`.`), letters, and numbers.
+   - **Not Allowed**: Underscores (`_`), hyphens (`-`), spaces, special characters.
+   - Example: `com.example.myapp`
+
+5. **Firebase Android ID**:
+   - **Allowed**: Dots (`.`), letters, and numbers.
+   - **Not Allowed**: Underscores (`_`), hyphens (`-`), spaces, special characters.
+   - Example: `com.example.myapp`
 
 # 3. Add Firebase to the Flutter app (using FlutterFire):
 
@@ -67,10 +91,10 @@ Template Flutter project.
    - Remove a locale by deleting the corresponding `intl_{locale}.arb` file and taking it out of the supportedLocales List.
 
 # 5. Add SHA-1 and SHA-256 keys to Firebase (Optional):
-   - Use the command `keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android` to get the SHA-1 key.
-   - Paste the SHA-1 key in the Firebase project settings under the Android app.
+- Use the command `keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android` to get the SHA-1 key.
+- Paste the SHA-1 key in the Firebase project settings under the Android app.
 
-# 6. Things to take in account for pre-production and should be ready prior to the deployment of the app:
+# 6. Things to take into account for pre-production and should be ready prior to the deployment of the app:
 ### (Check each completed item with a ✅)
 
 ### UI Design:
@@ -130,4 +154,3 @@ Template Flutter project.
 - **Analytics:** Integrate analytics to track user behavior and app performance. [ ]
 - **Performance Monitoring:** Set up performance monitoring to keep track of app performance in production. [ ]
 - **User Feedback:** Collect and analyze user feedback to make informed improvements. [ ]
-
