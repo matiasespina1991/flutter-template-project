@@ -393,7 +393,36 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
 
     try {
-      await ref.read(authProvider).signInWithGoogle();
+      bool userSignedIn = await ref.read(authProvider).signInWithGoogle();
+      if (userSignedIn) {
+        void userTappedConfirm() {
+          NotificationSnackbar.hideCurrentSnackBar();
+          NotificationSnackbar.showSnackBar(
+              message: S.of(context).loginSuccessfulMessage,
+              variant: SnackbarVariant.success,
+              duration: SnackbarDuration.short,
+              delay: 1);
+          Navigator.of(context).pushReplacement(pushRouteWithAnimation(
+              const HomeScreen(),
+              direction: SlideDirection.right));
+        }
+
+        if (mounted) {
+          NotificationModal.successfulModal(
+              title: S.of(context).successfulLogin,
+              message: S.of(context).successfulLoginRedirectToHomeMessage,
+              context: context,
+              onTapConfirm: () => userTappedConfirm());
+        }
+      } else {
+        if (mounted) {
+          NotificationSnackbar.showSnackBar(
+            message: S.of(context).loginErrorMessage,
+            variant: SnackbarVariant.error,
+            duration: SnackbarDuration.long,
+          );
+        }
+      }
     } on PlatformException catch (error) {
       NotificationSnackbar.showSnackBar(
         message: S.of(context).errorSigningInWithGoogleSnackbarMessage,

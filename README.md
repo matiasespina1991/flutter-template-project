@@ -7,7 +7,7 @@ Template Flutter project.
 # 2. Rename the Flutter app from `template_app` to the desired name of your app.
 
 1. **Change Package/Bundle ID:**
-   - **Android:** Edit `android/app/src/main/AndroidManifest.xml` and change the `package` attribute.
+   - **Android:** Edit `android/app/src/main/AndroidManifest.xml` and change the `android:label` attribute to `Name Of Your App`.
    - **iOS:** Change `CFBundleDisplayName` and `CFBundleName` in `ios/Runner/Info.plist`. Open the
      project in Xcode and change the `Bundle Identifier` in the `General` tab of the Runner target and
      also in the `Signing & Capabilities` tab.
@@ -90,11 +90,27 @@ Template Flutter project.
    - Run `flutter pub run intl_utils:generate` to generate the locale files.
    - Remove a locale by deleting the corresponding `intl_{locale}.arb` file and taking it out of the supportedLocales List.
 
-# 5. Add SHA-1 and SHA-256 keys to Firebase (Optional):
+# 5. Add SHA-1 and SHA-256 keys to Firebase (Android - Optional):
 - Use the command `keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android` to get the SHA-1 key.
 - Paste the SHA-1 key in the Firebase project settings under the Android app.
 
-# 6. Things to take into account for pre-production and should be ready prior to the deployment of the app:
+# 6. Add Google URL scheme support to the Info.plist file (iOS - Optional):
+- When trying to sign in with Google and the Google URL Scheme is not set, the app will crash and show a log similar to this one:
+- `*** Error trying to signing in user using Google: PlatformException(google_sign_in, Your app is missing support for the following URL schemes: com.googleusercontent.apps.99xxxxxxxxxxxxxxx, NSInvalidArgumentException, null)`.
+- In that case you should add the Google URL Scheme `com.googleusercontent.apps.99xxxxxxxxxxxxxxx` to the Info.plist file this way:
+  `<key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+       <key>CFBundleTypeRole</key>
+       <string>Editor</string>
+       <key>CFBundleURLSchemes</key>
+       <array>
+          <string>com.googleusercontent.apps.99xxxxxxxxxxxxxxx</string>
+       </array>
+    </dict>
+  </array>`
+
+# 7. Things to take into account for pre-production and should be ready prior to the deployment of the app:
 ### (Check each completed item with a ✅)
 
 ### UI Design:

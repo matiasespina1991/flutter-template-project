@@ -9,20 +9,78 @@ class AuthorizationProvider extends ChangeNotifier {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
   final FirebaseAuth? _firebaseAuth =
       AuthConfig.useFirebase ? FirebaseAuth.instance : null;
-
   final GoogleSignIn _googleSignIn =
       GoogleSignIn(scopes: AuthConfig.googleSignInScopes);
   String? _authToken;
+  User? _user;
+  bool _isLoading = true;
 
   AuthorizationProvider() {
-    _loadAuthToken();
+    _initializeUser();
   }
 
   String? get authToken => _authToken;
+  User? get user => _user;
+  bool get isLoading => _isLoading;
 
-  Future<void> _loadAuthToken() async {
-    _authToken = await storage.read(key: 'auth_token');
+  Future<void> _initializeUser() async {
+    if (AuthConfig.useFirebase) {
+      _user = _firebaseAuth?.currentUser;
+      if (_user != null) {
+        _authToken = _user!.uid;
+      }
+    } else {
+      _authToken = await storage.read(key: 'auth_token');
+    }
+
+    _isLoading = false;
     notifyListeners();
+
+    _googleSignIn.onCurrentUserChanged
+        .listen((GoogleSignInAccount? account) async {
+      if (account != null) {
+        _user = await _handleSignIn(account);
+        if (_user != null) {
+          _authToken = _user?.uid;
+          await setAuthToken(_authToken!);
+        }
+      } else {
+        _user = null;
+        _authToken = null;
+      }
+      notifyListeners();
+    });
+
+    GoogleSignInAccount? currentUser = await _googleSignIn.signInSilently();
+    if (currentUser != null) {
+      _user = await _handleSignIn(currentUser);
+      if (_user != null) {
+        _authToken = _user?.uid;
+        await setAuthToken(_authToken!);
+        notifyListeners();
+      }
+    }
+  }
+
+  Future<User?> _handleSignIn(GoogleSignInAccount account) async {
+    try {
+      final GoogleSignInAuthentication googleAuth =
+          await account.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+        accessToken: googleAuth.accessToken,
+      );
+
+      if (AuthConfig.useFirebase) {
+        final UserCredential authResult =
+            await _firebaseAuth!.signInWithCredential(credential);
+        return authResult.user;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error during Google sign-in: $e');
+      return null;
+    }
   }
 
   Future<void> setAuthToken(String token) async {
@@ -34,6 +92,7 @@ class AuthorizationProvider extends ChangeNotifier {
   Future<void> clearAuthToken() async {
     await storage.delete(key: 'auth_token');
     _authToken = null;
+    _user = null;
     debugPrint('Auth token cleared. User will be logged out.');
     notifyListeners();
   }
@@ -48,10 +107,15 @@ class AuthorizationProvider extends ChangeNotifier {
     if (AuthConfig.useFirebase) {
       await _firebaseAuth?.signOut();
     }
+
+    if (AuthConfig.allowGoogleSignIn) {
+      await _googleSignIn.signOut();
+    }
   }
 
   bool get isAuthenticated =>
-      DebugConfig.debugMode || (_authToken != null && _authToken!.isNotEmpty);
+      !isLoading &&
+      (DebugConfig.debugMode || (_authToken != null && _authToken!.isNotEmpty));
 
   Future<bool> signInWithEmail(String email, String password) async {
     bool success = false;
@@ -62,6 +126,7 @@ class AuthorizationProvider extends ChangeNotifier {
         final UserCredential authResult = await _firebaseAuth!
             .signInWithEmailAndPassword(email: email, password: password);
         _authToken = authResult.user!.uid;
+        _user = authResult.user;
         await setAuthToken(_authToken!);
       } else {
         _authToken = email;
@@ -99,6 +164,7 @@ class AuthorizationProvider extends ChangeNotifier {
             final UserCredential? authResult =
                 await _firebaseAuth?.signInWithCredential(credential);
             _authToken = authResult?.user!.uid;
+            _user = authResult?.user;
             await setAuthToken(_authToken!);
           } else {
             _authToken = googleAuth.accessToken;

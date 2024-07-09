@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/providers/providers_all.dart';
@@ -61,6 +62,10 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     final auth = ref.watch(authProvider);
     final connectivity = ref.watch(connectivityProvider);
 
+    if (auth.isLoading) {
+      return const LoadingScreen();
+    }
+
     _handleProtectedRoutes(auth);
     _checkConnectivity(connectivity);
 
@@ -77,7 +82,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
           fit: StackFit.expand,
           children: [
             _buildBackgroundAnimation(),
-            _buildMainContent(),
+            _buildMainContent(auth.isAuthenticated),
             _buildFloatingMenuBackdrop(),
           ],
         ),
@@ -196,14 +201,17 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     return const SizedBox.shrink();
   }
 
-  Widget _buildMainContent() {
+  Widget _buildMainContent(bool isAuthenticated) {
     return SingleChildScrollView(
       physics: widget.scrollPhysics ?? getScrollPhysics(),
       child: Column(
         children: [
-          Padding(
-            padding: ThemeSettings.scaffoldPadding,
-            child: widget.body,
+          Skeletonizer(
+            enabled: !isAuthenticated && widget.isProtected,
+            child: Padding(
+              padding: ThemeSettings.scaffoldPadding,
+              child: widget.body,
+            ),
           ),
         ],
       ),
