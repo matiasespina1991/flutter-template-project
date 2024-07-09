@@ -136,7 +136,7 @@ class ThemeSettings {
   static const Color snackBarErrorTextColor = Colors.white;
   static const Color snackBarSuccessBackgroundColor = Colors.green;
   static const Color snackBarSuccessTextColor = Colors.white;
-  static const Color snackBarInfoBackgroundColor = Colors.grey;
+  static const Color snackBarInfoBackgroundColor = Colors.black;
   static const Color snackBarInfoTextColor = Colors.white;
 
   static const FontConfig appBarTextStyle = FontConfig(
