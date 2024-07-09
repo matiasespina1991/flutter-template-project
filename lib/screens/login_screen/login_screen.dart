@@ -117,8 +117,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     SizedBox(
                       width: 233,
                       child: ElevatedButton(
-                        onPressed:
-                            _attemptingLogin ? null : () => attemptLogin(ref),
+                        onPressed: _attemptingLogin
+                            ? null
+                            : () => attemptLoginWithEmailAndPassword(ref),
                         child: Text(S.of(context).loginButton),
                       ),
                     ),
@@ -135,37 +136,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   borderRadius: BorderRadius.circular(10)),
                               text: S.of(context).signInWithGoogleButtonLabel,
                               onPressed: () async {
-                            NotificationSnackbar.showSnackBar(
-                              message: S
-                                  .of(context)
-                                  .signingInWithGoogleSnackbarMessage,
-                              variant: SnackbarVariant.info,
-                              duration: SnackbarDuration.long,
-                            );
-
-                            try {
-                              await ref.read(authProvider).signInWithGoogle();
-                            } on PlatformException catch (error) {
-                              NotificationSnackbar.showSnackBar(
-                                message: S
-                                    .of(context)
-                                    .errorSigningInWithGoogleSnackbarMessage,
-                                variant: SnackbarVariant.error,
-                                duration: SnackbarDuration.long,
-                              );
-
-                              debugPrint(
-                                  'Error signing in with Google: ${error.toString()}');
-                            } catch (error) {
-                              NotificationSnackbar.showSnackBar(
-                                message: S
-                                    .of(context)
-                                    .errorSigningInWithGoogleSnackbarMessage,
-                                variant: SnackbarVariant.error,
-                                duration: SnackbarDuration.long,
-                              );
-
-                              debugPrint('Error: ${error.toString()}');
+                            if (AuthConfig.allowGoogleSignIn) {
+                              attemptLoginWithGoogle(ref);
                             }
                           }),
                         ],
@@ -264,7 +236,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
-  void attemptLogin(WidgetRef ref) async {
+  void attemptLoginWithEmailAndPassword(WidgetRef ref) async {
     debugPrint('Attempting login...');
     var error = false;
     setState(() {
@@ -410,6 +382,34 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         _attemptingLogin = false;
       });
       NotificationSnackbar.hideCurrentSnackBar();
+    }
+  }
+
+  void attemptLoginWithGoogle(WidgetRef ref) async {
+    NotificationSnackbar.showSnackBar(
+      message: S.of(context).signingInWithGoogleSnackbarMessage,
+      variant: SnackbarVariant.info,
+      duration: SnackbarDuration.long,
+    );
+
+    try {
+      await ref.read(authProvider).signInWithGoogle();
+    } on PlatformException catch (error) {
+      NotificationSnackbar.showSnackBar(
+        message: S.of(context).errorSigningInWithGoogleSnackbarMessage,
+        variant: SnackbarVariant.error,
+        duration: SnackbarDuration.long,
+      );
+
+      debugPrint('Error signing in with Google: ${error.toString()}');
+    } catch (error) {
+      NotificationSnackbar.showSnackBar(
+        message: S.of(context).errorSigningInWithGoogleSnackbarMessage,
+        variant: SnackbarVariant.error,
+        duration: SnackbarDuration.long,
+      );
+
+      debugPrint('Error: ${error.toString()}');
     }
   }
 }

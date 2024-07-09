@@ -27,8 +27,8 @@ Template Flutter project.
 
 6. **Rename imports:**
    - Rename the imports in the files using the rename_imports.sh script in the root folder of the project.
-      - Run `chmod +x rename_imports.sh` to make the script executable.
-      - Run `./rename_imports.sh name_of_your_proyect` to rename the imports. 
+      - Run `chmod +x rename-imports.sh` to make the script executable.
+      - Run `./rename-imports.sh name_of_your_proyect` to rename the imports. 
 
 7. **Clean and Rebuild the Project:**
    - Run `flutter clean`.
@@ -66,7 +66,11 @@ Template Flutter project.
    - Run `flutter pub run intl_utils:generate` to generate the locale files.
    - Remove a locale by deleting the corresponding `intl_{locale}.arb` file and taking it out of the supportedLocales List.
 
-# 5. Things to take in account for pre-production and should be ready prior to the deployment of the app:
+# 5. Add SHA-1 and SHA-256 keys to Firebase (Optional):
+   - Use the command `keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android` to get the SHA-1 key.
+   - Paste the SHA-1 key in the Firebase project settings under the Android app.
+
+# 6. Things to take in account for pre-production and should be ready prior to the deployment of the app:
 ### (Check each completed item with a ✅)
 
 ### UI Design:
