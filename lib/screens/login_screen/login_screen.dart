@@ -7,6 +7,7 @@ import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/generated/l10n.dart';
 import '../../app_settings/theme_settings.dart';
 import '../../providers/providers_all.dart';
+import '../../routes/routes.dart';
 import '../../utils/ui/is_dark_mode.dart';
 import '../../utils/validation/is_email_valid.dart';
 import '../../widgets/AppScaffold/app_scaffold.dart';
@@ -35,7 +36,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       appBarTitle: S.of(context).loginScreenTitle,
-      isProtected: false,
       useSafeArea: false,
       hideFloatingSpeedDialMenu: true,
       backgroundAnimation: ThemeSettings.primaryLottieBackgroundAnimation,
@@ -131,7 +131,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               elevation: ThemeSettings.buttonsElevation,
                               padding: const EdgeInsets.all(5.5),
                               clipBehavior: Clip.hardEdge,
-                              shape: RoundedRectangleBorder(
+                              shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       ThemeSettings.buttonsBorderRadius),
                               text: S.of(context).signInWithGoogleButtonLabel,

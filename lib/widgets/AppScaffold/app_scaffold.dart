@@ -47,7 +47,6 @@ class AppScaffold extends ConsumerStatefulWidget {
 
 class AppScaffoldState extends ConsumerState<AppScaffold> {
   bool _connectivityChecked = false;
-  bool _checkedAuth = false;
   bool _userWentOffline = false;
   Timer? _connectivityTimer;
 
@@ -96,6 +95,18 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
 
   LoadingScreen? _handleProtectedRoutes(auth) {
     if (DebugConfig.forceDebugScreen) {
+      final String debugRoutePath = DebugConfig.debugScreen.path;
+      final String debugRouteName =
+          DebugConfig.debugScreen.name ?? debugRoutePath;
+
+      debugPrint(
+          '[DebugConfig.forceDebugScreen is set to true. Locked screen is: $debugRouteName. Navigation suspended.]');
+      if (mounted) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          context.go(debugRoutePath);
+        });
+      }
+
       return null;
     }
 

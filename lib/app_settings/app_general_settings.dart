@@ -1,4 +1,4 @@
-import '../routes/app_routes.dart';
+import '../routes/routes.dart';
 
 class AppGeneralSettings {
   static const bool useTopAppBar = false;
@@ -12,7 +12,7 @@ class AppGeneralSettings {
 
 class DebugConfig {
   static const bool debugMode = false; // If true, login screen will be skipped
-  static const String debugScreen = Routes.loginScreen;
+  static RouteConfig debugScreen = Routes.homeScreen;
   static const forceDebugScreen =
-      false; // If true, the route set in debugScreen will be shown and screen protection will be ignored
+      true; // If true, the route set in debugScreen will be shown and screen protection will be ignored
 }

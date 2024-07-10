@@ -160,8 +160,6 @@ class AuthorizationProvider extends ChangeNotifier {
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
           );
-          print('Google Auth: $credential');
-
           if (AuthConfig.useFirebase) {
             final UserCredential? authResult =
                 await _firebaseAuth?.signInWithCredential(credential);

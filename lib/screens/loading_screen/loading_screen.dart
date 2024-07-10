@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../widgets/AppScaffold/app_scaffold.dart';
 import '../../widgets/LoadingCircle/loading_circle.dart';
 
 class LoadingScreen extends StatelessWidget {
