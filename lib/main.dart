@@ -2,16 +2,19 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/providers/providers_all.dart';
-import 'package:template_app/routes/app_routes.dart';
+import 'package:template_app/routes/routes.dart';
+import 'package:template_app/screens/not_found_screen/not_found_screen.dart';
 import 'app_settings/auth_config.dart';
 import 'globals.dart';
 import 'app_settings/app_info.dart';
 import 'app_settings/language_settings.dart';
 import 'app_settings/theme_settings.dart';
 import 'screens/home_screen/home_screen.dart';
+import 'screens/loading_screen/loading_screen.dart';
+import 'screens/login_screen/login_screen.dart';
 import 'theme/main_theme/main_theme.dart';
 import 'utils/debug/log_configurations.dart';
 import 'generated/l10n.dart';
@@ -50,7 +53,7 @@ class MyApp extends ConsumerWidget {
           containersColor: ThemeSettings.forceSeedColor
               ? ThemeSettings.seedColor
               : Colors.grey),
-      child: MaterialApp(
+      child: MaterialApp.router(
         scaffoldMessengerKey: snackbarKey,
         title: AppInfo.appName,
         theme: MainTheme.lightTheme,
@@ -79,21 +82,10 @@ class MyApp extends ConsumerWidget {
           }
           return supportedLocales.first;
         },
-        initialRoute: (DebugConfig.forceDebugScreen)
-            ? Routes.getPath(DebugConfig.debugScreen)
-            : Routes.getPath(Routes.homeScreen),
-        onGenerateRoute: Routes.generateRoute,
-        home: const MainScreen(),
+        routerDelegate: Routes.router.routerDelegate,
+        routeInformationParser: Routes.router.routeInformationParser,
+        routeInformationProvider: Routes.router.routeInformationProvider,
       ),
     );
-  }
-}
-
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const HomeScreen();
   }
 }

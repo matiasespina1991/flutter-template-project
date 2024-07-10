@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:flutter/services.dart';
 import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/generated/l10n.dart';
 import '../../app_settings/theme_settings.dart';
 import '../../providers/providers_all.dart';
-import '../../routes/app_routes.dart';
-import '../../utils/navigation/navigate.dart';
-import '../../utils/navigation/navigation.dart';
 import '../../utils/ui/is_dark_mode.dart';
 import '../../utils/validation/is_email_valid.dart';
 import '../../widgets/AppScaffold/app_scaffold.dart';
@@ -133,7 +131,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               elevation: ThemeSettings.buttonsElevation,
                               padding: const EdgeInsets.all(5.5),
                               clipBehavior: Clip.hardEdge,
-                              shape: const RoundedRectangleBorder(
+                              shape: RoundedRectangleBorder(
                                   borderRadius:
                                       ThemeSettings.buttonsBorderRadius),
                               text: S.of(context).signInWithGoogleButtonLabel,
@@ -335,7 +333,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .read(authProvider)
           .signInWithEmail(_emailController.text, _passwordController.text);
 
-      print('a');
       if (userSignedIn) {
         void userTappedConfirm() {
           NotificationSnackbar.hideCurrentSnackBar();
@@ -344,8 +341,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               variant: SnackbarVariant.success,
               duration: SnackbarDuration.short,
               delay: 1);
-          Navigate.to(context, Routes.homeScreen,
-              type: NavigationType.replacement);
+          context.go('/');
         }
 
         if (mounted) {
@@ -393,28 +389,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       variant: SnackbarVariant.info,
       duration: SnackbarDuration.long,
     );
-
     try {
       bool userSignedIn = await ref.read(authProvider).signInWithGoogle();
       if (userSignedIn) {
-        void userTappedConfirm() {
-          NotificationSnackbar.hideCurrentSnackBar();
-          NotificationSnackbar.showSnackBar(
+        NotificationModal.successfulModal(
+          title: S.of(context).successfulLogin,
+          message: S.of(context).successfulLoginRedirectToHomeMessage,
+          context: context,
+          onTapConfirm: () {
+            NotificationSnackbar.hideCurrentSnackBar();
+            NotificationSnackbar.showSnackBar(
               message: S.of(context).loginSuccessfulMessage,
               variant: SnackbarVariant.success,
               duration: SnackbarDuration.short,
-              delay: 1);
-          Navigate.to(context, Routes.homeScreen,
-              type: NavigationType.replacement);
-        }
-
-        if (mounted) {
-          NotificationModal.successfulModal(
-              title: S.of(context).successfulLogin,
-              message: S.of(context).successfulLoginRedirectToHomeMessage,
-              context: context,
-              onTapConfirm: () => userTappedConfirm());
-        }
+              delay: 1,
+            );
+            context.go('/');
+          },
+        );
       } else {
         if (mounted) {
           NotificationSnackbar.showSnackBar(

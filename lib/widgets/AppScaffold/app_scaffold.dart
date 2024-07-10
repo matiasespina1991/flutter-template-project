@@ -11,12 +11,11 @@ import 'package:template_app/screens/loading_screen/loading_screen.dart';
 import 'package:template_app/utils/ui/is_dark_mode.dart';
 import 'package:template_app/widgets/NotificationModal/notification_modal.dart';
 import 'package:template_app/widgets/NotificationSnackbar/notification_snackbar.dart';
+
+import 'package:go_router/go_router.dart';
 import '../../app_settings/theme_settings.dart';
 import '../../generated/l10n.dart';
 import '../../models/general_models.dart';
-import '../../routes/app_routes.dart';
-import '../../utils/navigation/navigate.dart';
-import '../../utils/navigation/navigation.dart';
 import '../ThemeAppBar/template_app_bar.dart';
 import '../ThemeFloatingSpeedDialMenu/theme_floating_speed_dial_menu.dart';
 
@@ -105,8 +104,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
         widget.isProtected &&
         !auth.isAuthenticated) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigate.to(context, Routes.loginScreen,
-            type: NavigationType.replacement, direction: SlideDirection.left);
+        context.go('/login');
       });
     }
 
@@ -272,7 +270,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
             TextButton(
               child: const Text('OK'),
               onPressed: () {
-                Navigate.pop(context);
+                Navigator.of(context).pop();
               },
             ),
           ],

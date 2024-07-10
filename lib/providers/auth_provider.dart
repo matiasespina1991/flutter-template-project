@@ -54,6 +54,7 @@ class AuthorizationProvider extends ChangeNotifier {
     GoogleSignInAccount? currentUser = await _googleSignIn.signInSilently();
     if (currentUser != null) {
       _user = await _handleSignIn(currentUser);
+
       if (_user != null) {
         _authToken = _user?.uid;
         await setAuthToken(_authToken!);
@@ -159,6 +160,7 @@ class AuthorizationProvider extends ChangeNotifier {
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
           );
+          print('Google Auth: $credential');
 
           if (AuthConfig.useFirebase) {
             final UserCredential? authResult =
