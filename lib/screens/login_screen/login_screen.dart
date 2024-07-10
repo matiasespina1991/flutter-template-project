@@ -36,6 +36,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       appBarTitle: S.of(context).loginScreenTitle,
+      isProtected: false,
       useSafeArea: false,
       hideFloatingSpeedDialMenu: true,
       backgroundAnimation: ThemeSettings.primaryLottieBackgroundAnimation,
