@@ -4,6 +4,6 @@ import 'notify_that_app_is_runing_in_debug_mode.dart';
 
 logConfigurations() {
   if (DebugConfig.bypassLoginScreen) {
-    notifyThatAppIsRunningInDebugMode();
+    notifyThatBypassLoginScreenIsOn();
   }
 }
