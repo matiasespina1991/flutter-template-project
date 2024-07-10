@@ -20,6 +20,8 @@ class Navigate {
       return;
     }
 
+    debugPrint('_isNavigating: $_isNavigating');
+
     if (_isNavigating) return;
     _isNavigating = true;
 
@@ -46,10 +48,10 @@ class Navigate {
   }
 
   static void back(BuildContext context) {
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.of(context).pop((route) => route.isFirst);
   }
 
   static void pop(BuildContext context) {
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.of(context).pop((route) => route.isFirst);
   }
 }

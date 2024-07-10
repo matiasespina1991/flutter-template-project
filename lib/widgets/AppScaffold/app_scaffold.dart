@@ -48,6 +48,7 @@ class AppScaffold extends ConsumerStatefulWidget {
 
 class AppScaffoldState extends ConsumerState<AppScaffold> {
   bool _connectivityChecked = false;
+  bool _checkedAuth = false;
   bool _userWentOffline = false;
   Timer? _connectivityTimer;
 

@@ -335,6 +335,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .read(authProvider)
           .signInWithEmail(_emailController.text, _passwordController.text);
 
+      print('a');
       if (userSignedIn) {
         void userTappedConfirm() {
           NotificationSnackbar.hideCurrentSnackBar();

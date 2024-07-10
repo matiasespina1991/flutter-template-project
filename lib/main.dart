@@ -79,10 +79,9 @@ class MyApp extends ConsumerWidget {
           }
           return supportedLocales.first;
         },
-        initialRoute:
-            (DebugConfig.forceDebugScreen)
-                ? Routes.getPath(DebugConfig.debugScreen)
-                : Routes.getPath(Routes.homeScreen),
+        initialRoute: (DebugConfig.forceDebugScreen)
+            ? Routes.getPath(DebugConfig.debugScreen)
+            : Routes.getPath(Routes.homeScreen),
         onGenerateRoute: Routes.generateRoute,
         home: const MainScreen(),
       ),
