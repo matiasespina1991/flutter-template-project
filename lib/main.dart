@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/providers/providers_all.dart';
+import 'package:template_app/routes/app_routes.dart';
 import 'app_settings/auth_config.dart';
 import 'globals.dart';
 import 'app_settings/app_info.dart';
@@ -77,6 +79,11 @@ class MyApp extends ConsumerWidget {
           }
           return supportedLocales.first;
         },
+        initialRoute:
+            (DebugConfig.forceDebugScreen)
+                ? Routes.getPath(DebugConfig.debugScreen)
+                : Routes.getPath(Routes.homeScreen),
+        onGenerateRoute: Routes.generateRoute,
         home: const MainScreen(),
       ),
     );
