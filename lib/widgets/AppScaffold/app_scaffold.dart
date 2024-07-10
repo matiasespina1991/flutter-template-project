@@ -95,7 +95,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
   }
 
   LoadingScreen? _handleProtectedRoutes(auth) {
-    if (DebugConfig.forceDebugScreen) {
+    if (DebugConfig.debugScreen != null && DebugConfig.forceDebugScreen) {
       return null;
     }
 
@@ -112,7 +112,6 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     if (!auth.isAuthenticated && widget.isProtected) {
       return const LoadingScreen();
     }
-    return null;
   }
 
   void _checkConnectivity(connectivity) {
@@ -271,7 +270,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
             TextButton(
               child: const Text('OK'),
               onPressed: () {
-                Navigate.pop(context);
+                Navigator.of(context).pop();
               },
             ),
           ],

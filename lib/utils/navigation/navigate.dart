@@ -34,22 +34,27 @@ class Navigate {
     final route = pushRouteWithAnimation(routeConfig.builder(context),
         direction: direction);
 
-    if (type == NavigationType.replacement) {
-      await Navigator.of(context)
-          .pushReplacement(route)
-          .then((_) => _isNavigating = false);
-    } else {
-      await Navigator.of(context).push(route).then(
-            (_) => _isNavigating = false,
-          );
+    try {
+      if (type == NavigationType.replacement) {
+        debugPrint('Navigating with replacement to: $directionRouteName');
+        Navigator.of(context).pushReplacement(route);
+      } else {
+        debugPrint('Navigating with push to: $directionRouteName');
+        Navigator.of(context).push(route);
+      }
+      debugPrint('Navigation to $directionRouteName completed.');
+    } catch (e) {
+      debugPrint('Navigation error: $e');
+    } finally {
+      _isNavigating = false;
     }
   }
 
   static void back(BuildContext context) {
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.of(context).pop();
   }
 
   static void pop(BuildContext context) {
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.of(context).pop();
   }
 }
