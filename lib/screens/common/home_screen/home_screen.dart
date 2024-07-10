@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/widgets/AppScaffold/app_scaffold.dart';
-import '../../generated/l10n.dart';
-import '../../providers/providers_all.dart';
-import '../../utils/ui/is_dark_mode.dart';
+import '../../../generated/l10n.dart';
+import '../../../providers/providers_all.dart';
+import '../../../utils/ui/is_dark_mode.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -30,6 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
+      isProtected: true,
       appBarTitle: S.of(context).homeScreenTitle,
       body: SingleChildScrollView(
         child: Column(

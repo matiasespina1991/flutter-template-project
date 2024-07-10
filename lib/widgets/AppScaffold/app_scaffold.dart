@@ -7,7 +7,6 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:template_app/app_settings/app_general_settings.dart';
 import 'package:template_app/app_settings/auth_config.dart';
 import 'package:template_app/providers/providers_all.dart';
-import 'package:template_app/screens/loading_screen/loading_screen.dart';
 import 'package:template_app/utils/ui/is_dark_mode.dart';
 import 'package:template_app/widgets/NotificationModal/notification_modal.dart';
 import 'package:template_app/widgets/NotificationSnackbar/notification_snackbar.dart';
@@ -16,6 +15,7 @@ import 'package:go_router/go_router.dart';
 import '../../app_settings/theme_settings.dart';
 import '../../generated/l10n.dart';
 import '../../models/general_models.dart';
+import '../../screens/common/loading_screen/loading_screen.dart';
 import '../ThemeAppBar/template_app_bar.dart';
 import '../ThemeFloatingSpeedDialMenu/theme_floating_speed_dial_menu.dart';
 
@@ -33,9 +33,9 @@ class AppScaffold extends ConsumerStatefulWidget {
     super.key,
     required this.body,
     required this.appBarTitle,
+    required this.isProtected,
     this.useSafeArea,
     this.hideFloatingSpeedDialMenu = false,
-    this.isProtected = true,
     this.scrollPhysics,
     this.backgroundAnimation,
     this.backgroundAnimationDarkMode,
@@ -60,10 +60,6 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider);
     final connectivity = ref.watch(connectivityProvider);
-
-    if (auth.isLoading) {
-      return const LoadingScreen();
-    }
 
     _handleProtectedRoutes(auth);
     _checkConnectivity(connectivity);
@@ -96,8 +92,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
   LoadingScreen? _handleProtectedRoutes(auth) {
     if (DebugConfig.forceDebugScreen) {
       final String debugRoutePath = DebugConfig.debugScreen.path;
-      final String debugRouteName =
-          DebugConfig.debugScreen.name ?? debugRoutePath;
+      final String debugRouteName = DebugConfig.debugScreen.name;
 
       debugPrint(
           '[DebugConfig.forceDebugScreen is set to true. Locked screen is: $debugRouteName. Navigation suspended.]');
@@ -110,7 +105,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
       return null;
     }
 
-    if (!DebugConfig.debugMode &&
+    if (!DebugConfig.bypassLoginScreen &&
         AuthConfig.useProtectedRoutes &&
         widget.isProtected &&
         !auth.isAuthenticated) {
@@ -222,7 +217,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
             enabled: !isAuthenticated &&
                 widget.isProtected &&
                 !DebugConfig.forceDebugScreen &&
-                !DebugConfig.debugMode,
+                !DebugConfig.bypassLoginScreen,
             child: Padding(
               padding: ThemeSettings.scaffoldPadding,
               child: widget.body,
@@ -281,7 +276,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
             TextButton(
               child: const Text('OK'),
               onPressed: () {
-                Navigator.of(context).pop();
+                context.pop();
               },
             ),
           ],
