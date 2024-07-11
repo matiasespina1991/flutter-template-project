@@ -91,6 +91,10 @@ class ThemeSettings {
     darkModePrimary: Colors.blueGrey,
   );
 
+  static const ThemeColors appbarOnBackgroundColor = ThemeColors(
+    lightModePrimary: Colors.white,
+    darkModePrimary: Colors.white,
+  );
   static const ThemeColors elevatedButtonBackgroundColor = ThemeColors(
     lightModePrimary: Colors.blueGrey,
     darkModePrimary: Colors.white,

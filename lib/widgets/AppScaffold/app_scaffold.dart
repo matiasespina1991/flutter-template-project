@@ -28,6 +28,8 @@ class AppScaffold extends ConsumerStatefulWidget {
   final ScrollPhysics? scrollPhysics;
   final LottieAnimationBackground? backgroundAnimation;
   final LottieAnimationBackground? backgroundAnimationDarkMode;
+  final bool useTopAppBar;
+  final bool showScreenTitleInAppBar;
 
   const AppScaffold({
     super.key,
@@ -39,6 +41,8 @@ class AppScaffold extends ConsumerStatefulWidget {
     this.scrollPhysics,
     this.backgroundAnimation,
     this.backgroundAnimationDarkMode,
+    this.useTopAppBar = false,
+    this.showScreenTitleInAppBar = true,
   });
 
   @override
@@ -68,9 +72,9 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
       bottom: widget.useSafeArea ?? ThemeSettings.useSafeArea,
       top: widget.useSafeArea ?? ThemeSettings.useSafeArea,
       child: Scaffold(
-        appBar: AppGeneralSettings.useTopAppBar
+        appBar: (AppGeneralSettings.useTopAppBar || widget.useTopAppBar)
             ? ThemeAppBar(
-                title: widget.appBarTitle,
+                title: widget.showScreenTitleInAppBar ? widget.appBarTitle : '',
               )
             : null,
         body: Stack(
@@ -92,7 +96,8 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
   LoadingScreen? _handleProtectedRoutes(auth) {
     if (DebugConfig.forceDebugScreen) {
       final String debugRoutePath = DebugConfig.debugScreen.path;
-      final String debugRouteName = DebugConfig.debugScreen.name;
+      final String debugRouteName =
+          DebugConfig.debugScreen.name ?? debugRoutePath;
 
       debugPrint(
           '[DebugConfig.forceDebugScreen is set to true. Locked screen is: $debugRouteName. Navigation suspended.]');

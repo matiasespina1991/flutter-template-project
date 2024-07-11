@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../app_settings/theme_settings.dart';
+import '../../utils/ui/is_dark_mode.dart';
+
 class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ThemeAppBar({super.key, this.appBarHeight, this.title});
 
@@ -9,6 +12,9 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      foregroundColor: isDarkMode(context)
+          ? ThemeSettings.appbarOnBackgroundColor.darkModePrimary
+          : ThemeSettings.appbarOnBackgroundColor.lightModePrimary,
       title: Text(title ?? ''),
       actions: const <Widget>[],
     );
