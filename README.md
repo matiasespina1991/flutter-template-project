@@ -2,7 +2,12 @@
 
 Template Flutter project.
 
-# 1. Delete any .git folder and initialize a new git repository if necessary. Keep the .gitignore file.
+
+# 1. Prior to cloning the repository:
+
+1. **Delete any .git folder and initialize a new git repository if necessary. Keep the .gitignore file.**
+
+2. **Update the packages in the pubspec.yaml file by running `flutter pub upgrade --major-versions`.**
 
 # 2. Rename the Flutter app from `template_app` to the desired name of your app.
 
