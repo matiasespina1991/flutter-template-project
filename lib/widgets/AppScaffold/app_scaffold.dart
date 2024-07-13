@@ -65,6 +65,10 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     final auth = ref.watch(authProvider);
     final connectivity = ref.watch(connectivityProvider);
 
+    if (auth.isLoading && !auth.isAuthenticated) {
+      return const LoadingScreen();
+    }
+
     _handleProtectedRoutes(auth);
     _checkConnectivity(connectivity);
 
@@ -214,6 +218,19 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
   }
 
   Widget _buildMainContent(bool isAuthenticated) {
+    if (widget.scrollPhysics is NeverScrollableScrollPhysics) {
+      return Skeletonizer(
+        enabled: !isAuthenticated &&
+            widget.isProtected &&
+            !DebugConfig.forceDebugScreen &&
+            !DebugConfig.bypassLoginScreen,
+        child: Padding(
+          padding: ThemeSettings.scaffoldPadding,
+          child: widget.body,
+        ),
+      );
+    }
+
     return SingleChildScrollView(
       physics: widget.scrollPhysics ?? getScrollPhysics(),
       child: Column(

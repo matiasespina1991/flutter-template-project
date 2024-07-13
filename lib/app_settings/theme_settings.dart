@@ -86,6 +86,11 @@ class ThemeSettings {
     darkModePrimary: Colors.grey,
   );
 
+  static const ThemeColors cardBackgroundColor = ThemeColors(
+    lightModePrimary: Colors.blueGrey,
+    darkModePrimary: Colors.white,
+  );
+
   static const ThemeColors primaryContainerBackgroundColor = ThemeColors(
     lightModePrimary: Colors.blueGrey,
     darkModePrimary: Colors.blueGrey,

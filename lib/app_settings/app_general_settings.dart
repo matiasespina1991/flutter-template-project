@@ -11,6 +11,10 @@ class AppGeneralSettings {
 }
 
 class DebugConfig {
+  static const bool debugMode = true;
+  static const String? debugDatabaseId =
+      null; // The ID you set in Firebase for the database you will be using for debugging - If Null, main database will be used.
+  static const bool showDebugPrints = false;
   static const bool bypassLoginScreen =
       false; // If true, login screen will be skipped
   static RouteConfig debugScreen = Routes.notFoundScreen;
