@@ -115,7 +115,13 @@ Template Flutter project.
     </dict>
   </array>`
 
-# 7. Things to take into account for pre-production and should be ready prior to the deployment of the app:
+# 7. Change iOS and Android app icons:
+
+- Find inside pubspec.yaml the flutter_launcher_icons section and change the path to the icon file you want to use as App Icon.
+- Run `flutter pub run flutter_launcher_icons` to update the app icons for both platforms.
+- Find more information about the flutter_launcher_icons package [here](https://pub.dev/packages/flutter_launcher_icons).
+
+# 8. Things to take into account for pre-production and should be ready prior to the deployment of the app:
 ### (Check each completed item with a ✅)
 
 ### UI Design:
