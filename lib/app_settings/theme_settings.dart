@@ -13,6 +13,7 @@ class ThemeSettings {
     left: 20,
     right: 20,
   );
+  static double appBarHeight = 50;
   static const Color seedColor = Colors.blueGrey;
   static const bool forceSeedColor = false;
   static const String defaultScrollPhysics =

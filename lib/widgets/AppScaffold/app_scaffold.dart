@@ -15,6 +15,7 @@ import 'package:go_router/go_router.dart';
 import '../../app_settings/theme_settings.dart';
 import '../../generated/l10n.dart';
 import '../../models/general_models.dart';
+import '../../routes/routes.dart';
 import '../../screens/common/loading_screen/loading_screen.dart';
 import '../ThemeAppBar/template_app_bar.dart';
 import '../ThemeFloatingSpeedDialMenu/theme_floating_speed_dial_menu.dart';
@@ -30,6 +31,7 @@ class AppScaffold extends ConsumerStatefulWidget {
   final LottieAnimationBackground? backgroundAnimationDarkMode;
   final bool useTopAppBar;
   final bool showScreenTitleInAppBar;
+  final bool? centerTitle;
 
   const AppScaffold({
     super.key,
@@ -43,6 +45,7 @@ class AppScaffold extends ConsumerStatefulWidget {
     this.backgroundAnimationDarkMode,
     this.useTopAppBar = false,
     this.showScreenTitleInAppBar = true,
+    this.centerTitle,
   });
 
   @override
@@ -53,6 +56,22 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
   bool _connectivityChecked = false;
   bool _userWentOffline = false;
   Timer? _connectivityTimer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final String debugRouteName = DebugConfig.debugScreen.name;
+
+    if (DebugConfig.forceDebugScreen && debugRouteName.isNotEmpty) {
+      bool navigationAllowed = true;
+      // if (DebugConfig.alwaysAllowNavigation) {
+      //   navigationAllowed = true;
+      // }
+      debugPrint(
+          '[DebugConfig.forceDebugScreen is set to true. Target screen is: $debugRouteName. Navigation ${navigationAllowed ? 'allowed' : 'is blocked'}.');
+    }
+  }
 
   @override
   void dispose() {
@@ -78,6 +97,8 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
       child: Scaffold(
         appBar: (AppGeneralSettings.useTopAppBar || widget.useTopAppBar)
             ? ThemeAppBar(
+                appBarHeight: ThemeSettings.appBarHeight,
+                centerTitle: widget.centerTitle,
                 title: widget.showScreenTitleInAppBar ? widget.appBarTitle : '',
               )
             : null,
@@ -99,18 +120,6 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
 
   LoadingScreen? _handleProtectedRoutes(auth) {
     if (DebugConfig.forceDebugScreen) {
-      final String debugRoutePath = DebugConfig.debugScreen.path;
-      final String debugRouteName =
-          DebugConfig.debugScreen.name ?? debugRoutePath;
-
-      debugPrint(
-          '[DebugConfig.forceDebugScreen is set to true. Locked screen is: $debugRouteName. Navigation suspended.]');
-      if (mounted) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          context.go(debugRoutePath);
-        });
-      }
-
       return null;
     }
 
@@ -119,7 +128,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
         widget.isProtected &&
         !auth.isAuthenticated) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go('/login');
+        context.go(Routes.loginScreen.path);
       });
     }
 

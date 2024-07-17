@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
+import '../app_settings/app_general_settings.dart';
 import '../screens/common/home_screen/home_screen.dart';
 import '../screens/common/loading_screen/loading_screen.dart';
 import '../screens/common/login_screen/login_screen.dart';
@@ -48,6 +49,8 @@ class Routes {
   }
 
   static final GoRouter router = GoRouter(
+    initialLocation:
+        DebugConfig.forceDebugScreen ? DebugConfig.debugScreen.path : null,
     routes: _generateRoutes(),
   );
 }

@@ -33,6 +33,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = ref.watch(themeProvider);
+    final isDarkMode = themeNotifier.themeMode == ThemeMode.dark;
     return AppScaffold(
       appBarTitle: S.of(context).loginScreenTitle,
       isProtected: false,
@@ -150,7 +152,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         Text(
                           S.of(context).lightMode,
                           style: TextStyle(
-                            fontWeight: isDarkMode(context)
+                            fontWeight: isDarkMode
                                 ? FontWeight.normal
                                 : FontWeight.bold,
                           ),
@@ -161,7 +163,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         Text(
                           S.of(context).darkMode,
                           style: TextStyle(
-                            fontWeight: isDarkMode(context)
+                            fontWeight: isDarkMode
                                 ? FontWeight.bold
                                 : FontWeight.normal,
                           ),
@@ -171,12 +173,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(height: 5),
                     Switch(
                       thumbIcon: WidgetStateProperty.all(Icon(
-                        isDarkMode(context)
-                            ? Icons.dark_mode
-                            : Icons.light_mode,
+                        isDarkMode ? Icons.dark_mode : Icons.light_mode,
                         color: Colors.white,
                       )),
-                      value: isDarkMode(context),
+                      value: isDarkMode,
                       onChanged: (value) {
                         ref.read(themeProvider).toggleTheme(value);
                       },
