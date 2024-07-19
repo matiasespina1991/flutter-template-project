@@ -140,6 +140,8 @@ Template Flutter project.
 - **Search Functionality:** Add search functionality to the app for users to find content. [ ]
 - **Push Notifications:** Implement push notifications for the app using Firebase Cloud Messaging. [ ]
 - **Error Handling:** Implement error handling and logging in the app. [ ]
+- **Permissions handling:** Implement permissions handling for accessing device features. [ ]
+- **Permissions denied handling:** Implement handling for when permissions are denied. [ ]
 - **Dependency Injection:** Implement dependency injection to manage dependencies and promote testability. [ ]
 - **Modularization:** Structure the app into modules to improve maintainability and scalability. [ ]
 
