@@ -12,7 +12,8 @@ Template Flutter project.
 # 2. Rename the Flutter app from `template_app` to the desired name of your app.
 
 1. **Change Package/Bundle ID:**
-   - **Android:** Edit `android/app/src/main/AndroidManifest.xml` and change the `android:label` attribute to `Name Of Your App`.
+   - **Android:** Edit `android/app/src/main/AndroidManifest.xml` and change the `android:label` attribute to `Name Of Your App`,
+   also change MainActivity.kt 'package com.example.template_app' to 'package com.example.name_of_your_project'.
    - **iOS:** Change `CFBundleDisplayName` and `CFBundleName` in `ios/Runner/Info.plist`. Open the
      project in Xcode and change the `Bundle Identifier` in the `General` tab of the Runner target and
      also in the `Signing & Capabilities` tab.
