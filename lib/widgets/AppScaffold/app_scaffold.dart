@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:template_app/app_settings/app_general_settings.dart';
-import 'package:template_app/app_settings/auth_config.dart';
-import 'package:template_app/providers/providers_all.dart';
-import 'package:template_app/utils/ui/is_dark_mode.dart';
-import 'package:template_app/widgets/NotificationModal/notification_modal.dart';
-import 'package:template_app/widgets/NotificationSnackbar/notification_snackbar.dart';
+import 'package:gpguard_poc/app_settings/app_general_settings.dart';
+import 'package:gpguard_poc/app_settings/auth_config.dart';
+import 'package:gpguard_poc/providers/providers_all.dart';
+import 'package:gpguard_poc/utils/ui/is_dark_mode.dart';
+import 'package:gpguard_poc/widgets/NotificationModal/notification_modal.dart';
+import 'package:gpguard_poc/widgets/NotificationSnackbar/notification_snackbar.dart';
 
 import 'package:go_router/go_router.dart';
 import '../../app_settings/theme_settings.dart';

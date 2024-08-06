@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:template_app/app_settings/theme_settings.dart';
-import 'package:template_app/generated/l10n.dart';
+import 'package:gpguard_poc/app_settings/theme_settings.dart';
+import 'package:gpguard_poc/generated/l10n.dart';
 import 'package:intl/intl.dart';
 
 class NotificationModal {

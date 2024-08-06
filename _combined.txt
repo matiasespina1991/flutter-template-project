@@ -3,6 +3,7 @@
 ├── _combined.txt
 ├── analysis_options.yaml
 ├── concatenate-dart-files.sh
+├── firebase.json
 ├── lib
 │   ├── _bin
 │   │   └── config.dart
@@ -26,6 +27,7 @@
 │   │       ├── animation7.json
 │   │       ├── animation8.json
 │   │       └── animation9.json
+│   ├── firebase_options.dart
 │   ├── generated
 │   │   ├── intl
 │   │   │   ├── messages_all.dart
@@ -48,16 +50,20 @@
 │   │   ├── locale_provider.dart
 │   │   ├── providers_all.dart
 │   │   └── theme_provider.dart
+│   ├── routes
+│   │   └── routes.dart
 │   ├── screens
-│   │   ├── home_screen
-│   │   │   └── home_screen.dart
-│   │   ├── loading_screen
-│   │   │   └── loading_screen.dart
-│   │   └── login_screen
-│   │       └── login_screen.dart
+│   │   ├── _example_screen.dart
+│   │   └── common
+│   │       ├── home_screen
+│   │       ├── loading_screen
+│   │       ├── login_screen
+│   │       ├── not_found_screen
+│   │       └── scanner_screen
 │   ├── services
 │   │   ├── connectivity_service.dart
-│   │   └── error_reporting_service.dart
+│   │   ├── error_reporting_service.dart
+│   │   └── firestore_service.dart
 │   ├── theme
 │   │   └── main_theme
 │   │       ├── buttons_theme.dart
@@ -69,7 +75,7 @@
 │   │   │   ├── log_configurations.dart
 │   │   │   └── notify_that_app_is_runing_in_debug_mode.dart
 │   │   ├── navigation
-│   │   │   └── push_route_with_animation.dart
+│   │   │   └── _old_navigation.dart
 │   │   ├── ui
 │   │   │   └── is_dark_mode.dart
 │   │   └── validation
@@ -94,20 +100,20 @@
 ├── rename-imports.sh
 └── template_app.iml
 
-32 directories, 63 files
+36 directories, 65 files
 ///// lib/main.dart /////
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:template_app/providers/providers_all.dart';
+import 'package:gpguard_poc/providers/providers_all.dart';
+import 'package:gpguard_poc/routes/routes.dart';
 import 'app_settings/auth_config.dart';
 import 'globals.dart';
 import 'app_settings/app_info.dart';
 import 'app_settings/language_settings.dart';
 import 'app_settings/theme_settings.dart';
-import 'screens/home_screen/home_screen.dart';
 import 'theme/main_theme/main_theme.dart';
 import 'utils/debug/log_configurations.dart';
 import 'generated/l10n.dart';
@@ -138,15 +144,26 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeNotifier = ref.watch(themeProvider);
     final localeNotifier = ref.watch(localeProvider);
+    final isDarkMode = themeNotifier.themeMode == ThemeMode.dark;
 
     return SkeletonizerConfig(
-      data: const SkeletonizerConfigData(
-          effect: ShimmerEffect(),
+      data: SkeletonizerConfigData(
+          effect: ShimmerEffect(
+            baseColor: isDarkMode
+                ? ThemeSettings.seedColor.withOpacity(0.1)
+                : Colors.grey[300]!, // Color base del shimmer
+            highlightColor: isDarkMode
+                ? Colors.grey.withOpacity(0.25)
+                : Colors.grey[100]!, // Color de resaltado del shimmer
+            duration: const Duration(milliseconds: 2500),
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           enableSwitchAnimation: true,
           containersColor: ThemeSettings.forceSeedColor
               ? ThemeSettings.seedColor
               : Colors.grey),
-      child: MaterialApp(
+      child: MaterialApp.router(
         scaffoldMessengerKey: snackbarKey,
         title: AppInfo.appName,
         theme: MainTheme.lightTheme,
@@ -175,25 +192,20 @@ class MyApp extends ConsumerWidget {
           }
           return supportedLocales.first;
         },
-        home: const MainScreen(),
+        routerDelegate: Routes.router.routerDelegate,
+        routeInformationParser: Routes.router.routeInformationParser,
+        routeInformationProvider: Routes.router.routeInformationProvider,
       ),
     );
   }
 }
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const HomeScreen();
-  }
-}
-
 ///// lib/app_settings/app_general_settings.dart /////
+import '../routes/routes.dart';
+
 class AppGeneralSettings {
   static const bool useTopAppBar = false;
-  static const bool useFloatingSpeedDialMenu = true;
+  static const bool useFloatingSpeedDialMenu = false;
   static const bool useAppDrawerMenu = false;
   static const String minimumiOSVersion =
       '13.0'; // Set this manually in Xcode & Podfile
@@ -202,8 +214,15 @@ class AppGeneralSettings {
 }
 
 class DebugConfig {
-  static const bool debugMode = false; // If true, login screen will be skipped
-  static const String debugScreen = '/home'; //TODO
+  static const bool debugMode = true;
+  static const String? debugDatabaseId =
+      null; // The ID you set in Firebase for the database you will be using for debugging - If Null, main database will be used.
+  static const bool showDebugPrints = false;
+  static const bool bypassLoginScreen =
+      true; // If true, login screen will be skipped
+  static RouteConfig debugScreen = Routes.notFoundScreen;
+  static const forceDebugScreen =
+      false; // If true, the route set in debugScreen will be shown and screen protection will be ignored
 }
 
 ///// lib/app_settings/app_info.dart /////
@@ -215,7 +234,7 @@ class AppInfo {
 class AuthConfig {
   static const bool useProtectedRoutes = true;
   static const bool useFirebase = false;
-  static const bool allowGoogleSignIn = false;
+  static const bool allowGoogleSignIn = true;
   //TODO: Add scope functionality:
   static const List<String> googleSignInScopes = ['email'];
   static const bool allowFacebookSignIn = false;
@@ -224,15 +243,17 @@ class AuthConfig {
   static const bool allowEmailSignIn = false;
 }
 
-///// lib/screens/home_screen/home_screen.dart /////
+///// lib/screens/common/home_screen/home_screen.dart /////
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:template_app/app_settings/app_general_settings.dart';
-import 'package:template_app/widgets/AppScaffold/app_scaffold.dart';
-import '../../generated/l10n.dart';
-import '../../providers/providers_all.dart';
-import '../../utils/ui/is_dark_mode.dart';
+import 'package:gpguard_poc/app_settings/app_general_settings.dart';
+import 'package:gpguard_poc/widgets/AppScaffold/app_scaffold.dart';
+import '../../../generated/l10n.dart';
+import '../../../providers/providers_all.dart';
+import '../../../routes/routes.dart';
+import '../../../utils/ui/is_dark_mode.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -256,943 +277,60 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      appBarTitle: S.of(context).homeScreenTitle,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Skeletonizer(
-              enabled: isLoading,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(S.of(context).exampleTitle,
-                      style: Theme.of(context).textTheme.headlineSmall),
-                  const SizedBox(height: 10),
-                  Text(S.of(context).exampleDescription,
-                      style: Theme.of(context).textTheme.bodyMedium),
-                  const SizedBox(height: 20),
-                  Text(S.of(context).buttonsSectionTitle,
-                      style: Theme.of(context).textTheme.titleSmall),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 47),
-                      ),
-                      child: Text(S.of(context).elevatedButtonLabel)),
-                  TextButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 47),
-                      ),
-                      child: Text(S.of(context).textButtonLabel)),
-                  OutlinedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 47),
-                      ),
-                      child: Text(S.of(context).outlinedButtonLabel)),
-                  const SizedBox(height: 20),
-                  Text(S.of(context).switchesSectionTitle,
-                      style: Theme.of(context).textTheme.titleSmall),
-                  const SizedBox(height: 10),
-                  SwitchListTile(
-                    title: Text(S.of(context).exampleSwitch),
-                    value: exampleSwitchValue,
-                    onChanged: (value) {
-                      setState(() {
-                        exampleSwitchValue = value;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  Text(S.of(context).inputsSectionTitle,
-                      style: Theme.of(context).textTheme.titleSmall),
-                  const SizedBox(height: 10),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: S.of(context).textFieldLabel,
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Divider(),
-            const SizedBox(height: 20),
-            Skeletonizer(
-              enabled: isLoading,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        S.of(context).lightMode,
-                        style: TextStyle(
-                          fontWeight: isDarkMode(context)
-                              ? FontWeight.normal
-                              : FontWeight.bold,
-                        ),
-                      ),
-                      const Text(
-                        ' / ',
-                      ),
-                      Text(
-                        S.of(context).darkMode,
-                        style: TextStyle(
-                          fontWeight: isDarkMode(context)
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  Center(
-                    child: Switch(
-                      thumbIcon: WidgetStateProperty.all(Icon(
-                        isDarkMode(context)
-                            ? Icons.dark_mode
-                            : Icons.light_mode,
-                        color: Colors.white,
-                      )),
-                      value: isDarkMode(context),
-                      onChanged: (value) {
-                        ref.read(themeProvider).toggleTheme(value);
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          ref
-                              .read(localeProvider)
-                              .setLocale(const Locale('en'));
-                        },
-                        child: const Text(
-                          '🇺🇸',
-                          style: TextStyle(fontSize: 30),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      const Text('/'),
-                      const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () {
-                          ref
-                              .read(localeProvider)
-                              .setLocale(const Locale('es'));
-                        },
-                        child: const Text(
-                          '🇪🇸',
-                          style: TextStyle(fontSize: 30),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      const Text('/'),
-                      const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () {
-                          ref
-                              .read(localeProvider)
-                              .setLocale(const Locale('de'));
-                        },
-                        child: const Text(
-                          '🇩🇪',
-                          style: TextStyle(fontSize: 30),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Divider(),
-            Skeletonizer(
-                enabled: isLoading,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(S.of(context).chipsSectionTitle,
-                          style: Theme.of(context).textTheme.titleSmall),
-                      const SizedBox(height: 10),
-                      Wrap(
-                        spacing: 10,
-                        children: [
-                          Chip(
-                            label: Text(S.of(context).chipOneLabel),
-                          ),
-                          Chip(label: Text(S.of(context).chipTwoLabel)),
-                          Chip(label: Text(S.of(context).chipThreeLabel)),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Text(S.of(context).slidersSectionTitle,
-                          style: Theme.of(context).textTheme.titleSmall),
-                      const SizedBox(height: 10),
-                      Slider(
-                        value: _sliderValue.toDouble(),
-                        onChanged: (value) {
-                          setState(() {
-                            _sliderValue = value.toInt();
-                          });
-                        },
-                        min: 0,
-                        max: 100,
-                        // inactiveColor: Colors.white.withOpacity(0.4),
+    final themeNotifier = ref.watch(themeProvider);
 
-                        divisions: 100,
-                      ),
-                      Text('${S.of(context).sliderValueLabel}: $_sliderValue%'),
-                    ])),
-            const Divider(),
-            Skeletonizer(
-              enabled: isLoading,
-              child: Stepper(
-                physics: const NeverScrollableScrollPhysics(),
-                margin: const EdgeInsets.all(0),
-                controlsBuilder: (context, details) {
-                  return Row(
-                    children: [
-                      OutlinedButton(
-                        onPressed: details.onStepContinue,
-                        child: Text(S.of(context).continueButton),
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          minimumSize: const Size(92, 0),
-                        ),
-                        onPressed: details.onStepCancel,
-                        child: Text(S.of(context).back),
-                      ),
-                    ],
-                  );
-                },
-                currentStep: _stepperIndex,
-                onStepTapped: (index) {
-                  setState(() {
-                    _stepperIndex = index;
-                  });
-                },
-                onStepContinue: () {
-                  if (_stepperIndex < 2) {
-                    setState(() {
-                      _stepperIndex++;
-                    });
-                  }
-                },
-                onStepCancel: () {
-                  if (_stepperIndex > 0) {
-                    setState(() {
-                      _stepperIndex--;
-                    });
-                  }
-                },
-                steps: [
-                  Step(
-                    title: Text(S.of(context).stepOneTitle),
-                    content: SizedBox(
-                        height: 100,
-                        child:
-                            Center(child: Text(S.of(context).stepOneContent))),
-                    isActive: _stepperIndex == 0,
+    final isDarkMode = themeNotifier.themeMode == ThemeMode.dark;
+    return AppScaffold(
+      isProtected: true,
+      appBarTitle: S.of(context).homeScreenTitle,
+      body: Skeletonizer(
+        enabled: isLoading,
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    context.go(Routes.scannerScreen.path);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 47),
                   ),
-                  Step(
-                    title: Text(S.of(context).stepTwoTitle),
-                    content: SizedBox(
-                        height: 100,
-                        child:
-                            Center(child: Text(S.of(context).stepTwoContent))),
-                    isActive: _stepperIndex == 1,
-                  ),
-                  Step(
-                    title: Text(S.of(context).stepThreeTitle),
-                    content: SizedBox(
-                        height: 100,
-                        child: Center(
-                            child: Text(S.of(context).stepThreeContent))),
-                    isActive: _stepperIndex == 2,
-                  ),
-                ],
-              ),
-            ),
-            const Divider(),
-            Skeletonizer(
-              enabled: isLoading,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleDisplayLargePrefix,
-                        style: Theme.of(context).textTheme.displayLarge,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Large',
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleDisplayMediumPrefix,
-                        style: Theme.of(context).textTheme.displayMedium,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Medium',
-                            style: Theme.of(context)
-                                .textTheme
-                                .displayMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleDisplaySmallPrefix,
-                        style: Theme.of(context).textTheme.displaySmall,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Small',
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleHeadlineLargePrefix,
-                        style: Theme.of(context).textTheme.headlineLarge,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Large',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleHeadlineMediumPrefix,
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Medium',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleHeadlineSmallPrefix,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Small',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleTitleLargePrefix,
-                        style: Theme.of(context).textTheme.titleLarge,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Large',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleTitleMediumPrefix,
-                        style: Theme.of(context).textTheme.titleMedium,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Medium',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleTitleSmallPrefix,
-                        style: Theme.of(context).textTheme.titleSmall,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Small',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleBodyLargePrefix,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Large',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleBodyMediumPrefix,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Medium',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleBodySmallPrefix,
-                        style: Theme.of(context).textTheme.bodySmall,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Small',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleLabelLargePrefix,
-                        style: Theme.of(context).textTheme.labelLarge,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Large',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleLabelMediumPrefix,
-                        style: Theme.of(context).textTheme.labelMedium,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Medium',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: S.of(context).exampleLabelSmallPrefix,
-                        style: Theme.of(context).textTheme.labelSmall,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Small',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelSmall
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]),
-            ),
-            const SizedBox(height: 80),
-          ],
+                  child: Text('Open scanner')),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-///// lib/screens/login_screen/login_screen.dart /////
+///// lib/screens/common/scanner_screen/scanner_screen.dart /////
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sign_in_button/sign_in_button.dart';
-import 'package:flutter/services.dart';
-import 'package:template_app/app_settings/auth_config.dart';
-import 'package:template_app/generated/l10n.dart';
-import '../../app_settings/theme_settings.dart';
-import '../../providers/providers_all.dart';
-import '../../utils/navigation/push_route_with_animation.dart';
-import '../../utils/ui/is_dark_mode.dart';
-import '../../utils/validation/is_email_valid.dart';
-import '../../widgets/AppScaffold/app_scaffold.dart';
-import '../../widgets/NotificationModal/notification_modal.dart';
-import '../../widgets/NotificationSnackbar/notification_snackbar.dart';
-import '../../widgets/ThemeInputTextField/theme_input_text_field.dart';
-import '../home_screen/home_screen.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+import '../../../widgets/AppScaffold/app_scaffold.dart';
+
+class ScannerScreen extends StatefulWidget {
+  const ScannerScreen({super.key});
 
   @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+  State<ScannerScreen> createState() => _ScannerScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final FocusNode _emailFocusNode = FocusNode();
-  final FocusNode _passwordFocusNode = FocusNode();
-  bool _isEmailValid = true;
-  bool _isPasswordValid = true;
-  final int minPasswordLength = 6;
-  bool _attemptingLogin = false;
-
+class _ScannerScreenState extends State<ScannerScreen> {
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      appBarTitle: S.of(context).loginScreenTitle,
-      isProtected: false,
-      useSafeArea: false,
-      hideFloatingSpeedDialMenu: true,
-      backgroundAnimation: ThemeSettings.primaryLottieBackgroundAnimation,
-      backgroundAnimationDarkMode:
-          ThemeSettings.secondaryLottieBackgroundAnimation,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Center(
-              child: SizedBox(
-                width: 300,
-                child: Column(
-                  children: <Widget>[
-                    const SizedBox(height: 120),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Icon(Icons.email_outlined),
-                          const SizedBox(width: 5),
-                          Text(
-                            S.of(context).emailLabel,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    ThemeInputTextField(
-                      controller: _emailController,
-                      focusNode: _emailFocusNode,
-                      hintText: S.of(context).emailHintText,
-                      isEmailInput: true,
-                      isValid: _isEmailValid,
-                      errorText: S.of(context).invalidEmailMessage,
-                      onChanged: (value) {
-                        if (isEmailValid(value)) {
-                          setState(() {
-                            _isEmailValid = true;
-                          });
-                        }
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Icon(Icons.lock_outline),
-                          const SizedBox(width: 5),
-                          Text(
-                            S.of(context).passwordLabel,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                    ThemeInputTextField(
-                      controller: _passwordController,
-                      focusNode: _passwordFocusNode,
-                      hintText: S.of(context).passwordHintText,
-                      isPasswordInput: true,
-                      hidePasswordVisibilityIcon: false,
-                      isValid: _isPasswordValid,
-                      errorText: S.of(context).invalidPasswordMessage,
-                      onChanged: (value) {
-                        if (value.isNotEmpty &&
-                            value.length >= minPasswordLength) {
-                          setState(() {
-                            _isPasswordValid = true;
-                          });
-                        }
-                      },
-                    ),
-                    const SizedBox(height: 32.0),
-                    SizedBox(
-                      width: 233,
-                      child: ElevatedButton(
-                        onPressed: _attemptingLogin
-                            ? null
-                            : () => attemptLoginWithEmailAndPassword(ref),
-                        child: Text(S.of(context).loginButton),
-                      ),
-                    ),
-                    Visibility(
-                      visible: AuthConfig.allowGoogleSignIn,
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 22.0),
-                          SignInButton(Buttons.google,
-                              elevation: ThemeSettings.buttonsElevation,
-                              padding: const EdgeInsets.all(5.5),
-                              clipBehavior: Clip.hardEdge,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              text: S.of(context).signInWithGoogleButtonLabel,
-                              onPressed: () async {
-                            if (AuthConfig.allowGoogleSignIn) {
-                              attemptLoginWithGoogle(ref);
-                            }
-                          }),
-                        ],
-                      ),
-                    ),
-                    const Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          S.of(context).lightMode,
-                          style: TextStyle(
-                            fontWeight: isDarkMode(context)
-                                ? FontWeight.normal
-                                : FontWeight.bold,
-                          ),
-                        ),
-                        const Text(
-                          ' / ',
-                        ),
-                        Text(
-                          S.of(context).darkMode,
-                          style: TextStyle(
-                            fontWeight: isDarkMode(context)
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    Switch(
-                      thumbIcon: WidgetStateProperty.all(Icon(
-                        isDarkMode(context)
-                            ? Icons.dark_mode
-                            : Icons.light_mode,
-                        color: Colors.white,
-                      )),
-                      value: isDarkMode(context),
-                      onChanged: (value) {
-                        ref.read(themeProvider).toggleTheme(value);
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            ref
-                                .read(localeProvider)
-                                .setLocale(const Locale('en'));
-                          },
-                          child: const Text(
-                            '🇺🇸',
-                            style: TextStyle(fontSize: 30),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        const Text('/'),
-                        const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: () {
-                            ref
-                                .read(localeProvider)
-                                .setLocale(const Locale('es'));
-                          },
-                          child: const Text(
-                            '🇪🇸',
-                            style: TextStyle(fontSize: 30),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        const Text('/'),
-                        const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: () {
-                            ref
-                                .read(localeProvider)
-                                .setLocale(const Locale('de'));
-                          },
-                          child: const Text(
-                            '🇩🇪',
-                            style: TextStyle(fontSize: 30),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+    return const AppScaffold(
+      body: Center(
+        child: Text('Scanner Screen'),
       ),
+      appBarTitle: 'Scanner Screen',
+      isProtected: false,
     );
-  }
-
-  void attemptLoginWithEmailAndPassword(WidgetRef ref) async {
-    debugPrint('Attempting login...');
-    var error = false;
-    setState(() {
-      _isEmailValid = true;
-      _isPasswordValid = true;
-    });
-
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      List<String> emptyFields = [];
-      if (_emailController.text.isEmpty) {
-        debugPrint('Please insert a valid email');
-        emptyFields.add(S.of(context).email);
-        setState(() {
-          _isEmailValid = false;
-        });
-        NotificationSnackbar.showSnackBar(
-          message: S.of(context).invalidEmailSnackbarMessage,
-          variant: SnackbarVariant.error,
-          duration: SnackbarDuration.short,
-        );
-      }
-      if (_passwordController.text.isEmpty) {
-        debugPrint('Please insert a valid password');
-        emptyFields.add(S.of(context).password);
-        setState(() {
-          _isPasswordValid = false;
-        });
-        NotificationSnackbar.showSnackBar(
-          message: S.of(context).invalidPasswordSnackbarMessage,
-          variant: SnackbarVariant.error,
-          duration: SnackbarDuration.short,
-        );
-        error = true;
-      }
-
-      debugPrint('Error: The following fields are empty: $emptyFields');
-
-      NotificationSnackbar.showSnackBar(
-        message:
-            '${S.of(context).pleaseFillTheFollowingFields} ${emptyFields.join(', ')}.',
-        variant: SnackbarVariant.error,
-        duration: SnackbarDuration.short,
-      );
-      error = true;
-
-      NotificationModal.loginFieldsAreEmpty(
-          context: context, onTapConfirm: () {}, emptyFields: emptyFields);
-    }
-
-    if (_emailController.text.isNotEmpty &&
-        !isEmailValid(_emailController.text)) {
-      debugPrint('Email is not valid');
-      setState(() {
-        _isEmailValid = false;
-      });
-      NotificationSnackbar.showSnackBar(
-        message: S.of(context).invalidEmailMessage,
-        variant: SnackbarVariant.error,
-        duration: SnackbarDuration.short,
-      );
-      error = true;
-    }
-
-    if (_passwordController.text.isNotEmpty &&
-        _passwordController.text.length < minPasswordLength) {
-      debugPrint('Password is too short. Minimum length: $minPasswordLength');
-      setState(() {
-        _isPasswordValid = false;
-      });
-      NotificationSnackbar.showSnackBar(
-        message: S.of(context).invalidPasswordTooShortMessage,
-        variant: SnackbarVariant.error,
-        duration: SnackbarDuration.short,
-      );
-      error = true;
-    }
-
-    if (error) {
-      debugPrint('Login aborted.');
-      return;
-    }
-
-    setState(() {
-      _attemptingLogin = true;
-    });
-
-    NotificationSnackbar.showSnackBar(
-      message: S.of(context).signingInMessage,
-      variant: SnackbarVariant.info,
-      duration: SnackbarDuration.long,
-    );
-    try {
-      bool userSignedIn = await ref
-          .read(authProvider)
-          .signInWithEmail(_emailController.text, _passwordController.text);
-
-      if (userSignedIn) {
-        void userTappedConfirm() {
-          NotificationSnackbar.hideCurrentSnackBar();
-          NotificationSnackbar.showSnackBar(
-              message: S.of(context).loginSuccessfulMessage,
-              variant: SnackbarVariant.success,
-              duration: SnackbarDuration.short,
-              delay: 1);
-          Navigator.of(context).pushReplacement(pushRouteWithAnimation(
-              const HomeScreen(),
-              direction: SlideDirection.right));
-        }
-
-        if (mounted) {
-          NotificationModal.successfulModal(
-              title: S.of(context).successfulLogin,
-              message: S.of(context).successfulLoginRedirectToHomeMessage,
-              context: context,
-              onTapConfirm: () => userTappedConfirm());
-        }
-      } else {
-        if (mounted) {
-          NotificationSnackbar.showSnackBar(
-            message: S.of(context).loginErrorMessage,
-            variant: SnackbarVariant.error,
-            duration: SnackbarDuration.long,
-          );
-        }
-      }
-    } catch (error) {
-      if (mounted) {
-        NotificationSnackbar.showSnackBar(
-          message: S.of(context).loginErrorMessage,
-          variant: SnackbarVariant.error,
-          duration: SnackbarDuration.long,
-        );
-      }
-      if (mounted) {
-        NotificationModal.failedLogin(
-            context: context,
-            onTapConfirm: () {},
-            errorMessage: S.of(context).loginErrorMessage);
-        debugPrint('Error logging in: ${error.toString()}');
-      }
-    } finally {
-      setState(() {
-        _attemptingLogin = false;
-      });
-      NotificationSnackbar.hideCurrentSnackBar();
-    }
-  }
-
-  void attemptLoginWithGoogle(WidgetRef ref) async {
-    NotificationSnackbar.showSnackBar(
-      message: S.of(context).signingInWithGoogleSnackbarMessage,
-      variant: SnackbarVariant.info,
-      duration: SnackbarDuration.long,
-    );
-
-    try {
-      await ref.read(authProvider).signInWithGoogle();
-    } on PlatformException catch (error) {
-      NotificationSnackbar.showSnackBar(
-        message: S.of(context).errorSigningInWithGoogleSnackbarMessage,
-        variant: SnackbarVariant.error,
-        duration: SnackbarDuration.long,
-      );
-
-      debugPrint('Error signing in with Google: ${error.toString()}');
-    } catch (error) {
-      NotificationSnackbar.showSnackBar(
-        message: S.of(context).errorSigningInWithGoogleSnackbarMessage,
-        variant: SnackbarVariant.error,
-        duration: SnackbarDuration.long,
-      );
-
-      debugPrint('Error: ${error.toString()}');
-    }
   }
 }
 
@@ -1202,18 +340,20 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:template_app/app_settings/app_general_settings.dart';
-import 'package:template_app/app_settings/auth_config.dart';
-import 'package:template_app/providers/providers_all.dart';
-import 'package:template_app/screens/loading_screen/loading_screen.dart';
-import 'package:template_app/utils/ui/is_dark_mode.dart';
-import 'package:template_app/widgets/NotificationModal/notification_modal.dart';
-import 'package:template_app/widgets/NotificationSnackbar/notification_snackbar.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import 'package:gpguard_poc/app_settings/app_general_settings.dart';
+import 'package:gpguard_poc/app_settings/auth_config.dart';
+import 'package:gpguard_poc/providers/providers_all.dart';
+import 'package:gpguard_poc/utils/ui/is_dark_mode.dart';
+import 'package:gpguard_poc/widgets/NotificationModal/notification_modal.dart';
+import 'package:gpguard_poc/widgets/NotificationSnackbar/notification_snackbar.dart';
+
+import 'package:go_router/go_router.dart';
 import '../../app_settings/theme_settings.dart';
 import '../../generated/l10n.dart';
 import '../../models/general_models.dart';
-import '../../screens/login_screen/login_screen.dart';
-import '../../utils/navigation/push_route_with_animation.dart';
+import '../../routes/routes.dart';
+import '../../screens/common/loading_screen/loading_screen.dart';
 import '../ThemeAppBar/template_app_bar.dart';
 import '../ThemeFloatingSpeedDialMenu/theme_floating_speed_dial_menu.dart';
 
@@ -1226,17 +366,23 @@ class AppScaffold extends ConsumerStatefulWidget {
   final ScrollPhysics? scrollPhysics;
   final LottieAnimationBackground? backgroundAnimation;
   final LottieAnimationBackground? backgroundAnimationDarkMode;
+  final bool useTopAppBar;
+  final bool showScreenTitleInAppBar;
+  final bool? centerTitle;
 
   const AppScaffold({
     super.key,
     required this.body,
     required this.appBarTitle,
+    required this.isProtected,
     this.useSafeArea,
     this.hideFloatingSpeedDialMenu = false,
-    this.isProtected = true,
     this.scrollPhysics,
     this.backgroundAnimation,
     this.backgroundAnimationDarkMode,
+    this.useTopAppBar = false,
+    this.showScreenTitleInAppBar = true,
+    this.centerTitle,
   });
 
   @override
@@ -1244,10 +390,25 @@ class AppScaffold extends ConsumerStatefulWidget {
 }
 
 class AppScaffoldState extends ConsumerState<AppScaffold> {
-  bool _navigated = false;
   bool _connectivityChecked = false;
   bool _userWentOffline = false;
   Timer? _connectivityTimer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final String debugRouteName = DebugConfig.debugScreen.name;
+
+    if (DebugConfig.forceDebugScreen && debugRouteName.isNotEmpty) {
+      bool navigationAllowed = true;
+      // if (DebugConfig.alwaysAllowNavigation) {
+      //   navigationAllowed = true;
+      // }
+      debugPrint(
+          '[DebugConfig.forceDebugScreen is set to true. Target screen is: $debugRouteName. Navigation ${navigationAllowed ? 'allowed' : 'is blocked'}.');
+    }
+  }
 
   @override
   void dispose() {
@@ -1260,6 +421,10 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     final auth = ref.watch(authProvider);
     final connectivity = ref.watch(connectivityProvider);
 
+    if (auth.isLoading && !auth.isAuthenticated) {
+      return const LoadingScreen();
+    }
+
     _handleProtectedRoutes(auth);
     _checkConnectivity(connectivity);
 
@@ -1267,16 +432,18 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
       bottom: widget.useSafeArea ?? ThemeSettings.useSafeArea,
       top: widget.useSafeArea ?? ThemeSettings.useSafeArea,
       child: Scaffold(
-        appBar: AppGeneralSettings.useTopAppBar
+        appBar: (AppGeneralSettings.useTopAppBar || widget.useTopAppBar)
             ? ThemeAppBar(
-                title: widget.appBarTitle,
+                appBarHeight: ThemeSettings.appBarHeight,
+                centerTitle: widget.centerTitle,
+                title: widget.showScreenTitleInAppBar ? widget.appBarTitle : '',
               )
             : null,
         body: Stack(
           fit: StackFit.expand,
           children: [
             _buildBackgroundAnimation(),
-            _buildMainContent(),
+            _buildMainContent(auth.isAuthenticated),
             _buildFloatingMenuBackdrop(),
           ],
         ),
@@ -1288,23 +455,24 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     );
   }
 
-  _handleProtectedRoutes(auth) {
-    if (!DebugConfig.debugMode &&
+  LoadingScreen? _handleProtectedRoutes(auth) {
+    if (DebugConfig.forceDebugScreen) {
+      return null;
+    }
+
+    if (!DebugConfig.bypassLoginScreen &&
         AuthConfig.useProtectedRoutes &&
         widget.isProtected &&
-        !auth.isAuthenticated &&
-        !_navigated) {
-      _navigated = true;
+        !auth.isAuthenticated) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pushReplacement(pushRouteWithAnimation(
-            const LoginScreen(),
-            direction: SlideDirection.left));
+        context.go(Routes.loginScreen.path);
       });
     }
 
     if (!auth.isAuthenticated && widget.isProtected) {
       return const LoadingScreen();
     }
+    return null;
   }
 
   void _checkConnectivity(connectivity) {
@@ -1395,14 +563,33 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
     return const SizedBox.shrink();
   }
 
-  Widget _buildMainContent() {
+  Widget _buildMainContent(bool isAuthenticated) {
+    if (widget.scrollPhysics is NeverScrollableScrollPhysics) {
+      return Skeletonizer(
+        enabled: !isAuthenticated &&
+            widget.isProtected &&
+            !DebugConfig.forceDebugScreen &&
+            !DebugConfig.bypassLoginScreen,
+        child: Padding(
+          padding: ThemeSettings.scaffoldPadding,
+          child: widget.body,
+        ),
+      );
+    }
+
     return SingleChildScrollView(
       physics: widget.scrollPhysics ?? getScrollPhysics(),
       child: Column(
         children: [
-          Padding(
-            padding: ThemeSettings.scaffoldPadding,
-            child: widget.body,
+          Skeletonizer(
+            enabled: !isAuthenticated &&
+                widget.isProtected &&
+                !DebugConfig.forceDebugScreen &&
+                !DebugConfig.bypassLoginScreen,
+            child: Padding(
+              padding: ThemeSettings.scaffoldPadding,
+              child: widget.body,
+            ),
           ),
         ],
       ),
@@ -1457,7 +644,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
             TextButton(
               child: const Text('OK'),
               onPressed: () {
-                Navigator.of(context).pop();
+                context.pop();
               },
             ),
           ],
@@ -1495,7 +682,7 @@ class AppScaffoldState extends ConsumerState<AppScaffold> {
 ///// lib/widgets/NotificationSnackbar/notification_snackbar.dart /////
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:template_app/app_settings/theme_settings.dart';
+import 'package:gpguard_poc/app_settings/theme_settings.dart';
 
 import '../../globals.dart';
 
@@ -1565,14 +752,16 @@ class NotificationSnackbar {
                       : ThemeSettings.snackBarErrorTextColor,
             ),
           SizedBox(width: icon != null ? 8 : 0),
-          Text(message,
-              style: TextStyle(
-                  color: variant == SnackbarVariant.success
-                      ? ThemeSettings.snackBarSuccessTextColor
-                      : variant == SnackbarVariant.info
-                          ? ThemeSettings.snackBarInfoTextColor
-                          : ThemeSettings.snackBarErrorTextColor,
-                  fontSize: ThemeSettings.snackbarFontSize)),
+          Flexible(
+            child: Text(message,
+                style: TextStyle(
+                    color: variant == SnackbarVariant.success
+                        ? ThemeSettings.snackBarSuccessTextColor
+                        : variant == SnackbarVariant.info
+                            ? ThemeSettings.snackBarInfoTextColor
+                            : ThemeSettings.snackBarErrorTextColor,
+                    fontSize: ThemeSettings.snackbarFontSize)),
+          ),
         ],
       ),
     ));
@@ -1589,8 +778,9 @@ class NotificationSnackbar {
 
 ///// lib/widgets/NotificationModal/notification_modal.dart /////
 import 'package:flutter/material.dart';
-import 'package:template_app/app_settings/theme_settings.dart';
-import 'package:template_app/generated/l10n.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gpguard_poc/app_settings/theme_settings.dart';
+import 'package:gpguard_poc/generated/l10n.dart';
 import 'package:intl/intl.dart';
 
 class NotificationModal {
@@ -1625,7 +815,7 @@ class NotificationModal {
                   width: 200,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.pop();
                       onTapConfirm();
                     },
                     child: Text(S.of(context).gotIt),
@@ -1678,7 +868,7 @@ class NotificationModal {
                   width: 200,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.pop();
                       onTapConfirm();
                     },
                     child: Text(S.of(context).ok),
@@ -1726,7 +916,7 @@ class NotificationModal {
                   width: 200,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.pop();
                       onTapConfirm();
                     },
                     child: Text(S.of(context).ok),
@@ -1771,7 +961,7 @@ class NotificationModal {
                   width: 200,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.pop();
                       onTapConfirm();
                     },
                     child: Text(S.of(context).ok),
@@ -1816,7 +1006,7 @@ class NotificationModal {
                   width: 200,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.pop();
                       onTapConfirm();
                     },
                     child: Text(S.of(context).ok),
@@ -1860,7 +1050,7 @@ class NotificationModal {
                   width: 200,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.pop();
                       onTapConfirm();
                     },
                     child: Text(S.of(context).ok),
@@ -1904,7 +1094,7 @@ class NotificationModal {
                   width: 200,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.pop();
                       onTapConfirm();
                     },
                     child: Text(S.of(context).ok),
@@ -1949,7 +1139,7 @@ class NotificationModal {
                   width: 200,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.pop();
                       onTapConfirm();
                     },
                     child: Text(S.of(context).ok),
@@ -1969,27 +1159,108 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:template_app/app_settings/app_general_settings.dart';
-import 'package:template_app/app_settings/auth_config.dart';
+import 'package:gpguard_poc/app_settings/app_general_settings.dart';
+import 'package:gpguard_poc/app_settings/auth_config.dart';
 
 class AuthorizationProvider extends ChangeNotifier {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
   final FirebaseAuth? _firebaseAuth =
       AuthConfig.useFirebase ? FirebaseAuth.instance : null;
-
   final GoogleSignIn _googleSignIn =
       GoogleSignIn(scopes: AuthConfig.googleSignInScopes);
   String? _authToken;
+  User? _user;
+  bool _isLoading = true;
 
   AuthorizationProvider() {
-    _loadAuthToken();
+    _initializeUser();
   }
 
   String? get authToken => _authToken;
+  User? get user => _user;
+  bool get isLoading => _isLoading;
 
-  Future<void> _loadAuthToken() async {
-    _authToken = await storage.read(key: 'auth_token');
+  Future<void> _initializeUser() async {
+    if (AuthConfig.useFirebase) {
+      _user = _firebaseAuth?.currentUser;
+      if (_user != null) {
+        _authToken = _user!.uid;
+      }
+    } else {
+      _authToken = await storage.read(key: 'auth_token');
+    }
+
+    if (DebugConfig.debugMode || DebugConfig.forceDebugScreen) {
+      if (_authToken == null && _user == null) {
+        debugPrint('[User is not authenticated.]');
+      } else {
+        debugPrint('[User is authenticated.]');
+      }
+    }
+
+    if ((!DebugConfig.bypassLoginScreen || DebugConfig.forceDebugScreen) &&
+        (_authToken == null && _user == null)) {
+      debugPrint('Signing user automatically...');
+      GoogleSignInAccount? currentUser = await _googleSignIn.signIn();
+      if (currentUser != null) {
+        _user = await _handleSignIn(currentUser);
+        if (_user != null) {
+          _authToken = _user?.uid;
+          await setAuthToken(_authToken!);
+          notifyListeners();
+        }
+      }
+    }
+
+    _isLoading = false;
     notifyListeners();
+
+    _googleSignIn.onCurrentUserChanged
+        .listen((GoogleSignInAccount? account) async {
+      if (account != null) {
+        _user = await _handleSignIn(account);
+        if (_user != null) {
+          _authToken = _user?.uid;
+          await setAuthToken(_authToken!);
+        }
+      } else {
+        _user = null;
+        _authToken = null;
+      }
+      notifyListeners();
+    });
+
+    GoogleSignInAccount? currentUser = await _googleSignIn.signInSilently();
+    if (currentUser != null) {
+      _user = await _handleSignIn(currentUser);
+
+      if (_user != null) {
+        _authToken = _user?.uid;
+        await setAuthToken(_authToken!);
+        notifyListeners();
+      }
+    }
+  }
+
+  Future<User?> _handleSignIn(GoogleSignInAccount account) async {
+    try {
+      final GoogleSignInAuthentication googleAuth =
+          await account.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+        accessToken: googleAuth.accessToken,
+      );
+
+      if (AuthConfig.useFirebase) {
+        final UserCredential authResult =
+            await _firebaseAuth!.signInWithCredential(credential);
+        return authResult.user;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error during Google sign-in: $e');
+      return null;
+    }
   }
 
   Future<void> setAuthToken(String token) async {
@@ -2001,24 +1272,31 @@ class AuthorizationProvider extends ChangeNotifier {
   Future<void> clearAuthToken() async {
     await storage.delete(key: 'auth_token');
     _authToken = null;
+    _user = null;
     debugPrint('Auth token cleared. User will be logged out.');
     notifyListeners();
   }
 
   Future<void> signOut(BuildContext context) async {
-    if (DebugConfig.debugMode) {
+    if (DebugConfig.bypassLoginScreen) {
       debugPrint(
-          'Error: Debug mode is on. Disable it from AppGeneralSettings.debugMode in order to proceed with sign out.');
+          'Error: Debug mode is on. Disable it from AppGeneralSettings.bypassLoginScreen in order to proceed with sign out.');
       return;
     }
     await clearAuthToken();
     if (AuthConfig.useFirebase) {
       await _firebaseAuth?.signOut();
     }
+
+    if (AuthConfig.allowGoogleSignIn) {
+      await _googleSignIn.signOut();
+    }
   }
 
   bool get isAuthenticated =>
-      DebugConfig.debugMode || (_authToken != null && _authToken!.isNotEmpty);
+      !isLoading &&
+      (DebugConfig.bypassLoginScreen ||
+          (_authToken != null && _authToken!.isNotEmpty));
 
   Future<bool> signInWithEmail(String email, String password) async {
     bool success = false;
@@ -2029,6 +1307,7 @@ class AuthorizationProvider extends ChangeNotifier {
         final UserCredential authResult = await _firebaseAuth!
             .signInWithEmailAndPassword(email: email, password: password);
         _authToken = authResult.user!.uid;
+        _user = authResult.user;
         await setAuthToken(_authToken!);
       } else {
         _authToken = email;
@@ -2061,11 +1340,11 @@ class AuthorizationProvider extends ChangeNotifier {
             accessToken: googleAuth.accessToken,
             idToken: googleAuth.idToken,
           );
-
           if (AuthConfig.useFirebase) {
             final UserCredential? authResult =
                 await _firebaseAuth?.signInWithCredential(credential);
             _authToken = authResult?.user!.uid;
+            _user = authResult?.user;
             await setAuthToken(_authToken!);
           } else {
             _authToken = googleAuth.accessToken;
@@ -2090,9 +1369,9 @@ class AuthorizationProvider extends ChangeNotifier {
 
 ///// lib/providers/providers_all.dart /////
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:template_app/providers/auth_provider.dart';
-import 'package:template_app/providers/locale_provider.dart';
-import 'package:template_app/providers/theme_provider.dart';
+import 'package:gpguard_poc/providers/auth_provider.dart';
+import 'package:gpguard_poc/providers/locale_provider.dart';
+import 'package:gpguard_poc/providers/theme_provider.dart';
 
 import '../services/connectivity_service.dart';
 
@@ -2105,7 +1384,7 @@ final connectivityProvider =
 ///// lib/providers/theme_provider.dart /////
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:template_app/app_settings/theme_settings.dart';
+import 'package:gpguard_poc/app_settings/theme_settings.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
@@ -2153,7 +1432,7 @@ class ThemeProvider extends ChangeNotifier {
 }
 
 ///// pubspec.yaml /////
-name: template_app
+name: gpguard_poc
 description: "A new Flutter project."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -2183,6 +1462,8 @@ dependencies:
   google_sign_in: ^6.2.1
   # Sign In Button is a Flutter plugin for creating sign-in buttons in a Flutter app.
   sign_in_button: ^3.2.0
+  # Go Router is a Flutter plugin for routing in a Flutter app.
+  go_router: ^14.2.0
 
 
 #  # -----------------  GENERAL PACKAGES  -----------------
@@ -2200,7 +1481,6 @@ dependencies:
 #  image_picker: ^1.1.2
   # Skeletonizer is a Flutter plugin for creating skeleton loading animations in a Flutter app.
   skeletonizer: ^1.3.0
-
   # Device Info Plus is a Flutter plugin for getting information about the device the app is running on.
   device_info_plus: ^10.1.0
   # Package Info Plus is a Flutter plugin for getting information about the package the app is running on.
@@ -2233,6 +1513,8 @@ dependencies:
   flutter_speed_dial: ^7.0.0
 #  # Badges is a Flutter plugin for creating fancy animated badges in a Flutter app.
 #  badges: ^3.1.2
+#  # Loading Animation Widget is a Flutter plugin for creating loading animations in a Flutter app.
+#  loading_animation_widget: ^1.2.1
 #  # Flutter Native Splash is a Flutter plugin for creating a splash screen in a Flutter app.
 #  flutter_native_splash: ^2.4.0
 #  # Another Flushbar is a Flutter plugin for creating custom snackbars in a Flutter app.
@@ -2247,6 +1529,9 @@ dependencies:
 #  flutter_typeahead: ^2.0.0
 #  # Mesh Gradient is a Flutter plugin for creating mesh gradients in a Flutter app.
 #  mesh_gradient: ^1.3.6
+#  # Flutter Slidable is a Flutter plugin for creating slidable widgets in a Flutter app.
+#  flutter_slidable: ^3.1.1
+
 
   # -----------------  ANIMATIONS  -----------------
   # Lottie is a Flutter plugin for using Lottie animations in a Flutter app.
@@ -2284,7 +1569,7 @@ dependencies:
 #  # Flutter Auth is a Flutter plugin that enables Android and iOS authentication using passwords, phone numbers, and identity providers like Google, Facebook, and Twitter.
   firebase_auth: ^5.1.1
 #  # Cloud Firestore is a flexible, scalable database for mobile, web, and server development from Firebase and Google Cloud Platform.
-#  cloud_firestore: ^5.0.1
+  cloud_firestore: ^5.1.0
 #  # Firebase Database is a Flutter plugin to use the Firebase Realtime Database API and allow storing and syncing data with a NoSQL cloud database.
 #  firebase_database: ^11.0.1
 #  # Firebase Storage is a Flutter plugin to use the Firebase Cloud Storage API and allow uploading, downloading, and deleting files in the cloud.
@@ -2308,6 +1593,13 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^4.0.0
   intl_utils: ^2.8.7
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "lib/assets/path_to_your_icon.png"
+  min_sdk_android: 23 # Minimum SDK version for Android, adjust as needed
 
 flutter:
 

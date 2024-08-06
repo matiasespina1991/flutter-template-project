@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "755988850396",
+    "project_id": "gpguard-poc",
+    "storage_bucket": "gpguard-poc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755988850396:android:dfe393a6a37bfb65ddb619",
+        "android_client_info": {
+          "package_name": "com.matiasespina1991.gpguardpoc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnJFeYqLtR8xFAqBaWXjOr5J-5X2fAezg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

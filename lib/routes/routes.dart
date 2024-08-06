@@ -6,9 +6,15 @@ import '../screens/common/home_screen/home_screen.dart';
 import '../screens/common/loading_screen/loading_screen.dart';
 import '../screens/common/login_screen/login_screen.dart';
 import '../screens/common/not_found_screen/not_found_screen.dart';
+import '../screens/common/scanner_screen/scanner_screen.dart';
 
 class Routes {
   /// COMMON ROUTES
+
+  static RouteConfig scannerScreen = RouteConfig(
+      path: '/scanner',
+      name: 'Scanner Screen',
+      builder: (context) => const ScannerScreen());
 
   static RouteConfig loginScreen = RouteConfig(
     path: '/login',
@@ -35,6 +41,7 @@ class Routes {
 
   static List<GoRoute> _generateRoutes() {
     List<RouteConfig> allRoutes = [
+      scannerScreen,
       loginScreen,
       homeScreen,
       notFoundScreen,

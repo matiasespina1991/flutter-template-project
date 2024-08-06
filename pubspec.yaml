@@ -1,4 +1,4 @@
-name: template_app
+name: gpguard_poc
 description: "A new Flutter project."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,6 +30,9 @@ dependencies:
   sign_in_button: ^3.2.0
   # Go Router is a Flutter plugin for routing in a Flutter app.
   go_router: ^14.2.0
+
+  google_mlkit_barcode_scanning: ^0.12.0
+  camera: ^0.10.0+3
 
 
 #  # -----------------  GENERAL PACKAGES  -----------------
